@@ -16,11 +16,6 @@ public class CharacterTest {
     
 
     private final Character character1 = new Character(true, "eman");
-
-    
- 
-    
-    
     
     @Test
     void move() {
