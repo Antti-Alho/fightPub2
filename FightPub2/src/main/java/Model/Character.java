@@ -16,8 +16,6 @@
  */
 package Model;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  *
  * @author Pate
@@ -49,13 +47,11 @@ public class Character {
     
    
     public void changeFacing () {
-        throw new NotImplementedException();
         //changes the facingRight boolean to the correct value.
         
     } 
     
-    public void move() {
-        throw new NotImplementedException();
+    public void move(int A) {
         //changes the location of character
     }
 

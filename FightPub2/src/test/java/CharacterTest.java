@@ -1,3 +1,5 @@
+
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,26 +14,27 @@ import Model.Character;
  */
 public class CharacterTest {
     
-    public CharacterTest() {
-    }
-    private final Character character = new Character(true, true);
+
+    private final Character character1 = new Character(true, "eman");
     
-    @BeforeAll
-    public static void setUpClass() {
-    }
-    
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
+    @Test
+    void move() {
+        character1.setxCoord(1500);
+        character1.move(-4);
+        assertEquals(1496, character1.getxCoord());
+        character1.move(4);
+        assertEquals(1500, character1.getxCoord());
     }
     
-    @AfterEach
-    public void tearDown() {
+    @Test
+    void outOfBounds () {
+        character1.setxCoord(0);
+        character1.move(4);
+        assertEquals(0, character1.getxCoord());
+        character1.setxCoord(3000);
+        character1.move(4);
+        assertEquals(3000, character1.getxCoord());
     }
-    
     
 
 }
