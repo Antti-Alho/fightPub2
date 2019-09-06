@@ -54,7 +54,7 @@ public class Character {
         
     } 
     
-    public void move() {
+    public void move(int A) {
         throw new NotImplementedException();
         //changes the location of character
     }
