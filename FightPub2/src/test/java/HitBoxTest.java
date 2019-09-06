@@ -17,21 +17,9 @@ public class HitBoxTest {
     
     private final HitBox hitBox = new HitBox();
     
-    @BeforeAll
-    public static void setUpClass() {
-    }
+    @Test
+    void 
     
-    @AfterAll
-    public static void tearDownClass() {
-    }
-    
-    @BeforeEach
-    public void setUp() {
-    }
-    
-    @AfterEach
-    public void tearDown() {
-    }
     
     
 }

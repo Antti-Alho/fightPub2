@@ -29,7 +29,7 @@ public class CharacterTest {
     @Test
     void outOfBounds () {
         character1.setxCoord(0);
-        character1.move(4);
+        character1.move(-4);
         assertEquals(0, character1.getxCoord());
         character1.setxCoord(3000);
         character1.move(4);
