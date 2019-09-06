@@ -40,7 +40,8 @@ public class MapModel {
     mapLines.put("right", Arrays.asList(rightOfMap));
     mapLines.put("top", Arrays.asList(topOfMap));
     mapLines.put("left", Arrays.asList(leftOfMap));
-              
+    
+    
     }
 
 }
