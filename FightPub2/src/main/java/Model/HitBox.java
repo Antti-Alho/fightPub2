@@ -25,10 +25,59 @@ public class HitBox {
     
     int location, width, height, damage;
     
-    public HitBox () {
-        
-        
+    //this constructor might not see any use.
+    public HitBox (int location, int width, int height, int damage) {
+        this.location = location;
+        this.width = width;
+        this.height = height;
+        this.damage = damage;  
     }
+    
+    //this constructor might be better suited for our needs.
+    public HitBox (int width, int height, int damage) {
+        this.width = width;
+        this.height = height;
+        this.damage = damage;
+    }
+    
+    // ---------------- GETTERS AND SETTERS ---------------
+ 
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+    
+    
+    
+    
     
     
 }
