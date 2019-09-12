@@ -13,19 +13,30 @@ public class Character {
     boolean STATE_HITSTUN = false, STATE_ATTACK = false, STATE_BLOCKSTUN = false;
     String sprite, name = "eman";
         
-    HurtBox hurtBox = new HurtBox();
+    
+    
+    //it might be best to have the character act as a hurtbox rathen than having
+    //a separate object for hurtboxes.
+    
+    
     
     public Character (boolean player1, String name) {
        if (player1 == true) {
            xCoord = 1200;
            facingRight = true;
+           //width and height need to be changed.
+           //hurtBoxP1 = hurtbox of player 1
+           HurtBox hurtBoxP1 = new HurtBox(xCoord, 100, 100);
+           
        } else {
            xCoord = 1800;
            facingRight = false;
+           //width and height need to be changed.
+           HurtBox hurtBoxP2 = new HurtBox(xCoord, 100, 100);
        }
        this.player1 = player1;
        this.name = name;
-       hurtBox.setXcoord(xCoord);
+
         
     }
     
