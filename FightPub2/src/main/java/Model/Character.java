@@ -4,43 +4,84 @@ package Model;
  *
  * @author Pate
  */
+   enum Stance {
+           CROUCHING,
+           STANDING
+    }
+    enum State {
+           ATTACKING,
+           BLOCKSTUN,
+           HITSTUN,
+           NEUTRAL
+    }
+    enum Facing {
+        RIGHT,
+        LEFT
+    }
 public class Character {
-    
-    public int xCoord;
-    public int health = 100;
-    boolean player1 = false;
-    boolean facingRight = false;
-    boolean STATE_HITSTUN = false, STATE_ATTACK = false, STATE_BLOCKSTUN = false;
-    String sprite, name = "eman";
-        
+
+    private int xCoord;
+    private int yCoord = 0;
+    private int health = 100;
+    private int walkspeed;
+    private boolean player1 = false;
+    private String sprite;
+    private String name;
+    private State state;
+    private Stance stance;
+    private Facing facing;
     HurtBox hurtBox = new HurtBox();
-    
+
     public Character (boolean player1, String name) {
        if (player1 == true) {
-           xCoord = 1200;
-           facingRight = true;
+           this.xCoord = 1200;
+           this.facing = Facing.RIGHT;
        } else {
            xCoord = 1800;
-           facingRight = false;
+           this.facing=Facing.LEFT;
        }
        this.player1 = player1;
        this.name = name;
-       hurtBox.setXcoord(xCoord);
-        
-    }
-    
-   
-    public void changeFacing () {
-        //changes the facingRight boolean to the correct value.
-        
-    } 
-    
-    public void move(int A) {
-        //changes the location of character
+       this.walkspeed = 4;
+       this.stance = Stance.STANDING;
+       this.state = State.NEUTRAL;
     }
 
+
+    public void changeFacing () {
+        //changes the facingRight boolean to the correct value.
+
+    }
+
+    public void walk(String direction) {
+        //changes the location of character
+    }
     
+    public Stance getStance() {
+        return this.stance;
+    }
     
+    public State getState() {
+        return this.state;
+    }
+    
+    public Facing getFacing() {
+        return this.facing;
+    }
+    
+    public void setStance(Stance stance) {
+        this.stance = stance;
+    }
+    
+    public void setState(State state) {
+        this.state = state;
+    }
+    
+    public void setFacing(Facing facing) {
+        this.facing = facing;
+    }
+
+
     public String getSprite() {
         return sprite;
     }
@@ -52,12 +93,7 @@ public class Character {
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
     
-
     public int getxCoord() {
         return xCoord;
     }
@@ -78,43 +114,4 @@ public class Character {
         return player1;
     }
 
-    public void setPlayer1(boolean player1) {
-        this.player1 = player1;
-    }
-
-    public boolean isFacingRight() {
-        return facingRight;
-    }
-
-    public void setFacingRight(boolean facingRight) {
-        this.facingRight = facingRight;
-    }
-
-    public boolean isSTATE_HITSTUN() {
-        return STATE_HITSTUN;
-    }
-
-    public void setSTATE_HITSTUN(boolean STATE_HITSTUN) {
-        this.STATE_HITSTUN = STATE_HITSTUN;
-    }
-
-    public boolean isSTATE_ATTACK() {
-        return STATE_ATTACK;
-    }
-
-    public void setSTATE_ATTACK(boolean STATE_ATTACK) {
-        this.STATE_ATTACK = STATE_ATTACK;
-    }
-
-    public boolean isSTATE_BLOCKSTUN() {
-        return STATE_BLOCKSTUN;
-    }
-
-    public void setSTATE_BLOCKSTUN(boolean STATE_BLOCKSTUN) {
-        this.STATE_BLOCKSTUN = STATE_BLOCKSTUN;
-    }
-    
-    
-    
-    
 }
