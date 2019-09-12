@@ -8,7 +8,7 @@ public class Character {
     
     public int xCoord;
     public int health = 100;
-    boolean player1 = false;
+    boolean player = false;
     boolean facingRight = false;
     boolean STATE_HITSTUN = false, STATE_ATTACK = false, STATE_BLOCKSTUN = false;
     String sprite, name = "eman";
@@ -20,8 +20,8 @@ public class Character {
     
     
     
-    public Character (boolean player1, String name) {
-       if (player1 == true) {
+    public Character (boolean player, String name) {
+       if (player == true) {
            xCoord = 1200;
            facingRight = true;
            //width and height need to be changed.
@@ -34,7 +34,7 @@ public class Character {
            //width and height need to be changed.
            HurtBox hurtBoxP2 = new HurtBox(xCoord, 100, 100);
        }
-       this.player1 = player1;
+       this.player = player;
        this.name = name;
 
         
@@ -85,12 +85,12 @@ public class Character {
         this.health = health;
     }
 
-    public boolean isPlayer1() {
-        return player1;
+    public boolean isPlayer() {
+        return player;
     }
 
-    public void setPlayer1(boolean player1) {
-        this.player1 = player1;
+    public void setPlayer(boolean player) {
+        this.player = player;
     }
 
     public boolean isFacingRight() {
