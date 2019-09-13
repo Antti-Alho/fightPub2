@@ -14,9 +14,11 @@ public class MapModel {
         final int RIGHTBORDER = 3000;
         final int BOTTOM = 0;
 
-        private string name;
+        private String name;
 
     public MapModel (String name) {
         this.name = name;
+    }
+
 
 }

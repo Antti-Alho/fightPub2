@@ -20,6 +20,7 @@ package Model;
     }
 public class Character {
 
+
     private int xCoord;
     private int yCoord = 0;
     private int health = 100;
@@ -40,11 +41,10 @@ public class Character {
            xCoord = 1800;
            this.facing=Facing.LEFT;
        }
-       this.player1 = player1;
-       this.name = name;
        this.walkspeed = 4;
        this.stance = Stance.STANDING;
        this.state = State.NEUTRAL;
+
     }
 
 
@@ -110,8 +110,8 @@ public class Character {
         this.health = health;
     }
 
-    public boolean isPlayer1() {
-        return player1;
+    public boolean isPlayer() {
+        return player;
     }
 
 }

@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import Model.MapModel;
 import Model.Character;
 import controller.Controller;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -26,8 +27,8 @@ public class ControllerTest {
 
     @Test
     void startLocation(){
-        assertEquals(1200, controller.getCharacter1.getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
-        assertEquals(1800, controller.getCharacter2.getxCoord(), "Hahmo 2 ei ole aloituspaikallaan");
+        assertEquals(1200, controller.getPlayer1().getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
+        assertEquals(1800, controller.getPlayer2().getxCoord(), "Hahmo 2 ei ole aloituspaikallaan");
     }
 
 	@Test
@@ -53,5 +54,21 @@ public class ControllerTest {
 
     //character.getHurtboxFontside()
 
-
+    
+    @Test
+    void  characterCollission(){
+        controller.getPlayer1().setxCoord(1500);
+        controller.getPlayer2().setxCoord(1500);
+        assertEquals(false, controller.checkCollission(), "Hahmot ovat toistensä päällä");
+    }
+    
+    @Test
+    void cameraPosition(){
+        
+    }
+    
+    @Test inputs(){
+        
+    }
 }
+
