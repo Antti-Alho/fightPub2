@@ -1,7 +1,7 @@
 
 package controller;
 import Model.MenuElement;
-import java.utils.ArrayList;
+import java.util.ArrayList;
 /**
  *
  * @author Joonas
@@ -10,15 +10,16 @@ import java.utils.ArrayList;
 public class Menu {
     
     
-    ArrayList
-    MenuElement play = new MenuElement("Play");
-    MenuElement options = new MenuElement("Options");
-    int activeElement = 0;
+    private ArrayList<MenuElement> menuelements = new ArrayList<MenuElement>();
+    private int activeElement = 0;
     
     public Menu() {
-        menuelements.
+        MenuElement play = new MenuElement("Play");
+        MenuElement options = new MenuElement("Options");
+        menuelements.add(play);
+        menuelements.add(options);
         
-     menuelements[activeElement].active = true;
+     menuelements.get(activeElement).active = true;
      
      }
     
@@ -27,9 +28,9 @@ public class Menu {
             element.active = false;
         }
         activeElement++;
-        if (activeElement == menuelements.length)
+        if (activeElement == menuelements.size())
             activeElement = 0;
-        menuelements[activeElement].active = true;
+        menuelements.get(activeElement).active = true;
         }
     
     public void upElement() {
@@ -38,10 +39,13 @@ public class Menu {
         }
         activeElement--;
         if (activeElement == -1) {
-            activeElement = menuelements.length - 1;
+            activeElement = menuelements.size() - 1;
         }
-        menuelements[activeElement].active = true;
+        menuelements.get(activeElement).active = true;
     
+    }
+    public int getActiveElement() {
+        return activeElement;
     }
 
 }

@@ -31,7 +31,7 @@ public class Character {
     private State state;
     private Stance stance;
     private Facing facing;
-    HurtBox hurtBox = new HurtBox();
+    private HurtBox hurtBox;
 
     public Character (boolean player1, String name) {
        if (player1 == true) {
@@ -44,6 +44,8 @@ public class Character {
        this.walkspeed = 4;
        this.stance = Stance.STANDING;
        this.state = State.NEUTRAL;
+       hurtBox()
+       
 
     }
 
@@ -111,7 +113,7 @@ public class Character {
     }
 
     public boolean isPlayer() {
-        return player;
+        return player1;
     }
 
 }
