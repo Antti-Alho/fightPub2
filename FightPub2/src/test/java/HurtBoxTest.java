@@ -29,9 +29,11 @@ import Model.HurtBox;
  */
 public class HurtBoxTest {
     
+    private final HurtBox hurtBox = new HurtBox(20,20,20);
+    
     public HurtBoxTest() {
     }
-    private final HurtBox hurtBox = new HurtBox();
+    
     
     @BeforeAll
     public static void setUpClass() {

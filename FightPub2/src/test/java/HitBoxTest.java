@@ -15,11 +15,6 @@ public class HitBoxTest {
     public HitBoxTest() {
     }
     
-    private final HitBox hitBox = new HitBox();
-    
-    @Test
-    void 
-    
-    
-    
+    private final HitBox hitBox = new HitBox(20,20,20,20);
+
 }

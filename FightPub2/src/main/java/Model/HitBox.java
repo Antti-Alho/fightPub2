@@ -74,10 +74,4 @@ public class HitBox {
     public void setDamage(int damage) {
         this.damage = damage;
     }
-    
-    
-    
-    
-    
-    
 }
