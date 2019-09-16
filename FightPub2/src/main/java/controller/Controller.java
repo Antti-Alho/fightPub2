@@ -1,5 +1,6 @@
 package controller;
 import Model.Character;
+import Model.MapModel;
 
 /**
  *
@@ -13,6 +14,10 @@ public class Controller {
     public Controller() {
         this.player1 = new Character(true , "Jukka");
         this.player2 = new Character(false, "Pekka");
+    }
+
+    public Controller(Character char1, Character char2, MapModel map, int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -62,6 +67,14 @@ public class Controller {
      */
     public void eventListener(){
         
+    }
+
+    public void checkNextFrame() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void advance() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     /**

@@ -4,20 +4,20 @@ package Model;
  *
  * @author Pate
  */
-   enum Stance {
-           CROUCHING,
-           STANDING
-    }
-    enum State {
-           ATTACKING,
-           BLOCKSTUN,
-           HITSTUN,
-           NEUTRAL
-    }
-    enum Facing {
-        RIGHT,
-        LEFT
-    }
+enum Stance {
+    CROUCHING,
+    STANDING
+}
+enum State {
+    ATTACKING,
+    BLOCKSTUN,
+    HITSTUN,
+    NEUTRAL
+}
+enum Facing {
+    RIGHT,
+    LEFT
+}
 public class Character {
 
 
@@ -44,9 +44,6 @@ public class Character {
        this.walkspeed = 4;
        this.stance = Stance.STANDING;
        this.state = State.NEUTRAL;
-       hurtBox()
-       
-
     }
 
 
@@ -114,6 +111,22 @@ public class Character {
 
     public boolean isPlayer() {
         return player1;
+    }
+
+    public short getNextxCoord() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setLocation(int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Object getFacingRight() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void setNextLocation(int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
