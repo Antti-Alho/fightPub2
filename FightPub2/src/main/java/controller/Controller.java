@@ -8,32 +8,40 @@ import Model.MapModel;
  */
 public class Controller {
     
-    private Character player1;
-    private Character player2;
+    private Character char1;
+    private Character char2;
+    private int timelimit;
+    private int rounds;
+    private MapModel map;
     
     public Controller() {
-        this.player1 = new Character(true , "Jukka");
-        this.player2 = new Character(false, "Pekka");
+        this.char1 = new Character(true , "Jukka");
+        this.char2 = new Character(false, "Pekka");
     }
 
-    public Controller(Character char1, Character char2, MapModel map, int i, int i0) {
+    public Controller(String char1, String char2, MapModel map, int timelimit, int rounds) {
+        this.char1 = new Character(true, char1);
+        this.char2 = new Character(false, char2);
+        this.map = map;
+        this.timelimit = timelimit;
+        this.rounds = rounds;
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
-     * @return the player1
+     * @return the character
      */
-    public Character getPlayer1() {
-        return player1;
+    public Character getCharacter(int character) throws Exception { 
+        if (character == 1) {
+            return this.char1;
+        }
+        if (character == 2 ) {
+            return this.char2;
+        }
+        return null;
     }
 
-    /**
-     * @return the player2
-     */
-    public Character getPlayer2() {
-        return player2;
-    }
-    
     /**
      * Checks are the hurtboxes  on top of each other. 
      * If they are, they will be moved/stopped.
