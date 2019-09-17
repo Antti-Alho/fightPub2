@@ -30,8 +30,8 @@ public class ControllerTest {
 
     @Test
     public void startLocation(){
-        assertEquals(1200, controller.getPlayer1().getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
-        assertEquals(1800, controller.getPlayer2().getxCoord(), "Hahmo 2 ei ole aloituspaikallaan");
+        assertEquals(1200, controller.getCharacter(1).getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
+        assertEquals(1800, controller.getCharacter(2).getxCoord(), "Hahmo 2 ei ole aloituspaikallaan");
     }
 
     @Test
@@ -53,9 +53,9 @@ public class ControllerTest {
     
     @Test
     void  characterCollission(){
-        controller.getPlayer1().setxCoord(1500);
-        controller.getPlayer2().setxCoord(1500);
-        assertEquals(false, controller.checkCollission(), "Hahmot ovat toistensä päällä");
+        controller.getCharacter(1).setxCoord(1500);
+        controller.getCharacter(2).setxCoord(1500);
+        assertEquals(false, controller.checkCollision(), "Hahmot ovat toistensä päällä");
     }
     
     @Test

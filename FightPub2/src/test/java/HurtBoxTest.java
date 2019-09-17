@@ -15,14 +15,15 @@ import controller.Controller;
  */
 public class HurtBoxTest {
     
-    private final Controller controller = new Controller();
-    private final Character char1 = controller.getCharacter(1);
-    private final Character char2 = controller.getCharacter(2);
-    private final HurtBox hurtBox = new HurtBox(20,20,20, 0, 0, controller.char1); //Hurtbox parametrit? ehdotus (xcoord, leveys, korkeus, xoffset, yoffset, omistaja)
+    static Controller controller;
+    static HurtBox hurtBox;
 
     
     @BeforeAll
     public static void setUpClass() {
+        controller = new Controller();
+        hurtBox = new HurtBox(20,20,20, 0, 0, controller.getCharacter(1)); //Hurtbox parametrit? ehdotus (xcoord, leveys, korkeus, xoffset, yoffset, omistaja)
+   
         
     }
     

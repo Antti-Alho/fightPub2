@@ -47,7 +47,7 @@ public class Controller {
      * If they are, they will be moved/stopped.
      * @return 
      */
-    public boolean checkCollission(){
+    public boolean checkCollision(){
         if (false){
             return false;
         }
@@ -55,14 +55,14 @@ public class Controller {
             return true;
         }
     }
-    public boolean checkHitboxCollission(){
+    public boolean checkHitboxCollision(){
         if (true){
             return true;
         } else {
             return false;
         }
     }
-    public boolean checkHurtboxCollission(){
+    public boolean checkHurtboxCollision(){
         if (true){
             return true;
         } else {
