@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 Heidi
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
@@ -22,22 +6,26 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import Model.HurtBox;
+import Model.Character;
+import controller.Controller;
 
 /**
  *
- * @author Heidi
+ * @author Heidi, Joonas
  */
 public class HurtBoxTest {
     
-    private final HurtBox hurtBox = new HurtBox(20,20,20);
-    
-    public HurtBoxTest() {
-    }
-    
+    private final Controller controller = new Controller();
+    private final Character char1 = controller.getCharacter(1);
+    private final Character char2 = controller.getCharacter(2);
+    private final HurtBox hurtBox = new HurtBox(20,20,20, 0, 0, controller.char1); //Hurtbox parametrit? ehdotus (xcoord, leveys, korkeus, xoffset, yoffset, omistaja)
+
     
     @BeforeAll
     public static void setUpClass() {
+        
     }
+    
     
     @AfterAll
     public static void tearDownClass() {
@@ -50,10 +38,14 @@ public class HurtBoxTest {
     @AfterEach
     public void tearDown() {
     }
+    
+    @Test
+    void checkCollision() {
+        HurtBox h2 = new HurtBox(10, 20, 20, 0, 0, controller.char2);
+        assertEquals(true, controller.checkCollision(), "Boxes should collide");
+        h2.setxCoord(1000);
+        assertEquals(false, controller.checkCollision(), "Boxes should not collide");
+    }
 
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
+    
 }
