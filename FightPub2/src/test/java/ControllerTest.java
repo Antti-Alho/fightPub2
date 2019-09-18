@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 
 /**
  *
- * @author Heidi
+ * @author Heidi, Pate
  */
 public class ControllerTest {
 
@@ -20,12 +20,15 @@ public class ControllerTest {
     MapModel map;
     Controller controller;
     
+    //dont use Character classes instances here pls. only use control classes methods. you can get your desired character with controller.getCharacter.
+    
     @BeforeEach
     void setUp() {
         char1 = new Character(true, "enam");
         char2 = new Character(false, "enam");
         map = new MapModel("asd");
-        controller = new Controller();
+        controller = new Controller("Pekka", "Erkki", map, 0, 0);
+        
     }
 
     @Test
@@ -51,11 +54,12 @@ public class ControllerTest {
         assertEquals(50, char1.getxCoord(), "Hahmo seinän sisällä");
     }
     
+   
     @Test
-    void  characterCollission(){
-        controller.getCharacter(1).setxCoord(1500);
+    void characterCollission(){
+        controller.getCharacter(1).setxCoord(1480);
         controller.getCharacter(2).setxCoord(1500);
-        assertEquals(false, controller.checkCollision(), "Hahmot ovat toistensä päällä");
+        assertEquals(true, controller.checkCollision(), "Hahmot ovat toistensa päällä");
     }
     
     @Test

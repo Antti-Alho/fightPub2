@@ -37,9 +37,12 @@ public class Character {
        if (player1 == true) {
            this.xCoord = 1200;
            this.facing = Facing.RIGHT;
+           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 20, 0, this);
        } else {
-           xCoord = 1800;
+           this.xCoord = 1800;
            this.facing=Facing.LEFT;
+           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 20, 0, this);
+           
        }
        this.walkspeed = 4;
        this.stance = Stance.STANDING;
@@ -50,6 +53,10 @@ public class Character {
     public void changeFacing () {
         //changes the facingRight boolean to the correct value.
 
+    }
+    
+    public HurtBox getHurtbox() {
+        return this.hurtBox;
     }
 
     public void walk(String direction) {
@@ -66,6 +73,10 @@ public class Character {
     
     public Facing getFacing() {
         return this.facing;
+    }
+    
+    public static Facing getFacingRightEnum() {
+        return Facing.RIGHT;
     }
     
     public void setStance(Stance stance) {
@@ -121,11 +132,12 @@ public class Character {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Object getFacingRight() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public void setNextLocation(int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public Object getFacingRight() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
