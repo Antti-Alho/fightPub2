@@ -16,7 +16,7 @@ public class Controller {
     private int rounds;
     private MapModel map;
 
-    public Controller(String char1Name, String char2Name, MapModel map, int timelimit, int rounds) {
+    public Controller(Character char1, Character char , MapModel map, int timelimit, int rounds) {
         this.char1 = new Character(true, char1Name);
         this.char2 = new Character(false, char2Name);
         this.map = map;
