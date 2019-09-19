@@ -14,15 +14,9 @@ public class MapModel {
         final int RIGHTBORDER = 3000;
         final int BOTTOM = 0;
 
-        private String name;
+        final private String name;
 
     public MapModel (String name) {
         this.name = name;
     }
-
-    public MapModel() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
 }

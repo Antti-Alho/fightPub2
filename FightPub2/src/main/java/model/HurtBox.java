@@ -14,11 +14,19 @@ public class HurtBox {
      //Hurtbox parametrit? ehdotus (xcoord, leveys, korkeus, xoffset, yoffset, omistaja)
     public HurtBox (int xCoord, int width, int height, int xOffSet, int yOffSet, Character character) {
         this.xCoord = xCoord;
-        this.width = width;
         this.height = height;
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
         this.character = character;
+        if (character.getFacing() == Character.Facing.RIGHT) {
+            this.width = width;
+            this.xOffSet = xOffSet * -1;
+        }
+        else {
+            this.width = width * -1;
+            this.xOffSet = xOffSet * -1;
+        }
+        
     }
 
     

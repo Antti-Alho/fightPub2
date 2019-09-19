@@ -16,13 +16,12 @@ public class Controller {
     private int rounds;
     private MapModel map;
 
-    public Controller(String char1Name, String char2Name, MapModel map, int timelimit, int rounds) {
-        this.char1 = new Character(true, char1Name);
-        this.char2 = new Character(false, char2Name);
+    public Controller(Character char1, Character char2, MapModel map, int timelimit, int rounds) {
+        this.char1 = char2;
+        this.char2 = char2;
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
-
     }
 
     /**
@@ -55,9 +54,6 @@ public class Controller {
         }
     }
 
-
-
-    
     public Character getCharacter1(){
         return this.char1;
     }

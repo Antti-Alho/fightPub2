@@ -24,7 +24,7 @@ package model;
 import model.Character;
 public class HitBox {
     
-    int xcoord, width, height, damage, xoffset, yoffset;
+    int xcoord, width, height, xoffset, yoffset, damage;
     final Character owner;
             
     
