@@ -53,30 +53,10 @@ public class Character {
         STANDING
     }
 
-    /**
-     * 
-     */
-    public void changeFacing () {
-        
-
-    }
-    
-    /**
-     * 
-     * @return 
-     */
     public HurtBox getHurtbox() {
         return this.hurtBox;
     }
 
-    /**
-     * 
-     * @param direction 
-     */
-    public void walk(String direction) {
-        
-    }
-    
     public Stance getStance() {
         return this.stance;
     }
@@ -133,22 +113,5 @@ public class Character {
     public boolean isPlayer() {
         return player1;
     }
-
-    public short getNextxCoord() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setLocation(int i, int i0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-    public void setNextLocation(int i, int i0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
-    public Object getFacingRight() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }

@@ -29,7 +29,7 @@ public class Controller {
      * Checks if the hurtboxes and characters are on top of each other.
      * returns true if characters are in collision
      * 
-     * @return
+     * @return true if boxes collide
      */
     public boolean checkCollision() {
         if ( ( char1.getFacing() == Character.Facing.RIGHT ) && (char1.getxCoord() + char1.getHurtbox().getxOffSet() == char2.getxCoord()) ) {
@@ -55,29 +55,8 @@ public class Controller {
         }
     }
 
-    /**
-     * Listens inputs.
-     */
-    public void eventListener() {
 
-    }
 
-    public void checkNextFrame() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void advance() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * Listens if there have been keyboard commands.
-     */
-    /*
-    public checkInputs(){
-        return ;
-    }
-     */
     
     public Character getCharacter1(){
         return this.char1;
