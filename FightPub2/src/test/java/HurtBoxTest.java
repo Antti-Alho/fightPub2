@@ -5,9 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import Model.HurtBox;
-import Model.Character;
+import model.HurtBox;
+import model.Character;
 import controller.Controller;
+import model.MapModel;
 
 /**
  *
@@ -17,16 +18,11 @@ public class HurtBoxTest {
     
     static Controller controller;
     static HurtBox hurtBox;
-
-    //this class is useless. Dont use controller in a hurtBoxTest. dont test controller methods in a hurtbox test. dont test data classes.
-    //for the purposes youre trying to achieve here we have the controllerTest class to use. 
     
     @BeforeAll
     public static void setUpClass() {
-        controller = new Controller();
-        hurtBox = new HurtBox(20,20,20, 0, 0, controller.getCharacter(1)); //Hurtbox parametrit? ehdotus (xcoord, leveys, korkeus, xoffset, yoffset, omistaja)
-   
-        
+        controller = new Controller("asd", "asd2", new MapModel(), 0, 0);
+        hurtBox = new HurtBox(20,20,20, 0, 0, controller.getCharacter1());
     }
     
     
@@ -44,7 +40,7 @@ public class HurtBoxTest {
     
     @Test
     void checkCollision() {
-        HurtBox h2 = new HurtBox(10, 20, 20, 0, 0, controller.getCharacter(2));
+        HurtBox h2 = new HurtBox(10, 20, 20, 0, 0, controller.getCharacter2());
         assertEquals(true, controller.checkCollision(), "Boxes should collide");
         h2.setxCoord(1000);
         assertEquals(false, controller.checkCollision(), "Boxes should not collide");
