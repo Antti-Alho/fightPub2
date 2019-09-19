@@ -1,4 +1,4 @@
-package Model;
+package model;
 
 /**
  *
@@ -6,15 +6,29 @@ package Model;
  */
 public class HurtBox {
     
-    int xCoord, width, height;
+    int xCoord, width, height, xOffSet, yOffSet;
+    Character character;
     
     
-    public HurtBox (int xCoord, int width, int height) {
+    
+     //Hurtbox parametrit? ehdotus (xcoord, leveys, korkeus, xoffset, yoffset, omistaja)
+    public HurtBox (int xCoord, int width, int height, int xOffSet, int yOffSet, Character character) {
         this.xCoord = xCoord;
         this.width = width;
         this.height = height;
+        this.xOffSet = xOffSet;
+        this.yOffSet = yOffSet;
+        this.character = character;
     }
 
+    
+    public int getxOffSet() {
+        return xOffSet;
+    }
+    
+    public int getyOffSet() {
+        return yOffSet;
+    }
     
     public void setXcoord(int xCoord) {
         this.xCoord = xCoord;

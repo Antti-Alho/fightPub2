@@ -1,23 +1,10 @@
-package Model;
-
+package model;
+import static model.Character.Facing;
 /**
  *
  * @author Pate
  */
-enum Stance {
-    CROUCHING,
-    STANDING
-}
-enum State {
-    ATTACKING,
-    BLOCKSTUN,
-    HITSTUN,
-    NEUTRAL
-}
-enum Facing {
-    RIGHT,
-    LEFT
-}
+
 public class Character {
 
 
@@ -34,26 +21,60 @@ public class Character {
     private HurtBox hurtBox;
 
     public Character (boolean player1, String name) {
-       if (player1 == true) {
+        if (player1 == true) {
            this.xCoord = 1200;
            this.facing = Facing.RIGHT;
-       } else {
-           xCoord = 1800;
+           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 20, 0, this);
+        } else {
+           this.xCoord = 1800;
            this.facing=Facing.LEFT;
-       }
-       this.walkspeed = 4;
-       this.stance = Stance.STANDING;
-       this.state = State.NEUTRAL;
+           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 20, 0, this);
+           
+        }
+        this.walkspeed = 4;
+        this.stance = Stance.STANDING;
+        this.state = State.NEUTRAL;
+    }
+    
+    public enum Facing {
+        RIGHT,
+        LEFT
+    }
+    
+    public enum State {
+        ATTACKING,
+        BLOCKSTUN,
+        HITSTUN,
+        NEUTRAL
+    }
+    
+    public enum Stance {
+        CROUCHING,
+        STANDING
     }
 
-
+    /**
+     * 
+     */
     public void changeFacing () {
-        //changes the facingRight boolean to the correct value.
+        
 
     }
+    
+    /**
+     * 
+     * @return 
+     */
+    public HurtBox getHurtbox() {
+        return this.hurtBox;
+    }
 
+    /**
+     * 
+     * @param direction 
+     */
     public void walk(String direction) {
-        //changes the location of character
+        
     }
     
     public Stance getStance() {
@@ -67,7 +88,7 @@ public class Character {
     public Facing getFacing() {
         return this.facing;
     }
-    
+
     public void setStance(Stance stance) {
         this.stance = stance;
     }
@@ -121,11 +142,12 @@ public class Character {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Object getFacingRight() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public void setNextLocation(int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public Object getFacingRight() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

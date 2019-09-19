@@ -1,6 +1,6 @@
 
 package controller;
-import Model.MenuElement;
+import model.MenuElement;
 import java.util.ArrayList;
 /**
  *
