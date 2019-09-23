@@ -1,2 +1,2 @@
-# FightPub2
+# FightPub2 TEAM 8
 2D Fighter. WIP
