@@ -16,20 +16,19 @@ public class Controller {
     private int rounds;
     private MapModel map;
 
-    public Controller(String char1Name, String char2Name, MapModel map, int timelimit, int rounds) {
-        this.char1 = new Character(true, char1Name);
-        this.char2 = new Character(false, char2Name);
+    public Controller(Character char1, Character char2, MapModel map, int timelimit, int rounds) {
+        this.char1 = char2;
+        this.char2 = char2;
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
-
     }
 
     /**
      * Checks if the hurtboxes and characters are on top of each other.
      * returns true if characters are in collision
      * 
-     * @return
+     * @return true if boxes collide
      */
     public boolean checkCollision() {
         if ( ( char1.getFacing() == Character.Facing.RIGHT ) && (char1.getxCoord() + char1.getHurtbox().getxOffSet() == char2.getxCoord()) ) {
@@ -55,30 +54,6 @@ public class Controller {
         }
     }
 
-    /**
-     * Listens inputs.
-     */
-    public void eventListener() {
-
-    }
-
-    public void checkNextFrame() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void advance() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    /**
-     * Listens if there have been keyboard commands.
-     */
-    /*
-    public checkInputs(){
-        return ;
-    }
-     */
-    
     public Character getCharacter1(){
         return this.char1;
     }

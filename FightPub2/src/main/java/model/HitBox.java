@@ -21,34 +21,32 @@ package model;
  *
  * @author Pate
  */
+import model.Character;
 public class HitBox {
     
-    int location, width, height, damage;
-    
-    //this constructor might not see any use.
-    public HitBox (int location, int width, int height, int damage) {
-        this.location = location;
-        this.width = width;
-        this.height = height;
-        this.damage = damage;  
-    }
+    int xcoord, width, height, xoffset, yoffset, damage;
+    final Character owner;
+            
     
     //this constructor might be better suited for our needs.
-    public HitBox (int width, int height, int damage) {
+    public HitBox (int xcoord, int width, int height, int xoffset, int yoffset,int damage, Character owner) {
         this.width = width;
         this.height = height;
         this.damage = damage;
+        this.xoffset = xoffset;
+        this.yoffset = yoffset;
+        this.owner = owner;
     }
     
     // ---------------- GETTERS AND SETTERS ---------------
  
 
-    public int getLocation() {
-        return location;
+    public int getxCoord() {
+        return this.xcoord;
     }
 
-    public void setLocation(int location) {
-        this.location = location;
+    public void setXcoord(int xcoord) {
+        this.xcoord = xcoord;
     }
 
     public int getWidth() {

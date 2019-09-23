@@ -1,3 +1,4 @@
+import static HurtBoxTest.controller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,6 +9,7 @@ import model.MapModel;
 import model.Character;
 import controller.Controller;
 import java.awt.event.KeyEvent;
+import model.HurtBox;
 
 /**
  *
@@ -24,10 +26,7 @@ public class ControllerTest {
     
     @BeforeEach
     void setUp() {
-        char1 = new Character(true, "enam");
-        char2 = new Character(false, "enam");
-        map = new MapModel("asd");
-        controller = new Controller("Pekka", "Erkki", map, 0, 0);
+        controller = new Controller(new Character(true, "Pekka"), new Character(false, "Jukka"), new MapModel("Kaisla"),99, 2);
         
     }
 
@@ -41,17 +40,9 @@ public class ControllerTest {
     public void turn() {
         assertEquals(Character.Facing.RIGHT , char1.getFacing() , "Hahmo 1 ei katso vasemmalle lähtöpaikassaan.");
         assertEquals(Character.Facing.LEFT , char2.getFacing() , "Hahmo 2 ei katso oikealle lähtopaikassaan.");
-        char1.setLocation(2000,0);
+        char1.setxCoord(2000);
         assertEquals(Character.Facing.LEFT , char1.getFacing() , "Hahmo 1 ei katso oikealle liikuttuaan toisen pelaajan ohi.");
         assertEquals(Character.Facing.RIGHT, char2.getFacing() , "Hahmo 2 ei katso vasemmalle liikuttuaan toisen pelaajan ohi.");
-    }
-        
-    @Test
-    public void border() {
-        char1.setNextLocation(0, 0);
-        controller.checkNextFrame();
-        controller.advance();
-        assertEquals(50, char1.getxCoord(), "Hahmo seinän sisällä");
     }
     
    
@@ -60,6 +51,17 @@ public class ControllerTest {
         controller.getCharacter1().setxCoord(1500);
         controller.getCharacter2().setxCoord(1500);
         assertEquals(true, controller.checkCollision(), "Hahmot ovat toistensa päällä");
+    }
+    
+    @Test
+    void collisionCheck() {
+        controller.getCharacter1().setxCoord(1000);
+        controller.getCharacter2().setxCoord(2000);
+        assertEquals(false, controller.checkCollision(), "Hahmot eivät osu toisiinsa");
+    }
+    @Test
+    void characterCollision() {
+     
     }
     
     @Test
