@@ -20,6 +20,8 @@ public class Character {
     private Facing facing;
     private HurtBox hurtBox;
     private HitBox hitBox;
+    
+    
     /**
      * 
      * @param player1
@@ -29,14 +31,15 @@ public class Character {
         if (player1 == true) {
            this.xCoord = 1200;
            this.facing = Facing.RIGHT;
+           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 0, 0);
         } else {
            this.xCoord = 1800;
            this.facing=Facing.LEFT;
+           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 0, 0);
         }
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-        this.hurtBox = new HurtBox(this.xCoord, 20, 20, 0, 0, this);
         this.hitBox = new HitBox(this.xCoord, 20,20,20,0,10,this);
     }
     
