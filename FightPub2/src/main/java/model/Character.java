@@ -1,5 +1,6 @@
 package model;
-import static model.Character.Facing;
+import static model.HitBox.HitLocation;
+
 /**
  *
  * @author Pate, Joonas
@@ -40,7 +41,7 @@ public class Character {
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-        this.hitBox = new HitBox(this.xCoord, 20,20,20,0,10,this);
+        this.hitBox = new HitBox(0, 0, 0, 0, 0, 0, HitLocation.MID);
     }
     
     public enum Facing {
