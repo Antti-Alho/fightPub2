@@ -7,26 +7,15 @@ package model;
 public class HurtBox {
     
     int xCoord, width, height, xOffSet, yOffSet;
-    Character character;
-    
     
     
      //Hurtbox parametrit? ehdotus (xcoord, leveys, korkeus, xoffset, yoffset, omistaja)
-    public HurtBox (int xCoord, int width, int height, int xOffSet, int yOffSet, Character character) {
+    public HurtBox (int xCoord, int width, int height, int xOffSet, int yOffSet) {
         this.xCoord = xCoord;
+        this.width = width;
         this.height = height;
         this.xOffSet = xOffSet;
         this.yOffSet = yOffSet;
-        this.character = character;
-        if (character.getFacing() == Character.Facing.RIGHT) {
-            this.width = width;
-            this.xOffSet = xOffSet * -1;
-        }
-        else {
-            this.width = width * -1;
-            this.xOffSet = xOffSet * -1;
-        }
-        
     }
 
     
@@ -36,6 +25,14 @@ public class HurtBox {
     
     public int getyOffSet() {
         return yOffSet;
+    }
+    
+    public void setxOffSet (int xOffSet) {
+        this.xOffSet = xOffSet;
+    }
+    
+    public void setyOffSet (int yOffSet) {
+        this.yOffSet = yOffSet;
     }
     
     public void setXcoord(int xCoord) {
@@ -52,7 +49,7 @@ public class HurtBox {
     }
 
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     public void setWidth(int width) {

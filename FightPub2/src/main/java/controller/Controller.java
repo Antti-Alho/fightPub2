@@ -17,7 +17,7 @@ public class Controller {
     private MapModel map;
 
     public Controller(Character char1, Character char2, MapModel map, int timelimit, int rounds) {
-        this.char1 = char2;
+        this.char1 = char1;
         this.char2 = char2;
         this.map = map;
         this.timelimit = timelimit;
@@ -30,13 +30,23 @@ public class Controller {
      * 
      * @return true if boxes collide
      */
-    public boolean checkCollision() {
-        if ( ( char1.getFacing() == Character.Facing.RIGHT ) && (char1.getxCoord() + char1.getHurtbox().getxOffSet() == char2.getxCoord()) ) {
+    public boolean checkHorizontalCollision() {
+        if ( ( char1.getFacing() == Character.Facing.RIGHT ) && (char1.getxCoord() + char1.getHurtbox().getxOffSet() + char1.getHurtbox().getWidth() >= char2.getxCoord()) && (char1.getxCoord() + char1.getHurtbox().getxOffSet() <= char2.getxCoord() + char2.getHurtbox().getxOffSet()  + char2.getHurtbox().getWidth())) {
             return true; 
-        } else if ( ( char2.getFacing() == Character.Facing.RIGHT ) && (char2.getxCoord() + char2.getHurtbox().getxOffSet() == char1.getxCoord()) ) {
+        } else if ( ( char2.getFacing() == Character.Facing.RIGHT ) && (char2.getxCoord() + char2.getHurtbox().getxOffSet() + char2.getHurtbox().getWidth() >= char1.getxCoord()) && (char2.getxCoord() + char2.getHurtbox().getxOffSet() <= char1.getxCoord() + char2.getHurtbox().getxOffSet() + char1.getHurtbox().getWidth()) )  {
             return true;
         } else return false;
     } 
+    
+    
+    public boolean checkVerticalCollision() {
+        return (char2.getHurtbox().getyOffSet() <= char1.getHurtbox().getHeight() + char1.getHurtbox().getyOffSet() &&
+                char2.getHurtbox().getyOffSet() >= char1.getHurtbox().getyOffSet() || 
+                char2.getHurtbox().getyOffSet() + char2.getHurtbox().getHeight() >= char1.getHurtbox().getyOffSet()); 
+    }       
+
+
+    
 
     public boolean checkHitboxCollision() {
         if (true) {

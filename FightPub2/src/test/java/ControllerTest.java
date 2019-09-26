@@ -1,4 +1,4 @@
-import static HurtBoxTest.controller;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,15 +20,11 @@ public class ControllerTest {
     Character char1;
     Character char2;
     MapModel map;
-    Controller controller;
+    Controller controller = new Controller(new Character(true, "Pekka"), new Character(false, "Jukka"), new MapModel("Kaisla"),99, 2);
     
     //dont use Character classes instances here pls. only use control classes methods. you can get your desired character with controller.getCharacter.
     
-    @BeforeEach
-    void setUp() {
-        controller = new Controller(new Character(true, "Pekka"), new Character(false, "Jukka"), new MapModel("Kaisla"),99, 2);
-        
-    }
+ 
 
     @Test
     public void startLocation(){
@@ -48,20 +44,37 @@ public class ControllerTest {
    
     @Test
     void characterCollission(){
-        controller.getCharacter1().setxCoord(1500);
+      
+        controller.getCharacter1().setxCoord(1490);  
         controller.getCharacter2().setxCoord(1500);
-        assertEquals(true, controller.checkCollision(), "Hahmot ovat toistensa päällä");
+        assertEquals(true, controller.checkHorizontalCollision(), "Hahmot ovat toistensa päällä");
+        
+        controller.getCharacter1().setxCoord(1521);  
+
+        assertEquals(false, controller.checkHorizontalCollision(), "Hahmot eivät ole toistensa päällä");
     }
     
     @Test
     void collisionCheck() {
         controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(2000);
-        assertEquals(false, controller.checkCollision(), "Hahmot eivät osu toisiinsa");
+        assertEquals(false, controller.checkHorizontalCollision(), "Hahmot eivät osu toisiinsa");
     }
+
+   
     @Test
-    void characterCollision() {
-     
+    
+    void horizontalCollisionCheck () {
+        
+        assertEquals(true, controller.checkVerticalCollision(), "Hahmot osuvat vertikaali toisiinsa");
+        
+        controller.getCharacter1().getHurtbox().setyOffSet(30);
+        
+        assertEquals(false, controller.checkVerticalCollision(), "Hahmot eivät osu vertikaali toisiinsa");
+
+        
+        
+        
     }
     
     @Test
