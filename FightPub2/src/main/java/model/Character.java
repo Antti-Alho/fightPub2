@@ -31,11 +31,11 @@ public class Character {
         if (player1 == true) {
            this.xCoord = 1200;
            this.facing = Facing.RIGHT;
-           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 0, 0);
+           this.hurtBox = new HurtBox( 20, 20, 0, 0);
         } else {
            this.xCoord = 1800;
            this.facing=Facing.LEFT;
-           this.hurtBox = new HurtBox(this.xCoord, 20, 20, 0, 0);
+           this.hurtBox = new HurtBox(20, 20, 0, 0);
         }
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
