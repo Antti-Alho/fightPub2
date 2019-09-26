@@ -1,4 +1,5 @@
 package model;
+import java.awt.Rectangle;
 import static model.Character.Facing;
 /**
  *
@@ -9,7 +10,7 @@ public class Character {
 
 
     private int xCoord;
-    private int yCoord = 0;
+    private int yCoord = 20;
     private int health = 100;
     private int walkspeed;
     private boolean player1 = false;
@@ -19,9 +20,8 @@ public class Character {
     private Stance stance;
     private Facing facing;
     private HurtBox hurtBox;
-    private HitBox hitBox;
-    
-    
+    private HitBox hitBox;  
+
     /**
      * 
      * @param player1
@@ -31,23 +31,23 @@ public class Character {
         if (player1 == true) {
            this.xCoord = 1200;
            this.facing = Facing.RIGHT;
-           this.hurtBox = new HurtBox( 20, 20, 0, 0);
+           this.hurtBox = new HurtBox( 20, 20);
         } else {
            this.xCoord = 1800;
            this.facing=Facing.LEFT;
-           this.hurtBox = new HurtBox(20, 20, 0, 0);
+           this.hurtBox = new HurtBox(20, 20);
         }
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         this.hitBox = new HitBox(this.xCoord, 20,20,20,0,10,this);
     }
-    
+
     public enum Facing {
         RIGHT,
         LEFT
     }
-    
+
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -74,6 +74,14 @@ public class Character {
     
     public Facing getFacing() {
         return this.facing;
+    }
+    
+    public int getyCoord() {
+        return this.yCoord;
+    }
+    
+    public void setyCoord(int y) {
+        this.yCoord = y;
     }
 
     public void setStance(Stance stance) {
