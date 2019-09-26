@@ -9,8 +9,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+        <lwjgl.version>3.2.2</lwjgl.version>
     </properties>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -23,6 +24,34 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+            <profile>
+                    <id>lwjgl-natives-linux-amd64</id>
+                    <activation>
+                            <os>
+                                    <family>unix</family>
+                                    <arch>amd64</arch>
+                            </os>
+                    </activation>
+                    <properties>
+                            <lwjgl.natives>natives-linux</lwjgl.natives>
+                    </properties>
+            </profile>
+            <profile>
+                    <id>lwjgl-natives-windows-amd64</id>
+                    <activation>
+                            <os>
+                                    <family>windows</family>
+                                    <arch>amd64</arch>
+                            </os>
+                    </activation>
+                    <properties>
+                            <lwjgl.natives>natives-windows</lwjgl.natives>
+                    </properties>
+            </profile>
+    </profiles>
+
 
     <dependencies>  
         <dependency>
@@ -49,6 +78,121 @@
             <version>5.5.1</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>    
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-assimp</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-bgfx</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-glfw</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-nanovg</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-nuklear</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-openal</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-opengl</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-par</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-stb</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-vulkan</artifactId>
+                <version>${lwjgl.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-assimp</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-bgfx</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-glfw</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-nanovg</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-nuklear</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-openal</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-opengl</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-par</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+        <dependency>
+                <groupId>org.lwjgl</groupId>
+                <artifactId>lwjgl-stb</artifactId>
+                <version>${lwjgl.version}</version>
+                <classifier>${lwjgl.natives}</classifier>
+        </dependency>
+    </dependencies>   
     <name>FightPub2</name>
 </project>
