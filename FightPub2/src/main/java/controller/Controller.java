@@ -54,6 +54,14 @@ public class Controller {
         System.out.println(hitbox.x + "hitbox vasen reuna");
         return hitbox.intersects(hurtbox);
     }
+    
+    public void checkFacing() {
+        if (char1.getFacing() == Character.Facing.RIGHT && char1.getxCoord() > char2.getxCoord() ||
+                char1.getFacing() == Character.Facing.LEFT && char1.getxCoord() < char2.getxCoord()) {
+            char1.turn();
+            char2.turn();
+        }
+    }
 
 
     public Character getCharacter1(){

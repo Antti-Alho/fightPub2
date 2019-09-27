@@ -141,6 +141,15 @@ public class Character {
         this.hitBox = hitBox;
     }
     
+    public void turn() {
+        if (this.facing == Facing.LEFT) {
+            this.facing = Facing.RIGHT;
+        }
+        else {
+            this.facing = Facing.LEFT;
+        }
+    }
+    
     
     public void attack(char ID) {
         int damage;
