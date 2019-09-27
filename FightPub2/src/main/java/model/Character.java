@@ -42,7 +42,8 @@ public class Character {
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-        this.hitBox = new HitBox(0, 0, 0, 0, 0, 0, HitLocation.MID);
+        this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
+        
     }
 
     public enum Facing {
@@ -130,5 +131,35 @@ public class Character {
     public boolean isPlayer() {
         return player1;
     }
+
+    public HitBox getHitBox() {
+        return hitBox;
+    }
+
+    public void setHitBox(HitBox hitBox) {
+        this.hitBox = hitBox;
+    }
     
+    
+    public void attack(char ID) {
+        int damage;
+        int xOffset;
+        int yOffset;
+        int width;
+        int height;
+        HitBox hb = this.hitBox;
+        switch (ID) {
+            case 'A':
+                damage = 10;
+                width = 10;
+                height = 5;
+                xOffset = 15;
+                yOffset = -5;
+                if (this.facing == Facing.LEFT) {
+                    xOffset = this.hurtBox.getWidth() - xOffset - width;
+                }
+                hb.setAll(true, damage, width, height, xOffset, yOffset);
+                break;    
+        }
+    }
 }

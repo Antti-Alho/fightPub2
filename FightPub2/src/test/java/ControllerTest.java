@@ -11,6 +11,7 @@ import controller.Controller;
 import java.awt.event.KeyEvent;
 import model.HurtBox;
 import org.junit.jupiter.api.Disabled;
+import model.HitBox;
 
 /**
  *
@@ -82,7 +83,17 @@ public class ControllerTest {
     
     @Test
     void checkHitBoxCollision() {
-        
+        controller.getCharacter1().setxCoord(1400);
+        controller.getCharacter2().setxCoord(1421);
+        controller.getCharacter1().attack('A');
+        assertEquals(true, controller.checkHitboxCollision(controller.getCharacter1(), controller.getCharacter2()), "Iskun pitäisi osua");
+        assertEquals(false, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun ei pitäisi osua");
+        controller.getCharacter2().attack('A');
+        assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 iskee oikealta)");
+        controller.getCharacter2().setxCoord(1379);
+        controller.getCharacter2().attack('A');
+        System.out.println(controller.getCharacter2().getFacing());
+        assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 vasemmalta");
     }
     
     

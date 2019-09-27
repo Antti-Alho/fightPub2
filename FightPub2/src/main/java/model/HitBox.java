@@ -24,13 +24,13 @@ package model;
 
 public class HitBox {
 
-    int xcoord, width, height, xoffset, yoffset, damage;
+    int width, height, xoffset, yoffset, damage;
     boolean active;
     private HitLocation hitLocation;
 
 
     //this constructor might be better suited for our needs.
-    public HitBox(int xcoord, int width, int height, int xoffset, int yoffset, int damage, HitLocation hitLocation) {
+    public HitBox(int width, int height, int xoffset, int yoffset, int damage, HitLocation hitLocation) {
         this.width = width;
         this.height = height;
         this.xoffset = xoffset;
@@ -49,6 +49,7 @@ public class HitBox {
     }
 
     // ---------------- GETTERS AND SETTERS ---------------
+    
     public HitLocation getHitLocation() {
       return this.hitLocation;
     }
@@ -79,13 +80,6 @@ public class HitBox {
     public boolean isActive() {
         return active;
     }
-    public int getxCoord() {
-        return this.xcoord;
-    }
-
-    public void setXcoord(int xcoord) {
-        this.xcoord = xcoord;
-    }
 
     public int getWidth() {
         return width;
@@ -109,5 +103,14 @@ public class HitBox {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+    
+    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset) {
+        this.active = active;
+        this.damage = damage;
+        this.width = width;
+        this.height = height;
+        this.xoffset = xOffset;
+        this.yoffset = yOffset;
     }
 }
