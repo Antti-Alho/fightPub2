@@ -25,6 +25,7 @@ package model;
 public class HitBox {
 
     int width, height, xoffset, yoffset, damage;
+
     boolean active;
     private HitLocation hitLocation;
 
@@ -49,7 +50,7 @@ public class HitBox {
     }
 
     // ---------------- GETTERS AND SETTERS ---------------
-    
+
     public HitLocation getHitLocation() {
       return this.hitLocation;
     }
@@ -65,12 +66,14 @@ public class HitBox {
         return xoffset;
     }
 
+
     public void setXoffset(int xoffset) {
         this.xoffset = xoffset;
     }
 
     public int getYoffset() {
         return yoffset;
+
     }
 
     public void setYoffset(int yoffset) {

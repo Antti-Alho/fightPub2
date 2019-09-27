@@ -1,6 +1,5 @@
 package model;
-import java.awt.Rectangle;
-import static model.Character.Facing;
+
 import static model.HitBox.HitLocation;
 
 /**
@@ -42,8 +41,10 @@ public class Character {
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
+
         this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
         
+
     }
 
     public enum Facing {
