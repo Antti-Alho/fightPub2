@@ -16,37 +16,72 @@
  */
 package model;
 
-
 /**
  *
- * @author Pate
+ * @author Pate, Joonas
  */
-import model.Character;
+
+
 public class HitBox {
-    
-    int xcoord, width, height, xoffset, yoffset, damage;
-    final Character owner;
-            
-    
+
+    int width, height, xoffset, yoffset, damage;
+
+    boolean active;
+    private HitLocation hitLocation;
+
+
     //this constructor might be better suited for our needs.
-    public HitBox (int xcoord, int width, int height, int xoffset, int yoffset,int damage, Character owner) {
+    public HitBox(int width, int height, int xoffset, int yoffset, int damage, HitLocation hitLocation) {
         this.width = width;
         this.height = height;
-        this.damage = damage;
         this.xoffset = xoffset;
         this.yoffset = yoffset;
-        this.owner = owner;
+        this.damage = damage;
+        this.active = false;
+        this.hitLocation = hitLocation;
+    }
+       /**
+     * This enum determines if attack is blockable by which stances.
+     */
+    public enum HitLocation {
+        HIGH,
+        MID,
+        LOW
+    }
+
+    // ---------------- GETTERS AND SETTERS ---------------
+
+    public HitLocation getHitLocation() {
+      return this.hitLocation;
+    }
+    public void setHitLocation(HitLocation hitLocation) {
+        this.hitLocation = hitLocation;
     }
     
-    // ---------------- GETTERS AND SETTERS ---------------
- 
-
-    public int getxCoord() {
-        return this.xcoord;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
-    public void setXcoord(int xcoord) {
-        this.xcoord = xcoord;
+    public int getXoffset() {
+        return xoffset;
+    }
+
+
+    public void setXoffset(int xoffset) {
+        this.xoffset = xoffset;
+    }
+
+    public int getYoffset() {
+        return yoffset;
+
+    }
+
+    public void setYoffset(int yoffset) {
+        this.yoffset = yoffset;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public int getWidth() {
@@ -71,5 +106,14 @@ public class HitBox {
 
     public void setDamage(int damage) {
         this.damage = damage;
+    }
+    
+    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset) {
+        this.active = active;
+        this.damage = damage;
+        this.width = width;
+        this.height = height;
+        this.xoffset = xOffset;
+        this.yoffset = yOffset;
     }
 }

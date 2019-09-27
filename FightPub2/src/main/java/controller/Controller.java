@@ -36,12 +36,30 @@ public class Controller {
         Rectangle character2 = new Rectangle(char2.getxCoord(), char2.getyCoord() ,char2.getHurtbox().getWidth(), char2.getHurtbox().getHeight());
         return character1.intersects(character2);
     }
-
-    public boolean checkHitboxCollision() {
-        if (true) {
-            return true;
-        } else {
-            return false;
+/**
+ * 
+ * @param hittingCharacter Character of player with active hitbox
+ * @param characterGettingHit Character of player who might get hit
+ * @return true if hitbox collides with hurtbox
+ * 
+ */
+    public boolean checkHitboxCollision(Character hittingCharacter, Character characterGettingHit) {
+        int hitboxWidth = hittingCharacter.getHitBox().getWidth();
+        int hitboxHeight = hittingCharacter.getHitBox().getHeight();
+        int hurtboxWidth = characterGettingHit.getHurtbox().getWidth();
+        int hurtboxHeight = characterGettingHit.getHurtbox().getHeight();
+        
+        Rectangle hitbox = new Rectangle(hittingCharacter.getxCoord() + hittingCharacter.getHitBox().getXoffset(), hittingCharacter.getyCoord(), hitboxWidth, hitboxHeight);
+        Rectangle hurtbox = new Rectangle(characterGettingHit.getxCoord(), characterGettingHit.getyCoord() ,hurtboxWidth, hurtboxHeight);
+        System.out.println(hitbox.x + "hitbox vasen reuna");
+        return hitbox.intersects(hurtbox);
+    }
+    
+    public void checkFacing() {
+        if (char1.getFacing() == Character.Facing.RIGHT && char1.getxCoord() > char2.getxCoord() ||
+                char1.getFacing() == Character.Facing.LEFT && char1.getxCoord() < char2.getxCoord()) {
+            char1.turn();
+            char2.turn();
         }
     }
 

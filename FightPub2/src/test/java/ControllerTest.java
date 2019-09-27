@@ -11,6 +11,7 @@ import controller.Controller;
 import java.awt.event.KeyEvent;
 import model.HurtBox;
 import org.junit.jupiter.api.Disabled;
+import model.HitBox;
 
 /**
  *
@@ -78,11 +79,36 @@ public class ControllerTest {
         assertEquals(true, controller.checkCollision(), " pitäisi osua. pelaaja 1 suoraan yläpuolella.");        
               
         
-    } 
+    }
+    
+    @Test
+    void CheckFacing() {
+        Character char1 = controller.getCharacter1();
+        Character char2 = controller.getCharacter2();
+        char1.setxCoord(2500);
+        char2.setxCoord(1800);
+        controller.checkFacing();
+        assertEquals(Character.Facing.LEFT, char1.getFacing(), "Hahmo ei kääntynyt");
+        assertEquals(Character.Facing.RIGHT, char2.getFacing(), "Hahmo 2 ei kääntynyt");
+        controller.checkFacing();
+        assertEquals(Character.Facing.LEFT, char1.getFacing(), "Hahmo  kääntynyt vaikka ei saisi");
+        assertEquals(Character.Facing.RIGHT, char2.getFacing(), "Hahmo 2 kääntynyt vaikka ei saisi");
+        
+    }
     
     @Test
     void checkHitBoxCollision() {
-        
+        controller.getCharacter1().setxCoord(1400);
+        controller.getCharacter2().setxCoord(1421);
+        controller.getCharacter1().attack('A');
+        assertEquals(true, controller.checkHitboxCollision(controller.getCharacter1(), controller.getCharacter2()), "Iskun pitäisi osua");
+        assertEquals(false, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun ei pitäisi osua");
+        controller.getCharacter2().attack('A');
+        assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 iskee oikealta)");
+        controller.getCharacter2().setxCoord(1379);
+        controller.checkFacing();
+        controller.getCharacter2().attack('A');
+        assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 vasemmalta");
     }
     
     
