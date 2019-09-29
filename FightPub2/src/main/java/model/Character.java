@@ -1,6 +1,7 @@
 package model;
 
 import static model.HitBox.HitLocation;
+import view.Renderer;
 
 /**
  *
@@ -32,7 +33,7 @@ public class Character {
         if (player1 == true) {
            this.xCoord = 1200;
            this.facing = Facing.RIGHT;
-           this.hurtBox = new HurtBox( 20, 20);
+           this.hurtBox = new HurtBox(20, 20);
         } else {
            this.xCoord = 1800;
            this.facing=Facing.LEFT;

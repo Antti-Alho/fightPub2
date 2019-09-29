@@ -70,4 +70,17 @@ public class Controller {
     public Character getCharacter2(){
         return this.char2;
     }
+
+    public void update() {
+        System.out.println("Players move here");
+    }
+
+    public void input() {
+        System.out.println("Player inputs here");
+    }
+
+    public void render() {
+        System.out.println("Render here");
+        // current.state
+    }
 }
