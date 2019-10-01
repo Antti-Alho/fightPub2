@@ -2,7 +2,10 @@ package model;
 
 /**
  *
- * @author Pate
+ * @author Pate, Joonas
+ * HurtBox is the characters actual projection. If hurtbox is hit by hitbox,
+ * character takes a hit. Hurtboxes also cant collide with other characters
+ * hurtbox, or go out of map bounds.
  */
 public class HurtBox {
 
@@ -10,7 +13,7 @@ public class HurtBox {
     
     /**
      * Creates the characters hurtbox.
-     * character takes damage when a whitbox is inside hurtbox.
+     * character takes damage when a hitbox is inside hurtbox.
      * @param width starts from the characters x coordinate.
      * @param height starts from the characters Y coordinate.
      */

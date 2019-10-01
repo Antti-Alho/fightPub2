@@ -25,8 +25,9 @@ public class Character {
 
     /**
      * 
-     * @param player1
-     * @param name 
+     * @param player1 boolean is true if character is controlled by player 1
+     * sets character to left side of screen on round start.
+     * @param name Name of character.
      */
     public Character (boolean player1, String name) {
         if (player1 == true) {
@@ -140,7 +141,10 @@ public class Character {
     public void setHitBox(HitBox hitBox) {
         this.hitBox = hitBox;
     }
-    
+    /**
+     * Turns player facing. Is called when controller detects players swapping
+     * sides in relation to each other.
+     */
     public void turn() {
         if (this.facing == Facing.LEFT) {
             this.facing = Facing.RIGHT;
@@ -150,7 +154,10 @@ public class Character {
         }
     }
     
-    
+    /**
+     * sets hitbox in a position determined by ID.
+     * @param ID char value that indicates attack used.
+     */
     public void attack(char ID) {
         int damage;
         int xOffset;

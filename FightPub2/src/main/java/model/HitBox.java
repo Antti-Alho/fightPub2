@@ -41,7 +41,10 @@ public class HitBox {
         this.hitLocation = hitLocation;
     }
        /**
-     * This enum determines if attack is blockable by which stances.
+     * This enum value indicates if attack is blockable in certain stance.
+     * HIGH attacks must be blocked STANDING
+     * MID attacks can be blocked either STANDING or CROUCHING
+     * LOW attacks must be blocked CROUCHING
      */
     public enum HitLocation {
         HIGH,
@@ -108,6 +111,15 @@ public class HitBox {
         this.damage = damage;
     }
     
+    /**
+     * Helper method to set all parameters in single method
+     * @param active
+     * @param damage
+     * @param width
+     * @param height
+     * @param xOffset
+     * @param yOffset 
+     */
     public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset) {
         this.active = active;
         this.damage = damage;
