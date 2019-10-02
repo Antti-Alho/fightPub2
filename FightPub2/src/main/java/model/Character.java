@@ -6,9 +6,7 @@ import static model.HitBox.HitLocation;
  *
  * @author Pate, Joonas
  */
-
 public class Character {
-
 
     private int xCoord;
     private int yCoord = 20;
@@ -21,30 +19,16 @@ public class Character {
     private Stance stance;
     private Facing facing;
     private HurtBox hurtBox;
-    private HitBox hitBox;  
+    private HitBox hitBox;
 
-    /**
-     * 
-     * @param player1
-     * @param name 
-     */
-    public Character (boolean player1, String name) {
-        if (player1 == true) {
-           this.xCoord = 1200;
-           this.facing = Facing.RIGHT;
-           this.hurtBox = new HurtBox( 20, 20);
-        } else {
-           this.xCoord = 1800;
-           this.facing=Facing.LEFT;
-           this.hurtBox = new HurtBox(20, 20);
-        }
+    public Character(int xCoord, Character.Facing facing) {
+        this.xCoord = xCoord;
+        this.facing = facing;
+        this.hurtBox = new HurtBox(20, 20);
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-
         this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
-        
-
     }
 
     public enum Facing {
@@ -58,7 +42,7 @@ public class Character {
         HITSTUN,
         NEUTRAL
     }
-    
+
     public enum Stance {
         CROUCHING,
         STANDING
@@ -71,19 +55,19 @@ public class Character {
     public Stance getStance() {
         return this.stance;
     }
-    
+
     public State getState() {
         return this.state;
     }
-    
+
     public Facing getFacing() {
         return this.facing;
     }
-    
+
     public int getyCoord() {
         return this.yCoord;
     }
-    
+
     public void setyCoord(int y) {
         this.yCoord = y;
     }
@@ -91,15 +75,14 @@ public class Character {
     public void setStance(Stance stance) {
         this.stance = stance;
     }
-    
+
     public void setState(State state) {
         this.state = state;
     }
-    
+
     public void setFacing(Facing facing) {
         this.facing = facing;
     }
-
 
     public String getSprite() {
         return sprite;
@@ -112,7 +95,7 @@ public class Character {
     public String getName() {
         return name;
     }
-    
+
     public int getxCoord() {
         return xCoord;
     }
@@ -140,17 +123,15 @@ public class Character {
     public void setHitBox(HitBox hitBox) {
         this.hitBox = hitBox;
     }
-    
+
     public void turn() {
         if (this.facing == Facing.LEFT) {
             this.facing = Facing.RIGHT;
-        }
-        else {
+        } else {
             this.facing = Facing.LEFT;
         }
     }
-    
-    
+
     public void attack(char ID) {
         int damage;
         int xOffset;
@@ -169,7 +150,7 @@ public class Character {
                     xOffset = this.hurtBox.getWidth() - xOffset - width;
                 }
                 hb.setAll(true, damage, width, height, xOffset, yOffset);
-                break;    
+                break;
         }
     }
 }
