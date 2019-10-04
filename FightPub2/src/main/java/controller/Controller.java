@@ -5,8 +5,8 @@ import model.Character;
 import model.MapModel;
 
 /**
- *
- * @author Heidi, Pate
+ * This class initializes the game. Contains methods to check game state.
+ * @author Heidi, Pate, Joonas
  */
 public class Controller {
 
@@ -16,6 +16,14 @@ public class Controller {
     private int rounds;
     private MapModel map;
 
+    /**
+     * 
+     * @param char1 character that player 1 controls
+     * @param char2 character that player 2 controls
+     * @param map stage that characters are on
+     * @param timelimit timelimit of the round in seconds
+     * @param rounds number of maximum rounds
+     */
     public Controller(Character char1, Character char2, MapModel map, int timelimit, int rounds) {
         this.char1 = char1;
         this.char2 = char2;
@@ -38,6 +46,9 @@ public class Controller {
 
     /**
      *
+     * This method checks if the hitting characters hitbox collides with 
+     * the other characters hurtbox
+     * 
      * @param hittingCharacter Character of player with active hitbox
      * @param characterGettingHit Character of player who might get hit
      * @return true if hitbox collides with hurtbox
@@ -55,6 +66,10 @@ public class Controller {
         return hitbox.intersects(hurtbox);
     }
 
+    
+    /**
+     * Checks characters positions and makes sure they are facing eachother.
+     */
     public void checkFacing() {
         if (char1.getFacing() == Character.Facing.RIGHT && char1.getxCoord() > char2.getxCoord()
                 || char1.getFacing() == Character.Facing.LEFT && char1.getxCoord() < char2.getxCoord()) {

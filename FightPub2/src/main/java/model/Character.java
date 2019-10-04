@@ -3,7 +3,10 @@ package model;
 import static model.HitBox.HitLocation;
 
 /**
- *
+ *This class contains playable character attributes and methods.
+ * @see HitBox
+ * @see HurtBox
+ * 
  * @author Pate, Joonas
  */
 public class Character {
@@ -20,6 +23,13 @@ public class Character {
     private final HurtBox hurtBox;
     private HitBox hitBox;
 
+    
+    
+    /**
+     * Constructor of character. 
+     * @param xCoord sets the characters position in map.
+     * @param facing sets the caracters direction of facing.
+     */
     public Character(int xCoord, Character.Facing facing) {
         this.xCoord = xCoord;
         this.facing = facing;
@@ -30,11 +40,30 @@ public class Character {
         this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
 
+    /**
+     * This enum class provides the values that indicate which direction 
+     * the character is facing.
+     *  Character has to have a set facing value.
+     * 
+    */
     public enum Facing {
         RIGHT,
         LEFT
     }
 
+    /**
+     * This enum class provides the values that indicate in which state the
+     * character is in.
+     * If the characters state is:
+     * ATTACKING: Character is locked in attack animation
+     * and is unable to perform any other actions.
+     * BLOCKSTUN: After successfully blocking an attack, character is in blockstun.
+     * In blockstun the character is unable to perform any other actions than blocking.
+     * HITSTUN: After getting hit, character is in hitstun and can not perform
+     * any actions.
+     * NEUTRAL: Default state for the character. Can perform most actions
+     */
+    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -42,6 +71,12 @@ public class Character {
         NEUTRAL
     }
 
+    /**
+     * This enum class provides the values that indicate if the character
+     * is crouching or standing.
+     * Stance affects characters hurtbox dimensions, blockable attacks and
+     * enables the use of stance specific attacks.
+     */
     public enum Stance {
         CROUCHING,
         STANDING
@@ -119,6 +154,9 @@ public class Character {
         this.hitBox = hitBox;
     }
 
+    /**
+     * Toggles characters direction of facing.
+     */
     public void turn() {
         if (this.facing == Facing.LEFT) {
             this.facing = Facing.RIGHT;
@@ -127,6 +165,12 @@ public class Character {
         }
     }
 
+    /**
+     * This method sets the characters hitbox values based on the switch case
+     * hitbox is set to active in this process which means the character is capable of 
+     * hitting the opponent
+     * @param ID Tells which hit the player wants to use.
+     */
     public void attack(char ID) {
         int damage;
         int xOffset;
@@ -144,7 +188,7 @@ public class Character {
                 if (this.facing == Facing.LEFT) {
                     xOffset = this.hurtBox.getWidth() - xOffset - width;
                 }
-                hb.setAll(true, damage, width, height, xOffset, yOffset);
+                hb.setAll(true, damage, width, height, xOffset, yOffset, HitBox.HitLocation.MID);
                 break;
         }
     }

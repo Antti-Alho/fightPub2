@@ -17,7 +17,8 @@
 package model;
 
 /**
- *
+ * This class is used to create a rectangle which is used to hit 
+ * another character. Every instance of character class has an instance of this class.
  * @author Pate, Joonas
  */
 
@@ -30,7 +31,16 @@ public class HitBox {
     private HitLocation hitLocation;
 
 
-    //this constructor might be better suited for our needs.
+    /**
+     * Constructor.
+     * @param width width of the hitbox in pixels.
+     * @param height height of the hitbox in pixels.
+     * @param xoffset distance from characters x coordinate in pixels.
+     * @param yoffset distance from the characters top edge towards maps floor.
+     * @param damage how much damage the hitbox does to other player if the hitbox hits hurtbox
+     * @param hitLocation Describes what type of hit the players uses. This value is used to determine 
+     * what kind of block the opponent player must use in order to block the hit successfully
+     */
     public HitBox(int width, int height, int xoffset, int yoffset, int damage, HitLocation hitLocation) {
         this.width = width;
         this.height = height;
@@ -40,8 +50,11 @@ public class HitBox {
         this.active = false;
         this.hitLocation = hitLocation;
     }
-       /**
+     /**
      * This enum determines if attack is blockable by which stances.
+     * HIGH attacks can only be blocked by a standing character. 
+     * MID attacks can be blocked by either a standing or crouching character.
+     * LOW attacks can only be blocked by a crouching character.
      */
     public enum HitLocation {
         HIGH,
@@ -108,12 +121,24 @@ public class HitBox {
         this.damage = damage;
     }
     
-    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset) {
+    /**
+     * Helper method. Used to set all values of hitbox in a single method.
+     * Parameters explained in constructors documentation.
+     * @param active
+     * @param damage
+     * @param width
+     * @param height
+     * @param xOffset
+     * @param yOffset 
+     * @param hitLocation 
+     */
+    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset, HitLocation hitLocation) {
         this.active = active;
         this.damage = damage;
         this.width = width;
         this.height = height;
         this.xoffset = xOffset;
         this.yoffset = yOffset;
+        this.hitLocation = hitLocation;
     }
 }
