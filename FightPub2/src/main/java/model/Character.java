@@ -12,13 +12,12 @@ public class Character {
     private int yCoord = 20;
     private int health = 100;
     private int walkspeed;
-    private boolean player1 = false;
     private String sprite;
     private String name;
     private State state;
     private Stance stance;
     private Facing facing;
-    private HurtBox hurtBox;
+    private final HurtBox hurtBox;
     private HitBox hitBox;
 
     public Character(int xCoord, Character.Facing facing) {
@@ -110,10 +109,6 @@ public class Character {
 
     public void setHealth(int health) {
         this.health = health;
-    }
-
-    public boolean isPlayer() {
-        return player1;
     }
 
     public HitBox getHitBox() {
