@@ -4,62 +4,80 @@ import static model.HitBox.HitLocation;
 import view.Renderer;
 
 /**
- *
+ *This class contains playable character attributes and methods.
+ * @see HitBox
+ * @see HurtBox
+ * 
  * @author Pate, Joonas
  */
-
 public class Character {
-
 
     private int xCoord;
     private int yCoord = 20;
     private int health = 100;
     private int walkspeed;
-    private boolean player1 = false;
     private String sprite;
     private String name;
     private State state;
     private Stance stance;
     private Facing facing;
-    private HurtBox hurtBox;
-    private HitBox hitBox;  
+    private final HurtBox hurtBox;
+    private HitBox hitBox;
 
+    
+    
     /**
-     * 
-     * @param player1
-     * @param name 
+     * Constructor of character. 
+     * @param xCoord sets the characters position in map.
+     * @param facing sets the caracters direction of facing.
      */
-    public Character (boolean player1, String name) {
-        if (player1 == true) {
-           this.xCoord = 300;
-           this.facing = Facing.RIGHT;
-           this.hurtBox = new HurtBox(200, 400);
-        } else {
-           this.xCoord = 1200;
-           this.facing=Facing.LEFT;
-           this.hurtBox = new HurtBox(200, 400);
-        }
+    public Character(int xCoord, Character.Facing facing) {
+        this.xCoord = xCoord;
+        this.facing = facing;
+        this.hurtBox = new HurtBox(200, 400);
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-
         this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
-        
-
     }
 
+    /**
+     * This enum class provides the values that indicate which direction 
+     * the character is facing.
+     *  Character has to have a set facing value.
+     * 
+    */
     public enum Facing {
         RIGHT,
         LEFT
     }
 
+    /**
+     * This enum class provides the values that indicate in which state the
+     * character is in.
+     * If the characters state is:
+     * ATTACKING: Character is locked in attack animation
+     * and is unable to perform any other actions.
+     * BLOCKSTUN: After successfully blocking an attack, character is in blockstun.
+     * In blockstun the character is unable to perform any other actions than blocking.
+     * HITSTUN: After getting hit, character is in hitstun and can not perform
+     * any actions.
+     * NEUTRAL: Default state for the character. Can perform most actions
+     */
+    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
         HITSTUN,
         NEUTRAL
     }
-    
+
+    /**
+     * This enum class provides the values that indicate if the character
+     * is crouching or standing.
+     * Stance affects characters hurtbox dimensions, blockable attacks and
+     * enables the use of stance specific attacks.
+     */
     public enum Stance {
         CROUCHING,
         STANDING
@@ -72,19 +90,19 @@ public class Character {
     public Stance getStance() {
         return this.stance;
     }
-    
+
     public State getState() {
         return this.state;
     }
-    
+
     public Facing getFacing() {
         return this.facing;
     }
-    
+
     public int getyCoord() {
         return this.yCoord;
     }
-    
+
     public void setyCoord(int y) {
         this.yCoord = y;
     }
@@ -92,15 +110,14 @@ public class Character {
     public void setStance(Stance stance) {
         this.stance = stance;
     }
-    
+
     public void setState(State state) {
         this.state = state;
     }
-    
+
     public void setFacing(Facing facing) {
         this.facing = facing;
     }
-
 
     public String getSprite() {
         return sprite;
@@ -113,7 +130,7 @@ public class Character {
     public String getName() {
         return name;
     }
-    
+
     public int getxCoord() {
         return xCoord;
     }
@@ -130,10 +147,6 @@ public class Character {
         this.health = health;
     }
 
-    public boolean isPlayer() {
-        return player1;
-    }
-
     public HitBox getHitBox() {
         return hitBox;
     }
@@ -141,17 +154,25 @@ public class Character {
     public void setHitBox(HitBox hitBox) {
         this.hitBox = hitBox;
     }
-    
+
+    /**
+     * Toggles characters direction of facing.
+     */
     public void turn() {
         if (this.facing == Facing.LEFT) {
             this.facing = Facing.RIGHT;
-        }
-        else {
+        } else {
             this.facing = Facing.LEFT;
         }
     }
-    
-    
+
+
+    /**
+     * This method sets the characters hitbox values based on the switch case
+     * hitbox is set to active in this process which means the character is capable of 
+     * hitting the opponent
+     * @param ID Tells which hit the player wants to use.
+     */
     public void attack(char ID) {
         int damage;
         int xOffset;
@@ -169,8 +190,8 @@ public class Character {
                 if (this.facing == Facing.LEFT) {
                     xOffset = this.hurtBox.getWidth() - xOffset - width;
                 }
-                hb.setAll(true, damage, width, height, xOffset, yOffset);
-                break;    
+                hb.setAll(true, damage, width, height, xOffset, yOffset, HitBox.HitLocation.MID);
+                break;
         }
     }
 }

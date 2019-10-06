@@ -20,7 +20,9 @@ import model.HitBox;
 public class ControllerTest {
 
     MapModel map;
-    Controller controller = new Controller(new Character(true, "Pekka"), new Character(false, "Jukka"), new MapModel("Kaisla"), 99, 2);
+    //Controller controller = new Controller(new Character(1200, Character.Facing.RIGHT), new Character(false, "Jukka"), new MapModel("Kaisla"), 99, 2);
+
+    Controller controller = new Controller(new Character(1200, Character.Facing.RIGHT), new Character(1800, Character.Facing.LEFT), new MapModel("Kaisla"), 99, 2);
 
     //dont use Character classes instances here pls. only use control classes methods. you can get your desired character with controller.getCharacter.
     @Test
@@ -38,49 +40,49 @@ public class ControllerTest {
         assertEquals(Character.Facing.LEFT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso oikealle liikuttuaan toisen pelaajan ohi.");
         assertEquals(Character.Facing.RIGHT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso vasemmalle liikuttuaan toisen pelaajan ohi.");
     }
+
     @Test
     void collisionCheck() {
-        
+
         controller.getCharacter1().setxCoord(1200);
         controller.getCharacter2().setxCoord(1800);
-        
+
         assertEquals(false, controller.checkCollision(), "Hahmot ovat alotuis paikalla ei pitäisi osua");
-        
+
         controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(1010);
 
         assertEquals(true, controller.checkCollision(), " pitäisi osua");
-        
+
         controller.getCharacter2().setyCoord(50);
-        
+
         assertEquals(false, controller.checkCollision(), "char 2 noastettu  ei pitäisi osua");
-        
+
         controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(1000);
         controller.getCharacter2().setyCoord(20);
-        
+
         assertEquals(true, controller.checkCollision(), "pitäisi osua samassa paikassa kummatkin");
-        
+
         controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(900);
-        
+
         assertEquals(false, controller.checkCollision(), " ei pitäisi osua ");
-        
+
         controller.getCharacter1().setyCoord(50);
-        
+
         assertEquals(false, controller.checkCollision(), " ei pitäisi osua. 1 pelaaja ylhäällä.");
-        
+
         controller.getCharacter2().setxCoord(1000);
-        
+
         assertEquals(false, controller.checkCollision(), " ei pitäisi osua. pelaaja 1 suoraan yläpuolella.");
-        
-        controller.getCharacter1().setyCoord(20);    
-        
-        assertEquals(true, controller.checkCollision(), " pitäisi osua. pelaaja 1 suoraan yläpuolella.");        
-              
-        
+
+        controller.getCharacter1().setyCoord(20);
+
+        assertEquals(true, controller.checkCollision(), " pitäisi osua. pelaaja 1 suoraan yläpuolella.");
+
     }
-    
+
     @Test
     void CheckFacing() {
         Character char1 = controller.getCharacter1();
@@ -93,9 +95,9 @@ public class ControllerTest {
         controller.checkFacing();
         assertEquals(Character.Facing.LEFT, char1.getFacing(), "Hahmo  kääntynyt vaikka ei saisi");
         assertEquals(Character.Facing.RIGHT, char2.getFacing(), "Hahmo 2 kääntynyt vaikka ei saisi");
-        
+
     }
-    
+
     @Test
     void checkHitBoxCollision() {
         controller.getCharacter1().setxCoord(1400);
@@ -110,8 +112,7 @@ public class ControllerTest {
         controller.getCharacter2().attack('A');
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 vasemmalta");
     }
-    
-    
+
     @Test
     void cameraPosition() {
 

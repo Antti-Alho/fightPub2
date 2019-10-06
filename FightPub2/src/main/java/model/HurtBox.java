@@ -1,16 +1,20 @@
 package model;
 
 /**
- *
+ * This class is tied to a character model.
+ * Hurtbox's purpose is to give the character a width and height that are
+ * used to check if the character is colliding with another character, going out of bounds 
+ * or getting hit.
+ * @see Character
  * @author Pate
  */
 public class HurtBox {
-
+    //Width and heigth in pixels.
     int width, height;
     
     /**
      * Creates the characters hurtbox.
-     * character takes damage when a whitbox is inside hurtbox.
+     * character takes damage when an opponent characters hitbox is inside a hurtbox.
      * @param width starts from the characters x coordinate.
      * @param height starts from the characters Y coordinate.
      */
