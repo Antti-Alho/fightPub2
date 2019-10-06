@@ -25,29 +25,45 @@ public class Window {
             throw new RuntimeException("Failed to create the GLFW window");
         }
         
-         // Configure our window
-        glfwDefaultWindowHints(); // optional, the current window hints are already the default
-        glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
-        glfwWindowHint(GLFW_RESIZABLE, GL_FALSE); // the window will be resizable
-        
         // Get the resolution of the primary monitor
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        // Center our window
+        
         glfwSetWindowPos(
                 id,
                 (vidmode.width() - WIDTH) / 2,
                 (vidmode.height() - HEIGHT) / 2
         );
         
-        // Make the OpenGL context current
         glfwMakeContextCurrent(id);
         GL.createCapabilities();
-                
-        // Enable v-sync
+        GLCapabilities caps = GL.getCapabilities();
         glfwSwapInterval(1);
-        glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+        
+        
+        // Configure our window
+        glfwDefaultWindowHints(); // optional, the current window hints are already the default
+        glfwDefaultWindowHints();
+        if (caps.OpenGL32) {
+            /* Hints for OpenGL 3.2 core profile */
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+        } else if (caps.OpenGL21) {
+            /* Hints for legacy OpenGL 2.1 */
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+        } else {
+            throw new RuntimeException("Neither OpenGL 3.2 nor OpenGL 2.1 is "
+                                       + "supported, you may want to update your graphics driver.");
+        }
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
+        
+        
         // Make the window visible
-        glfwShowWindow(id);
+        //glfwShowWindow(id);
+        
         
     }
 

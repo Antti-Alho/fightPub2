@@ -81,7 +81,7 @@ public class View {
             }
             delta = timer.getDelta();
             accumulator += delta;
-            
+
             input();
             
             while (accumulator >= interval){
@@ -98,11 +98,7 @@ public class View {
             window.update();
         }
     }
-
-    public static void main(String[] args) {
-        new View().run();
-    }
-
+   
     private void input() {
         controller.input();
     }
@@ -114,6 +110,12 @@ public class View {
     private void render() {
         controller.render();
     }
+
+    public static void main(String[] args) {
+        new View().run();
+    }
+
+    
 
 
 }
