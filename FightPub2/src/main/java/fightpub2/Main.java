@@ -4,10 +4,14 @@
  * and open the template in the editor.
  */
 package fightpub2;
+
+import view.View;
+
 public class Main {
     public static void main(String[] args) {
-        for (String arg : args) {
-            System.out.println(args);
-        }
+        Introduction i = new Introduction();
+        //i.run();
+        view.View view = new View();
+        view.run();
     }
 }

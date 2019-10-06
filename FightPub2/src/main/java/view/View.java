@@ -1,119 +1,188 @@
 package view;
 
-import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.*;
-
+import controller.Controller;
+import model.MapModel;
+import controller.Menu;
+import java.nio.IntBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.lwjgl.Version;
-import static org.lwjgl.glfw.Callbacks.*;
-
 import static org.lwjgl.glfw.GLFW.*;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL;
+
+import org.lwjgl.glfw.GLFWVidMode;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import org.lwjgl.system.MemoryUtil;
+import static org.lwjgl.system.MemoryUtil.NULL;
+
 /**
  *
- * @author Heidi
+ * @author Heidi, Antti
  */
 public class View {
  
-    // The window handle
-    private long window;
-
-    public void run() {
-        System.out.println("Hello LWJGL " + Version.getVersion() + "!");
-
-        try {
-            init();
-            loop();
-
-            // Release window and window callbacks
-            glfwFreeCallbacks(window);
-            glfwDestroyWindow(window);
-        } finally {
-            // Terminate GLFW and release the GLFWerrorfun
-            glfwTerminate();
-            glfwSetErrorCallback(null).free();
-        }
+    public static final int TARGET_FPS = 60;
+    public static final int TARGET_UPS = 30;
+    
+    protected Window window;
+    protected Timer timer;
+    protected Renderer renderer;
+    protected Controller controller;
+    private boolean running;
+    public static final int monitorHeigt = 1080;
+    public static final int monitorWight = 1920;
+    
+    public View(){
+        timer = new Timer();
+        renderer = new Renderer();
+        controller = new Controller(new model.Character(true, "Jaakko"), new model.Character(false, "Pekka"), new MapModel("Jee"), 100, 1);
     }
+    
+       /**
+     * This error callback will simply print the error to
+     * <code>System.err</code>.
+     */
+    private static GLFWErrorCallback errorCallback
+                                     = GLFWErrorCallback.createPrint(System.err);
 
-    private void init() {
-        // Setup an error callback. The default implementation
-        // will print the error message in System.err.
-        GLFWErrorCallback.createPrint(System.err).set();
+   
+    public  void run() {
+        long window;
 
-        // Initialize GLFW. Most GLFW functions will not work before doing this.
+        /* Set the error callback */
+        glfwSetErrorCallback(errorCallback);
+
+        /* Initialize GLFW */
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
-        // Configure our window
-        glfwDefaultWindowHints(); // optional, the current window hints are already the default
-        glfwWindowHint(GLFW_VISIBLE, GL_FALSE); // the window will stay hidden after creation
-        glfwWindowHint(GLFW_RESIZABLE, GL_TRUE); // the window will be resizable
-
-        int WIDTH = 1920;
-        int HEIGHT = 1080;
-
-        // Create the window
-        window = glfwCreateWindow(WIDTH, HEIGHT, "Hello World!", NULL, NULL);
+        /* Create window */
+        window = glfwCreateWindow(monitorWight, monitorHeigt, "Simple example", NULL, NULL);
         if (window == NULL) {
+            glfwTerminate();
             throw new RuntimeException("Failed to create the GLFW window");
         }
 
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            }
-        });
-
-        // Get the resolution of the primary monitor
-        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        // Center our window
-        glfwSetWindowPos(
-                window,
-                (vidmode.width() - WIDTH) / 2,
-                (vidmode.height() - HEIGHT) / 2
+        /* Center the window on screen */
+        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowPos(window,
+                         (vidMode.width() - monitorWight) / 2,
+                         (vidMode.height() - monitorHeigt) / 2
         );
 
-        // Make the OpenGL context current
+        /* Create OpenGL context */
         glfwMakeContextCurrent(window);
-        // Enable v-sync
-        glfwSwapInterval(1);
-
-        // Make the window visible
-        glfwShowWindow(window);
-    }
-
-    private void loop() {
-        // This line is critical for LWJGL's interoperation with GLFW's
-        // OpenGL context, or any context that is managed externally.
-        // LWJGL detects the context that is current in the current thread,
-        // creates the ContextCapabilities instance and makes the OpenGL
-        // bindings available for use.
         GL.createCapabilities();
 
-        // Set the clear color
-        glClearColor(1.0f, 0.0f, 1.0f, 0.0f);
+        /* Enable vertical synchronization */
+        glfwSwapInterval(1);
 
-        // Run the rendering loop until the user has attempted to close
-        // the window or has pressed the ESCAPE key.
+
+        
+        /* Declare buffers for using inside the loop */
+        
+        IntBuffer width = MemoryUtil.memAllocInt(1);
+        IntBuffer height = MemoryUtil.memAllocInt(1);
+        
+        
+        
+       
+        
+        /* Loop until window gets closed */
         while (!glfwWindowShouldClose(window)) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear the framebuffer
+            
+            glClearColor(1.0f, 0.2f, 0.9f, 0f);
+            /* Get width and height to calcualte the ratio */
+            glfwGetFramebufferSize(window, width, height);
 
-            glfwSwapBuffers(window); // swap the color buffers
+            /* Rewind buffers for next get */
+            width.rewind();
+            height.rewind();
 
-            // Poll for window events. The key callback above will only be
-            // invoked during this call.
+            /* Set hurtbox and clear screen */
+            // (Xcoord, ycoord, leveys, korkeus)
+            glViewport(controller.getCharacter1().getxCoord(), 0, 
+                    controller.getCharacter1().getHurtbox().getWidth(), 
+                    controller.getCharacter1().getHurtbox().getHeight());
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            /* Set ortographic projection */
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glMatrixMode(GL_MODELVIEW);
+
+            /* Render triangle */
+            glBegin(GL_TRIANGLES);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(-1.0f, -1.0f, 0.0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(1.0f, 1.0f, 0.0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(-1.f, 1.0f, -1.0f);
+
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(-1.0f, -1.0f, 0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(1.0f, 1.0f, 0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(1.0f, -1.0f, 1.0f);
+            
+            glEnd();
+   
+            /* Rewind buffers for next get */
+            width.rewind();
+            height.rewind();
+            
+            glViewport(controller.getCharacter2().getxCoord(), 0,
+                    controller.getCharacter2().getHurtbox().getWidth(), 
+                    controller.getCharacter2().getHurtbox().getHeight());
+
+            /* Set ortographic projection */
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glMatrixMode(GL_MODELVIEW);
+
+            /* Render triangle */
+            glBegin(GL_TRIANGLES);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(-1.0f, -1.0f, 0.0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(1.0f, 1.0f, 0.0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(-1.f, 1.0f, -1.0f);
+
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(-1.0f, -1.0f, 0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(1.0f, 1.0f, 0f);
+            glColor3f(0f, 1f, 0f);
+            glVertex3f(1.0f, -1.0f, 1.0f);
+            glEnd();
+
+            //Estää glfwGetFramebufferSize:ia kaatumasta
+            glViewport(0, 0, width.get(), height.get());
+            /* Swap buffers and poll Events */
+            glfwSwapBuffers(window);
             glfwPollEvents();
+
+            /* Flip buffers for next loop */
+            width.flip();
+            height.flip();
+            
         }
+
+        /* Free buffers */
+        MemoryUtil.memFree(width);
+        MemoryUtil.memFree(height);
+
+        /* Release window and its callbacks */
+        glfwDestroyWindow(window);
+
+        /* Terminate GLFW and release the error callback */
+        glfwTerminate();
+        errorCallback.free();
     }
-
-    public static void main(String[] args) {
-        new View().run();
-    }
-
-
-    
-    
-    
 }
+
