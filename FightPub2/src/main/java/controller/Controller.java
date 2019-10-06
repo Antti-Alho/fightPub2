@@ -25,7 +25,6 @@ public class Controller {
     private view.Texture texture;
 
     public Controller(Character char1, Character char2, MapModel map, int timelimit, int rounds) {
-        enter();
         this.char1 = char1;
         this.char2 = char2;
         this.map = map;
