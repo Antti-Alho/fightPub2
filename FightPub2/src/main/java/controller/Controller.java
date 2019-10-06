@@ -33,10 +33,10 @@ public class Controller {
     }
 
     /**
-     * Checks if the hurtboxes of characters are on top of each other. returns
-     * true if characters are in collision
+     * Checks if the hurtboxes of the characters are intersecting. returns
+     * true if characters are in collision.
      *
-     * @return true if boxes collide
+     * @return true if characters collide.
      */
     public boolean checkCollision() {
         Rectangle character1 = new Rectangle(char1.getxCoord(), char1.getyCoord(), char1.getHurtbox().getWidth(), char1.getHurtbox().getHeight());
@@ -55,14 +55,20 @@ public class Controller {
      *
      */
     public boolean checkHitboxCollision(Character hittingCharacter, Character characterGettingHit) {
+        
         int hitboxWidth = hittingCharacter.getHitBox().getWidth();
         int hitboxHeight = hittingCharacter.getHitBox().getHeight();
+        int hitboxXcoord = hittingCharacter.getxCoord() + hittingCharacter.getHitBox().getXoffset();
+        int hitboxYcoord = hittingCharacter.getyCoord();
+        
         int hurtboxWidth = characterGettingHit.getHurtbox().getWidth();
         int hurtboxHeight = characterGettingHit.getHurtbox().getHeight();
+        int hurtboxXcoord = characterGettingHit.getxCoord();
+        int hurtboxYcoord = characterGettingHit.getyCoord();
+        
+        Rectangle hitbox = new Rectangle(hitboxXcoord, hitboxYcoord, hitboxWidth, hitboxHeight);
+        Rectangle hurtbox = new Rectangle(hurtboxXcoord, hurtboxYcoord, hurtboxWidth, hurtboxHeight);
 
-        Rectangle hitbox = new Rectangle(hittingCharacter.getxCoord() + hittingCharacter.getHitBox().getXoffset(), hittingCharacter.getyCoord(), hitboxWidth, hitboxHeight);
-        Rectangle hurtbox = new Rectangle(characterGettingHit.getxCoord(), characterGettingHit.getyCoord(), hurtboxWidth, hurtboxHeight);
-        System.out.println(hitbox.x + "hitbox vasen reuna");
         return hitbox.intersects(hurtbox);
     }
 

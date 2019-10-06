@@ -5,10 +5,11 @@ package model;
  * Hurtbox's purpose is to give the character a width and height that are
  * used to check if the character is colliding with another character, going out of bounds 
  * or getting hit.
+ * @see Character
  * @author Pate
  */
 public class HurtBox {
-
+    //Width and heigth in pixels.
     int width, height;
     
     /**

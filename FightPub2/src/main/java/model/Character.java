@@ -165,6 +165,7 @@ public class Character {
         }
     }
 
+
     /**
      * This method sets the characters hitbox values based on the switch case
      * hitbox is set to active in this process which means the character is capable of 

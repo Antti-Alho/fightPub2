@@ -19,6 +19,7 @@ package model;
 /**
  * This class is used to create a rectangle which is used to hit 
  * another character. Every instance of character class has an instance of this class.
+ * @see Character
  * @author Pate, Joonas
  */
 
