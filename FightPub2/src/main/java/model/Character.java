@@ -1,6 +1,7 @@
 package model;
 
 import static model.HitBox.HitLocation;
+import view.Renderer;
 
 /**
  *This class contains playable character attributes and methods.
@@ -33,7 +34,7 @@ public class Character {
     public Character(int xCoord, Character.Facing facing) {
         this.xCoord = xCoord;
         this.facing = facing;
-        this.hurtBox = new HurtBox(20, 20);
+        this.hurtBox = new HurtBox(200, 400);
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;

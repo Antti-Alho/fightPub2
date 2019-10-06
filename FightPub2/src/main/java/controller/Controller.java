@@ -1,8 +1,14 @@
 package controller;
 
 import java.awt.Rectangle;
+import java.nio.IntBuffer;
 import model.Character;
 import model.MapModel;
+import org.lwjgl.glfw.GLFW;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11C.glClear;
+import org.lwjgl.system.MemoryStack;
 
 /**
  * This class initializes the game. Contains methods to check game state.
@@ -15,6 +21,7 @@ public class Controller {
     private int timelimit;
     private int rounds;
     private MapModel map;
+    private view.Texture texture;
 
     /**
      * 
@@ -31,7 +38,6 @@ public class Controller {
         this.timelimit = timelimit;
         this.rounds = rounds;
     }
-
     /**
      * Checks if the hurtboxes of the characters are intersecting. returns
      * true if characters are in collision.
@@ -45,14 +51,12 @@ public class Controller {
     }
 
     /**
-     *
-     * This method checks if the hitting characters hitbox collides with 
+     * Checks if the hitting characters hitbox collides with 
      * the other characters hurtbox
      * 
      * @param hittingCharacter Character of player with active hitbox
      * @param characterGettingHit Character of player who might get hit
      * @return true if hitbox collides with hurtbox
-     *
      */
     public boolean checkHitboxCollision(Character hittingCharacter, Character characterGettingHit) {
         
@@ -90,5 +94,37 @@ public class Controller {
 
     public Character getCharacter2() {
         return this.char2;
+    }
+
+    public void update() {
+        System.out.println("Players move here");
+    }
+
+    public void input() {
+        System.out.println("Player inputs here");
+    }
+
+    public void render() {
+        texture.bind();
+        System.out.println("Render here");
+        // current.state
+    }
+    
+    public void enter(){
+        int width, height; 
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            long window = GLFW.glfwGetCurrentContext();
+            IntBuffer widthBuffer = stack.mallocInt(1);
+            IntBuffer heightBuffer = stack.mallocInt(1);
+            width = widthBuffer.get();
+            height = heightBuffer.get();
+            System.out.println("window: " + window);
+            GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
+        }
+        
+        
+        glClearColor(1.0f, 0.2f, 0.9f, 0f);
+        //glClearColor(1.0f, 0.2f, 0.9f, 0f);
+        
     }
 }
