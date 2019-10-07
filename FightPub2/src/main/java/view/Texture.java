@@ -12,7 +12,7 @@ import org.lwjgl.system.MemoryStack;
 
 /**
  *
- * @author Heidi,, Antti
+ * @author Heidi, Antti
  */
 public class Texture {
     
@@ -28,6 +28,7 @@ public class Texture {
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, id);
     }
+    
     public void setParameter(int name, int value) {
         glTexParameteri(GL_TEXTURE_2D, name, value);
     }
@@ -36,14 +37,13 @@ public class Texture {
         uploadData(GL_RGBA8, width, height, GL_RGBA, data);
     }
     
-    
     public void uploadData(int internalFormat, int width, int height, int format, ByteBuffer data) {
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     }
+    
     public void delete() {
         glDeleteTextures(id);
     }
-
     
     public int getWidth() {
         return width;
