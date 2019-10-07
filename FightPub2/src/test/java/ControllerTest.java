@@ -22,15 +22,21 @@ public class ControllerTest {
     MapModel map;
     //Controller controller = new Controller(new Character(1200, Character.Facing.RIGHT), new Character(false, "Jukka"), new MapModel("Kaisla"), 99, 2);
 
-    Controller controller = new Controller(new Character(1200, Character.Facing.RIGHT), new Character(1800, Character.Facing.LEFT), new MapModel("Kaisla"), 99, 2);
+    Controller controller = new Controller(new Character(400, Character.Facing.RIGHT), new Character(1800, Character.Facing.LEFT), new MapModel("Kaisla"), 99, 2);
 
     //dont use Character classes instances here pls. only use control classes methods. you can get your desired character with controller.getCharacter.
+    @BeforeEach
+    public void setHitbox(){
+        controller.getCharacter1().getHurtbox().setHeight(20);
+        controller.getCharacter2().getHurtbox().setHeight(20);
+        controller.getCharacter1().getHurtbox().setWidth(20);
+        controller.getCharacter2().getHurtbox().setWidth(20);
+    }
     @Test
     public void startLocation() {
-        assertEquals(1200, controller.getCharacter1().getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
+        assertEquals(400, controller.getCharacter1().getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
         assertEquals(1800, controller.getCharacter2().getxCoord(), "Hahmo 2 ei ole aloituspaikallaan");
     }
-
     @Test
     @Disabled
     public void turn() {
@@ -54,7 +60,7 @@ public class ControllerTest {
 
         assertEquals(true, controller.checkCollision(), " pitäisi osua");
 
-        controller.getCharacter2().setyCoord(50);
+        controller.getCharacter2().setyCoord(151);
 
         assertEquals(false, controller.checkCollision(), "char 2 noastettu  ei pitäisi osua");
 

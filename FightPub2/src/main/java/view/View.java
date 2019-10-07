@@ -2,13 +2,11 @@ package view;
 
 import controller.Controller;
 import model.MapModel;
-import controller.Menu;
 import java.nio.IntBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.lwjgl.Version;
+import model.Character;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
 
 import org.lwjgl.glfw.GLFWVidMode;
@@ -33,10 +31,21 @@ public class View {
     public static final int monitorHeigt = 1080;
     public static final int monitorWight = 1920;
     
+    private final GLFWKeyCallback keyCallback;
+    
     public View(){
         timer = new Timer();
         renderer = new Renderer();
-        controller = new Controller(new model.Character(true, "Jaakko"), new model.Character(false, "Pekka"), new MapModel("Jee"), 100, 1);
+        controller = new Controller(new Character(400, Character.Facing.RIGHT), new Character(1000, Character.Facing.LEFT), new MapModel("Jee"), 100, 1);
+        
+        keyCallback = new GLFWKeyCallback() {
+            @Override
+            public void invoke(long window, int key, int scancode, int action, int mods) {
+                if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+                    glfwSetWindowShouldClose(window, true);
+                }
+            }
+        };
     }
     
        /**
@@ -71,26 +80,15 @@ public class View {
                          (vidMode.width() - monitorWight) / 2,
                          (vidMode.height() - monitorHeigt) / 2
         );
-
-        /* Create OpenGL context */
+        
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
-
-        /* Enable vertical synchronization */
+        // v-sync
         glfwSwapInterval(1);
-
-
-        
-        /* Declare buffers for using inside the loop */
-        
         IntBuffer width = MemoryUtil.memAllocInt(1);
         IntBuffer height = MemoryUtil.memAllocInt(1);
         
-        
-        
-       
-        
-        /* Loop until window gets closed */
+        glfwSetKeyCallback(window, keyCallback);
         while (!glfwWindowShouldClose(window)) {
             
             glClearColor(1.0f, 0.2f, 0.9f, 0f);
