@@ -1,11 +1,9 @@
 package model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Arrays;
 
 /**
- *
+ * Stage that the characters are on.
+ * 
  * @author Pate
  */
 public class MapModel {

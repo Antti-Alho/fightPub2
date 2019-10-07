@@ -3,8 +3,8 @@ package controller;
 import model.MenuElement;
 import java.util.ArrayList;
 /**
- *
- * @author Joonas
+ * This class created an menu that can be navigated with up and down inputs.
+ * @author Joonas, Patrik
  */
 
 public class Menu {
@@ -22,7 +22,9 @@ public class Menu {
      menuelements.get(activeElement).active = true;
      
      }
-    
+    /**
+     * Goes down 1 element at a time. If at last element go back to first element.
+     */
     public void downElement() {
         for (MenuElement element : menuelements) {
             element.active = false;
@@ -32,7 +34,9 @@ public class Menu {
             activeElement = 0;
         menuelements.get(activeElement).active = true;
         }
-    
+    /**
+     * Goes up 1 element at a time. If at first element go to last element.
+     */
     public void upElement() {
         for (MenuElement element : menuelements) {
             element.active = false;
