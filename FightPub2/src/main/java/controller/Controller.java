@@ -75,7 +75,6 @@ public class Controller {
 
         return hitbox.intersects(hurtbox);
     }
-
     
     /**
      * Checks characters positions and makes sure they are facing eachother.

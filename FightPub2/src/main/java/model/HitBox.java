@@ -51,11 +51,12 @@ public class HitBox {
         this.active = false;
         this.hitLocation = hitLocation;
     }
-     /**
-     * This enum determines if attack is blockable by which stances.
-     * HIGH attacks can only be blocked by a standing character. 
-     * MID attacks can be blocked by either a standing or crouching character.
-     * LOW attacks can only be blocked by a crouching character.
+  
+       /**
+     * This enum value indicates if attack is blockable in certain stance.
+     * HIGH attacks must be blocked STANDING
+     * MID attacks can be blocked either STANDING or CROUCHING
+     * LOW attacks must be blocked CROUCHING
      */
     public enum HitLocation {
         HIGH,
@@ -123,8 +124,7 @@ public class HitBox {
     }
     
     /**
-     * Helper method. Used to set all values of hitbox in a single method.
-     * Parameters explained in constructors documentation.
+     * Helper method to set all parameters in single method
      * @param active
      * @param damage
      * @param width

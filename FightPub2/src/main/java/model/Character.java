@@ -154,9 +154,10 @@ public class Character {
     public void setHitBox(HitBox hitBox) {
         this.hitBox = hitBox;
     }
-
+  
     /**
-     * Toggles characters direction of facing.
+     * Turns player facing. Is called when controller detects players swapping
+     * sides in relation to each other.
      */
     public void turn() {
         if (this.facing == Facing.LEFT) {
@@ -165,13 +166,10 @@ public class Character {
             this.facing = Facing.LEFT;
         }
     }
-
-
+  
     /**
-     * This method sets the characters hitbox values based on the switch case
-     * hitbox is set to active in this process which means the character is capable of 
-     * hitting the opponent
-     * @param ID Tells which hit the player wants to use.
+     * sets hitbox in a position determined by ID.
+     * @param ID char value that indicates attack used.
      */
     public void attack(char ID) {
         int damage;

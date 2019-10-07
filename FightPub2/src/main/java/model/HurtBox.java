@@ -14,7 +14,7 @@ public class HurtBox {
     
     /**
      * Creates the characters hurtbox.
-     * character takes damage when an opponent characters hitbox is inside a hurtbox.
+     * character takes damage when a hitbox is inside hurtbox.
      * @param width starts from the characters x coordinate.
      * @param height starts from the characters Y coordinate.
      */
