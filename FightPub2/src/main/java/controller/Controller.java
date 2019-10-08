@@ -117,13 +117,11 @@ public class Controller {
             IntBuffer heightBuffer = stack.mallocInt(1);
             width = widthBuffer.get();
             height = heightBuffer.get();
-            System.out.println("window: " + window);
             GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
         }
         
         
         glClearColor(1.0f, 0.2f, 0.9f, 0f);
-        //glClearColor(1.0f, 0.2f, 0.9f, 0f);
         
     }
 }

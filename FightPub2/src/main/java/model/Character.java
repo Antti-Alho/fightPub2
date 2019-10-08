@@ -13,7 +13,7 @@ import view.Renderer;
 public class Character {
 
     private int xCoord;
-    private int yCoord = 20;
+    private int yCoord = 0;
     private int health = 100;
     private int walkspeed;
     private String sprite;
@@ -24,12 +24,10 @@ public class Character {
     private final HurtBox hurtBox;
     private HitBox hitBox;
 
-    
-    
     /**
      * Constructor of character. 
      * @param xCoord sets the characters position in map.
-     * @param facing sets the caracters direction of facing.
+     * @param facing sets the characters direction of facing.
      */
     public Character(int xCoord, Character.Facing facing) {
         this.xCoord = xCoord;
@@ -64,7 +62,6 @@ public class Character {
      * any actions.
      * NEUTRAL: Default state for the character. Can perform most actions
      */
-    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -181,10 +178,10 @@ public class Character {
         switch (ID) {
             case 'A':
                 damage = 10;
-                width = 10;
-                height = 5;
-                xOffset = 15;
-                yOffset = -5;
+                width = 100;
+                height = 100;
+                xOffset = 200;
+                yOffset = 0;
                 if (this.facing == Facing.LEFT) {
                     xOffset = this.hurtBox.getWidth() - xOffset - width;
                 }
