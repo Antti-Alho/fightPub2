@@ -58,15 +58,12 @@ public class View {
     public void run() {
         long window;
 
-        /* Set the error callback */
         glfwSetErrorCallback(errorCallback);
 
-        /* Initialize GLFW */
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW");
         }
 
-        /* Create window */
         window = glfwCreateWindow(monitorWight, monitorHeigt, "Simple example", NULL, NULL);
         if (window == NULL) {
             glfwTerminate();

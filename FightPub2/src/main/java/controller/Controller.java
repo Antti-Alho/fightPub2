@@ -120,7 +120,6 @@ public class Controller {
             GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
         }
         
-        
         glClearColor(1.0f, 0.2f, 0.9f, 0f);
         
     }
