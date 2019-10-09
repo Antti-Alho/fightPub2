@@ -3,7 +3,7 @@ package view;
 import controller.Controller;
 import model.MapModel;
 import java.nio.IntBuffer;
-import model.Character;
+import model.PlayerEntity;
 import static org.lwjgl.glfw.GLFW.*;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -36,7 +36,7 @@ public class View {
     public View(){
         timer = new Timer();
         renderer = new Renderer();
-        controller = new Controller(new Character(400, Character.Facing.RIGHT), new Character(1000, Character.Facing.LEFT), new MapModel("Jee"), 100, 1);
+        controller = new Controller("Pekka", "Pekka", new MapModel("Jee"), 100, 1);
         
         keyCallback = new GLFWKeyCallback() {
             @Override
@@ -102,8 +102,8 @@ public class View {
             /* Set hurtbox and clear screen */
             // (Xcoord, ycoord, leveys, korkeus)
             glViewport(controller.getCharacter1().getxCoord(), 0, 
-                    controller.getCharacter1().getHurtbox().getWidth(), 
-                    controller.getCharacter1().getHurtbox().getHeight());
+                    controller.getCharacter1().getStandingWidth(), 
+                    controller.getCharacter1().getStandingHeight());
             glClear(GL_COLOR_BUFFER_BIT);
 
             /* Set ortographic projection */
@@ -134,8 +134,8 @@ public class View {
             height.rewind();
             
             glViewport(controller.getCharacter2().getxCoord(), 0,
-                    controller.getCharacter2().getHurtbox().getWidth(), 
-                    controller.getCharacter2().getHurtbox().getHeight());
+                    controller.getCharacter2().getStandingWidth(), 
+                    controller.getCharacter2().getStandingHeight());
 
             /* Set ortographic projection */
             glMatrixMode(GL_PROJECTION);

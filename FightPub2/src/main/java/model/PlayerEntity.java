@@ -2,6 +2,8 @@ package model;
 
 import static model.HitBox.HitLocation;
 import view.Renderer;
+import javax.persistence.*;
+import controller.Database;
 
 /**
  *This class contains playable character attributes and methods.
@@ -10,35 +12,76 @@ import view.Renderer;
  * 
  * @author Pate, Joonas
  */
-public class Character {
+@Entity
+@Table(name = "Hahmo")
+public class PlayerEntity {
 
-    private int xCoord;
-    private int yCoord = 20;
-    private int health = 100;
-    private int walkspeed;
-    private String sprite;
+    public PlayerEntity() {
+
+    }
+
+    
+
+    /**
+     * @param walkspeed the walkspeed to set
+     */
+    public void setWalkspeed(int walkspeed) {
+        this.walkspeed = walkspeed;
+    }
+    @Id
+    @Column(name = "name")
     private String name;
+    
+    @Column (name = "standing_Width")
+    private int standingWidth;
+    @Column (name = "standing_Height")
+    private int standingHeight;
+    
+    @Column (name = "crouching_Width")
+    private int crouchingWidth;
+    @Column (name = "crouching_Height")
+    private int crouchingHeight;
+    
+    @Column (name = "health")
+    private int health;
+    
+    @Column (name = "walkspeed")
+    private int walkspeed;
+    
+    @Transient
+    private HitBox hitBox; 
+    @Transient
+    private HurtBox hurtBox;
+    @Transient
+    private int xCoord;
+    @Transient
+    private int yCoord = 0;
+    @Transient
+    private String sprite;
+    @Transient
     private State state;
+    @Transient
     private Stance stance;
+    @Transient
     private Facing facing;
-    private final HurtBox hurtBox;
-    private HitBox hitBox;
-
-    
-    
+        
     /**
      * Constructor of character. 
      * @param xCoord sets the characters position in map.
      * @param facing sets the caracters direction of facing.
      */
-    public Character(int xCoord, Character.Facing facing) {
+    
+   
+
+    public PlayerEntity(int xCoord, PlayerEntity.Facing facing) {
         this.xCoord = xCoord;
         this.facing = facing;
-        this.hurtBox = new HurtBox(200, 400);
-        this.walkspeed = 4;
+        this.hurtBox = new HurtBox(getStandingWidth(), getStandingHeight());
+        System.out.println(getStandingHeight());
+        this.walkspeed = walkspeed;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-        this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
+        //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
 
     /**
@@ -130,6 +173,9 @@ public class Character {
     public String getName() {
         return name;
     }
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getxCoord() {
         return xCoord;
@@ -153,6 +199,68 @@ public class Character {
 
     public void setHitBox(HitBox hitBox) {
         this.hitBox = hitBox;
+    }
+    /**
+     * @return the standingWidth
+     */
+    public int getStandingWidth() {
+        return standingWidth;
+    }
+
+    /**
+     * @param standingWidth the standingWidth to set
+     */
+    public void setStandingWidth(int standingWidth) {
+        this.standingWidth = standingWidth;
+    }
+
+    /**
+     * @return the standingHeight
+     */
+    public int getStandingHeight() {
+        return standingHeight;
+    }
+
+    /**
+     * @param standingHeight the standingHeight to set
+     */
+    public void setStandingHeight(int standingHeight) {
+        this.standingHeight = standingHeight;
+    }
+
+    /**
+     * @return the crouchingWidth
+     */
+    public int getCrouchingWidth() {
+        return crouchingWidth;
+    }
+
+    /**
+     * @param crouchingWidth the crouchingWidth to set
+     */
+    public void setCrouchingWidth(int crouchingWidth) {
+        this.crouchingWidth = crouchingWidth;
+    }
+
+    /**
+     * @return the crouchingHeight
+     */
+    public int getCrouchingHeight() {
+        return crouchingHeight;
+    }
+
+    /**
+     * @param crouchingHeight the crouchingHeight to set
+     */
+    public void setCrouchingHeight(int crouchingHeight) {
+        this.crouchingHeight = crouchingHeight;
+    }
+
+    /**
+     * @return the walkspeed
+     */
+    public int getWalkspeed() {
+        return walkspeed;
     }
   
     /**

@@ -1,14 +1,16 @@
 package controller;
 
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.nio.IntBuffer;
-import model.Character;
+import model.PlayerEntity;
 import model.MapModel;
 import org.lwjgl.glfw.GLFW;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import org.lwjgl.glfw.GLFWKeyCallback;
 import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11C.glClear;
 import org.lwjgl.system.MemoryStack;
+import controller.Database;
 
 /**
  * This class initializes the game. Contains methods to check game state.
@@ -16,12 +18,14 @@ import org.lwjgl.system.MemoryStack;
  */
 public class Controller {
 
-    private Character char1;
-    private Character char2;
+    private PlayerEntity char1;
+    private PlayerEntity char2;
     private int timelimit;
     private int rounds;
     private MapModel map;
     private view.Texture texture;
+    private KeyEvent keyCallback;
+    private KeyListener listener;
 
     /**
      * 
@@ -31,13 +35,22 @@ public class Controller {
      * @param timelimit timelimit of the round in seconds
      * @param rounds number of maximum rounds
      */
-    public Controller(Character char1, Character char2, MapModel map, int timelimit, int rounds) {
-        this.char1 = char1;
-        this.char2 = char2;
+    public Controller(String char1, String char2, MapModel map, int timelimit, int rounds) {
+        Database db = new Database();
+        this.char1 = db.getPlayerEntity(char1);
+
+        this.char2 = db.getPlayerEntity(char2);
+        System.out.println(this.char1);
+        System.out.println(this.char2);
+        this.char1.setxCoord(400);
+        this.char2.setxCoord(1200);
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
     }
+    
+    
+    
     /**
      * Checks if the hurtboxes of the characters are intersecting. returns
      * true if characters are in collision.
@@ -58,7 +71,7 @@ public class Controller {
      * @param characterGettingHit Character of player who might get hit
      * @return true if hitbox collides with hurtbox
      */
-    public boolean checkHitboxCollision(Character hittingCharacter, Character characterGettingHit) {
+    public boolean checkHitboxCollision(PlayerEntity hittingCharacter, PlayerEntity characterGettingHit) {
         
         int hitboxWidth = hittingCharacter.getHitBox().getWidth();
         int hitboxHeight = hittingCharacter.getHitBox().getHeight();
@@ -80,18 +93,18 @@ public class Controller {
      * Checks characters positions and makes sure they are facing eachother.
      */
     public void checkFacing() {
-        if (char1.getFacing() == Character.Facing.RIGHT && char1.getxCoord() > char2.getxCoord()
-                || char1.getFacing() == Character.Facing.LEFT && char1.getxCoord() < char2.getxCoord()) {
+        if (char1.getFacing() == PlayerEntity.Facing.RIGHT && char1.getxCoord() > char2.getxCoord()
+                || char1.getFacing() == PlayerEntity.Facing.LEFT && char1.getxCoord() < char2.getxCoord()) {
             char1.turn();
             char2.turn();
         }
     }
 
-    public Character getCharacter1() {
+    public PlayerEntity getCharacter1() {
         return this.char1;
     }
 
-    public Character getCharacter2() {
+    public PlayerEntity getCharacter2() {
         return this.char2;
     }
 
@@ -100,8 +113,9 @@ public class Controller {
     }
 
     public void input() {
-        System.out.println("Player inputs here");
+        System.out.println("input hetre");
     }
+    
 
     public void render() {
         texture.bind();
@@ -126,4 +140,5 @@ public class Controller {
         //glClearColor(1.0f, 0.2f, 0.9f, 0f);
         
     }
+    
 }
