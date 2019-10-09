@@ -48,15 +48,14 @@ public class View {
         };
     }
     
-       /**
+    /**
      * This error callback will simply print the error to
      * <code>System.err</code>.
      */
-    private static GLFWErrorCallback errorCallback
-                                     = GLFWErrorCallback.createPrint(System.err);
+    private static GLFWErrorCallback errorCallback = GLFWErrorCallback.createPrint(System.err);
 
    
-    public  void run() {
+    public void run() {
         long window;
 
         /* Set the error callback */
@@ -90,76 +89,17 @@ public class View {
         
         glfwSetKeyCallback(window, keyCallback);
         while (!glfwWindowShouldClose(window)) {
-            
+            controller.input();
+            controller.update();
+            // set background
             glClearColor(1.0f, 0.2f, 0.9f, 0f);
-            /* Get width and height to calcualte the ratio */
             glfwGetFramebufferSize(window, width, height);
 
-            /* Rewind buffers for next get */
-            width.rewind();
-            height.rewind();
-
-            /* Set hurtbox and clear screen */
-            // (Xcoord, ycoord, leveys, korkeus)
-            glViewport(controller.getCharacter1().getxCoord(), 0, 
-                    controller.getCharacter1().getStandingWidth(), 
-                    controller.getCharacter1().getStandingHeight());
             glClear(GL_COLOR_BUFFER_BIT);
-
-            /* Set ortographic projection */
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            glMatrixMode(GL_MODELVIEW);
-
-            /* Render triangle */
-            glBegin(GL_TRIANGLES);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(-1.0f, -1.0f, 0.0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(1.0f, 1.0f, 0.0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(-1.f, 1.0f, -1.0f);
-
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(-1.0f, -1.0f, 0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(1.0f, 1.0f, 0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(1.0f, -1.0f, 1.0f);
             
-            glEnd();
-   
-            /* Rewind buffers for next get */
-            width.rewind();
-            height.rewind();
+            // draw objects
+            drawObjects(width, height);
             
-            glViewport(controller.getCharacter2().getxCoord(), 0,
-                    controller.getCharacter2().getStandingWidth(), 
-                    controller.getCharacter2().getStandingHeight());
-
-            /* Set ortographic projection */
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            glMatrixMode(GL_MODELVIEW);
-
-            /* Render triangle */
-            glBegin(GL_TRIANGLES);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(-1.0f, -1.0f, 0.0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(1.0f, 1.0f, 0.0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(-1.f, 1.0f, -1.0f);
-
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(-1.0f, -1.0f, 0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(1.0f, 1.0f, 0f);
-            glColor3f(0f, 1f, 0f);
-            glVertex3f(1.0f, -1.0f, 1.0f);
-            glEnd();
-
-            //Estää glfwGetFramebufferSize:ia kaatumasta
             glViewport(0, 0, width.get(), height.get());
             /* Swap buffers and poll Events */
             glfwSwapBuffers(window);
@@ -181,6 +121,73 @@ public class View {
         /* Terminate GLFW and release the error callback */
         glfwTerminate();
         errorCallback.free();
+    }
+    
+    public void drawObjects(IntBuffer width, IntBuffer height){
+        Colour charColour = new Colour(0f, 1f, 0f);
+        Colour hitboxColour = new Colour(1f, 0f, 0f);
+        
+        // char1
+        drawSquare(controller.getCharacter1().getxCoord(),
+            0,
+            controller.getCharacter1().getStandingWidth(),
+            controller.getCharacter1().getStandingHeight(),
+            width,
+            height,
+            charColour
+        );
+            
+        // char 2
+        drawSquare(controller.getCharacter2().getxCoord(),
+            0,
+            controller.getCharacter2().getStandingWidth(), 
+            controller.getCharacter2().getStandingHeight(),
+            width,
+            height,
+            charColour
+        );
+        
+        controller.getCharacter1().attack('A');
+        controller.getCharacter2().attack('A');
+        // hitbox 1
+        drawSquare(controller.getCharacter1().getHitBox().getXoffset() + controller.getCharacter1().getxCoord(),
+            controller.getCharacter1().getHitBox().getYoffset() + controller.getCharacter1().getyCoord(),
+            controller.getCharacter1().getHitBox().getWidth(), 
+            controller.getCharacter1().getHitBox().getHeight(),
+            width,
+            height,
+            hitboxColour
+        );
+        
+        //hitbox 2
+        drawSquare(controller.getCharacter2().getHitBox().getXoffset() + controller.getCharacter2().getxCoord(),
+            controller.getCharacter2().getHitBox().getYoffset() + controller.getCharacter2().getyCoord(),
+            controller.getCharacter2().getHitBox().getWidth(), 
+            controller.getCharacter2().getHitBox().getHeight(),
+            width,
+            height,
+            hitboxColour
+        );
+        
+    }
+    
+    public void drawSquare(int x, int y, int width, int height, IntBuffer widthbuffer, IntBuffer heightbuffer, Colour col){
+        widthbuffer.rewind();
+        heightbuffer.rewind();
+        
+        glViewport(x, y, width, height);
+
+        glBegin(GL_TRIANGLES);
+
+        glColor3f(col.getR(), col.getG(), col.getB());
+        glVertex3f(-1.0f, -1.0f, 0.0f);
+        glVertex3f(1.0f, 1.0f, 0.0f);
+        glVertex3f(-1.f, 1.0f, -1.0f);
+
+        glVertex3f(-1.0f, -1.0f, 0f);
+        glVertex3f(1.0f, 1.0f, 0f);
+        glVertex3f(1.0f, -1.0f, 1.0f);
+        glEnd();
     }
 }
 

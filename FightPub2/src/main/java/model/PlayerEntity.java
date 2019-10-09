@@ -16,29 +16,19 @@ import controller.Database;
 @Table(name = "Hahmo")
 public class PlayerEntity {
 
-    public PlayerEntity() {
-
-    }
-
-    
-
-    /**
-     * @param walkspeed the walkspeed to set
-     */
-    public void setWalkspeed(int walkspeed) {
-        this.walkspeed = walkspeed;
-    }
     @Id
     @Column(name = "name")
     private String name;
     
     @Column (name = "standing_Width")
     private int standingWidth;
+    
     @Column (name = "standing_Height")
     private int standingHeight;
     
     @Column (name = "crouching_Width")
     private int crouchingWidth;
+    
     @Column (name = "crouching_Height")
     private int crouchingHeight;
     
@@ -64,21 +54,21 @@ public class PlayerEntity {
     private Stance stance;
     @Transient
     private Facing facing;
-        
+
+
+    
+    public PlayerEntity(){
+    }
     /**
      * Constructor of character. 
      * @param xCoord sets the characters position in map.
-     * @param facing sets the caracters direction of facing.
+     * @param facing sets the characters direction of facing.
      */
-    
-   
-
     public PlayerEntity(int xCoord, PlayerEntity.Facing facing) {
         this.xCoord = xCoord;
         this.facing = facing;
-        this.hurtBox = new HurtBox(getStandingWidth(), getStandingHeight());
-        System.out.println(getStandingHeight());
-        this.walkspeed = walkspeed;
+        this.hurtBox = new HurtBox(getStandingHeight(), getStandingWidth());
+        this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
@@ -107,7 +97,6 @@ public class PlayerEntity {
      * any actions.
      * NEUTRAL: Default state for the character. Can perform most actions
      */
-    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -125,10 +114,51 @@ public class PlayerEntity {
         CROUCHING,
         STANDING
     }
+    
+    /**
+     * Turns player facing. Is called when controller detects players swapping
+     * sides in relation to each other.
+     */
+    public void turn() {
+        if (this.facing == Facing.LEFT) {
+            this.facing = Facing.RIGHT;
+        } else {
+            this.facing = Facing.LEFT;
+        }
+    }
+  
+    /**
+     * sets hitbox in a position determined by ID.
+     * @param ID char value that indicates attack used.
+     */
+    public void attack(char ID) {
+        int damage;
+        int xOffset;
+        int yOffset;
+        int width;
+        int height;
+        HitBox hb = this.hitBox;
+        switch (ID) {
+            case 'A':
+                damage = 10;
+                width = 100;
+                height = 100;
+                xOffset = 200;
+                yOffset = 0;
+                if (this.facing == Facing.LEFT) {
+                    xOffset = this.hurtBox.getWidth() - xOffset - width;
+                }
+                hb.setAll(true, damage, width, height, xOffset, yOffset, HitBox.HitLocation.MID);
+                break;
+        }
+    }
 
     public HurtBox getHurtbox() {
         return this.hurtBox;
     }
+    public void setHurtBox(HurtBox hurtBox){
+        this.hurtBox = hurtBox;
+    } 
 
     public Stance getStance() {
         return this.stance;
@@ -262,42 +292,12 @@ public class PlayerEntity {
     public int getWalkspeed() {
         return walkspeed;
     }
-  
+    
     /**
-     * Turns player facing. Is called when controller detects players swapping
-     * sides in relation to each other.
+     * @param walkspeed the walkspeed to set
      */
-    public void turn() {
-        if (this.facing == Facing.LEFT) {
-            this.facing = Facing.RIGHT;
-        } else {
-            this.facing = Facing.LEFT;
-        }
+    public void setWalkspeed(int walkspeed) {
+        this.walkspeed = walkspeed;
     }
-  
-    /**
-     * sets hitbox in a position determined by ID.
-     * @param ID char value that indicates attack used.
-     */
-    public void attack(char ID) {
-        int damage;
-        int xOffset;
-        int yOffset;
-        int width;
-        int height;
-        HitBox hb = this.hitBox;
-        switch (ID) {
-            case 'A':
-                damage = 10;
-                width = 10;
-                height = 5;
-                xOffset = 15;
-                yOffset = -5;
-                if (this.facing == Facing.LEFT) {
-                    xOffset = this.hurtBox.getWidth() - xOffset - width;
-                }
-                hb.setAll(true, damage, width, height, xOffset, yOffset, HitBox.HitLocation.MID);
-                break;
-        }
-    }
+    
 }

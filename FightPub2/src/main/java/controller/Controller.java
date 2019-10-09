@@ -11,6 +11,8 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import org.lwjgl.system.MemoryStack;
 import controller.Database;
+import model.HitBox;
+import model.HurtBox;
 
 /**
  * This class initializes the game. Contains methods to check game state.
@@ -40,10 +42,13 @@ public class Controller {
         this.char1 = db.getPlayerEntity(char1);
 
         this.char2 = db.getPlayerEntity(char2);
-        System.out.println(this.char1);
-        System.out.println(this.char2);
+        this.char2.setFacing(PlayerEntity.Facing.LEFT);
         this.char1.setxCoord(400);
         this.char2.setxCoord(1200);
+        this.char1.setHurtBox(new HurtBox(200, 400));
+        this.char2.setHurtBox(new HurtBox(200, 400));
+        this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
+        this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
@@ -131,13 +136,11 @@ public class Controller {
             IntBuffer heightBuffer = stack.mallocInt(1);
             width = widthBuffer.get();
             height = heightBuffer.get();
-            System.out.println("window: " + window);
             GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
         }
         
         
         glClearColor(1.0f, 0.2f, 0.9f, 0f);
-        //glClearColor(1.0f, 0.2f, 0.9f, 0f);
         
     }
     
