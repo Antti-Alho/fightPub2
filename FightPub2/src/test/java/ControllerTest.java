@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import model.MapModel;
-import model.Character;
+import model.PlayerEntity;
 import controller.Controller;
 import java.awt.event.KeyEvent;
 import model.HurtBox;
@@ -22,7 +22,7 @@ public class ControllerTest {
     MapModel map;
     //Controller controller = new Controller(new Character(1200, Character.Facing.RIGHT), new Character(false, "Jukka"), new MapModel("Kaisla"), 99, 2);
 
-    Controller controller = new Controller(new Character(400, Character.Facing.RIGHT), new Character(1800, Character.Facing.LEFT), new MapModel("Kaisla"), 99, 2);
+    Controller controller = new Controller(new PlayerEntity(400, PlayerEntity.Facing.RIGHT), new PlayerEntity(1800, PlayerEntity.Facing.LEFT), new MapModel("Kaisla"), 99, 2);
 
     //dont use Character classes instances here pls. only use control classes methods. you can get your desired character with controller.getCharacter.
     @BeforeEach
@@ -40,11 +40,11 @@ public class ControllerTest {
     @Test
     @Disabled
     public void turn() {
-        assertEquals(Character.Facing.RIGHT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso vasemmalle lähtöpaikassaan.");
-        assertEquals(Character.Facing.LEFT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso oikealle lähtopaikassaan.");
+        assertEquals(PlayerEntity.Facing.RIGHT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso vasemmalle lähtöpaikassaan.");
+        assertEquals(PlayerEntity.Facing.LEFT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso oikealle lähtopaikassaan.");
         controller.getCharacter1().setxCoord(2000);
-        assertEquals(Character.Facing.LEFT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso oikealle liikuttuaan toisen pelaajan ohi.");
-        assertEquals(Character.Facing.RIGHT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso vasemmalle liikuttuaan toisen pelaajan ohi.");
+        assertEquals(PlayerEntity.Facing.LEFT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso oikealle liikuttuaan toisen pelaajan ohi.");
+        assertEquals(PlayerEntity.Facing.RIGHT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso vasemmalle liikuttuaan toisen pelaajan ohi.");
     }
 
     @Test
@@ -91,16 +91,16 @@ public class ControllerTest {
 
     @Test
     void CheckFacing() {
-        Character char1 = controller.getCharacter1();
-        Character char2 = controller.getCharacter2();
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
         char1.setxCoord(2500);
         char2.setxCoord(1800);
         controller.checkFacing();
-        assertEquals(Character.Facing.LEFT, char1.getFacing(), "Hahmo ei kääntynyt");
-        assertEquals(Character.Facing.RIGHT, char2.getFacing(), "Hahmo 2 ei kääntynyt");
+        assertEquals(PlayerEntity.Facing.LEFT, char1.getFacing(), "Hahmo ei kääntynyt");
+        assertEquals(PlayerEntity.Facing.RIGHT, char2.getFacing(), "Hahmo 2 ei kääntynyt");
         controller.checkFacing();
-        assertEquals(Character.Facing.LEFT, char1.getFacing(), "Hahmo  kääntynyt vaikka ei saisi");
-        assertEquals(Character.Facing.RIGHT, char2.getFacing(), "Hahmo 2 kääntynyt vaikka ei saisi");
+        assertEquals(PlayerEntity.Facing.LEFT, char1.getFacing(), "Hahmo  kääntynyt vaikka ei saisi");
+        assertEquals(PlayerEntity.Facing.RIGHT, char2.getFacing(), "Hahmo 2 kääntynyt vaikka ei saisi");
 
     }
 
