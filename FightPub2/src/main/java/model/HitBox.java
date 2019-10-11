@@ -63,7 +63,26 @@ public class HitBox {
         MID,
         LOW
     }
-
+    
+    /**
+     * Helper method to set all parameters in single method
+     * @param active
+     * @param damage
+     * @param width
+     * @param height
+     * @param xOffset
+     * @param yOffset 
+     * @param hitLocation 
+     */
+    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset, HitLocation hitLocation) {
+        this.active = active;
+        this.damage = damage;
+        this.width = width;
+        this.height = height;
+        this.xoffset = xOffset;
+        this.yoffset = yOffset;
+        this.hitLocation = hitLocation;
+    }
     // ---------------- GETTERS AND SETTERS ---------------
 
     public HitLocation getHitLocation() {
@@ -123,23 +142,5 @@ public class HitBox {
         this.damage = damage;
     }
     
-    /**
-     * Helper method to set all parameters in single method
-     * @param active
-     * @param damage
-     * @param width
-     * @param height
-     * @param xOffset
-     * @param yOffset 
-     * @param hitLocation 
-     */
-    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset, HitLocation hitLocation) {
-        this.active = active;
-        this.damage = damage;
-        this.width = width;
-        this.height = height;
-        this.xoffset = xOffset;
-        this.yoffset = yOffset;
-        this.hitLocation = hitLocation;
-    }
+    
 }
