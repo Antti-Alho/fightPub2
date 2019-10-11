@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Window.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FightPub2</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">Window.java</span></div><h1>Window.java</h1><pre class="source lang-java linenums">package view;
+
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GLCapabilities;
+
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.system.MemoryUtil.NULL;
+/**
+ *
+ * @author Heidi, Antti
+ */
+public class Window {
+    private final long id;
+    private final GLFWKeyCallback keyCallback;
+
+<span class="nc" id="L20">    Window(int width, int height, String title) {</span>
+<span class="nc" id="L21">        glfwDefaultWindowHints();</span>
+<span class="nc" id="L22">        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);</span>
+<span class="nc" id="L23">        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);</span>
+<span class="nc" id="L24">        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);</span>
+<span class="nc" id="L25">        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);</span>
+<span class="nc" id="L26">        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);</span>
+<span class="nc" id="L27">        id = glfwCreateWindow(width, height, title, NULL, NULL);</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (id == NULL) {</span>
+<span class="nc" id="L29">            glfwTerminate();</span>
+<span class="nc" id="L30">            throw new RuntimeException(&quot;Failed to create the GLFW window!&quot;);</span>
+        }
+        
+<span class="nc" id="L33">        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());</span>
+<span class="nc" id="L34">        glfwMakeContextCurrent(id);</span>
+<span class="nc" id="L35">        GL.createCapabilities();</span>
+        // v-sync
+<span class="nc" id="L37">        glfwSwapInterval(1);</span>
+        
+        
+        // Pressing ESC closes this window next time its rendered
+<span class="nc" id="L41">        keyCallback = new GLFWKeyCallback() {</span>
+            @Override
+            public void invoke(long window, int key, int scancode, int action, int mods) {
+<span class="nc bnc" id="L44" title="All 4 branches missed.">                if (key == GLFW_KEY_ESCAPE &amp;&amp; action == GLFW_PRESS) {</span>
+<span class="nc" id="L45">                    glfwSetWindowShouldClose(window, true);</span>
+                }
+<span class="nc" id="L47">            }</span>
+        };
+<span class="nc" id="L49">        glfwSetKeyCallback(id, keyCallback);</span>
+<span class="nc" id="L50">    }</span>
+
+    public boolean isClosing() {
+<span class="nc" id="L53">        System.out.println(&quot;Window Closing here&quot;);</span>
+<span class="nc" id="L54">        return glfwWindowShouldClose(id);</span>
+    }
+
+    public void update() {
+<span class="nc" id="L58">        glfwSwapBuffers(id);</span>
+<span class="nc" id="L59">        glfwPollEvents();</span>
+<span class="nc" id="L60">    }</span>
+    
+    public void destroy() {
+<span class="nc" id="L63">        glfwDestroyWindow(id);</span>
+<span class="nc" id="L64">        keyCallback.free();</span>
+<span class="nc" id="L65">    }  </span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

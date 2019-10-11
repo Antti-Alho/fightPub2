@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Texture.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FightPub2</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">Texture.java</span></div><h1>Texture.java</h1><pre class="source lang-java linenums">
+package view;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13C.GL_CLAMP_TO_BORDER;
+import static org.lwjgl.stb.STBImage.stbi_failure_reason;
+import static org.lwjgl.stb.STBImage.stbi_load;
+import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
+import org.lwjgl.system.MemoryStack;
+
+/**
+ * Stores texture data that has been passed to graphics card memory
+ * @author Heidi, Antti
+ */
+public class Texture {
+    
+    private final int id;
+    private int width;
+    private int height;
+
+<span class="nc" id="L23">    public Texture() {</span>
+<span class="nc" id="L24">        id = glGenTextures();</span>
+<span class="nc" id="L25">    }</span>
+
+    /**
+     * Binds this texture to current GL_TEXTURE_2D context
+     */
+    public void bind() {
+<span class="nc" id="L31">        glBindTexture(GL_TEXTURE_2D, id);</span>
+<span class="nc" id="L32">    }</span>
+    
+    /**
+     * sets parameters for current GL_TEXTURE_2D context calling glTexParametri
+     * https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
+     * @param name name of parameter
+     * @param value value of parameter
+     */
+    public void setParameter(int name, int value) {
+<span class="nc" id="L41">        glTexParameteri(GL_TEXTURE_2D, name, value);</span>
+<span class="nc" id="L42">    }</span>
+    
+    /**
+     * Uploads image data to graphic memory
+     * @param width width of the image
+     * @param height height of the image
+     * @param data image data in ByteBuffer
+     */
+    public void uploadData(int width, int height, ByteBuffer data) {
+<span class="nc" id="L51">        uploadData(GL_RGBA8, width, height, GL_RGBA, data);</span>
+<span class="nc" id="L52">    }</span>
+
+    /**
+     * Uploads image data to graphic memory calling glTexImage2D
+     * @param internalFormat 
+     * @param width width of the image
+     * @param height height of the image
+     * @param format
+     * @param data image data in ByteBuffer
+     */
+    public void uploadData(int internalFormat, int width, int height, int format, ByteBuffer data) {
+<span class="nc" id="L63">        glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);</span>
+<span class="nc" id="L64">    }</span>
+    
+    /**
+     * Deletes this texture from graphic memory
+     */
+    public void delete() {
+<span class="nc" id="L70">        glDeleteTextures(id);</span>
+<span class="nc" id="L71">    }</span>
+    
+    public int getWidth() {
+<span class="nc" id="L74">        return width;</span>
+    }
+
+    /**
+     * @param width must not be negative 
+     */
+    public void setWidth(int width) {
+<span class="nc bnc" id="L81" title="All 2 branches missed.">        if (width &gt; 0) {</span>
+<span class="nc" id="L82">            this.width = width;</span>
+        }
+<span class="nc" id="L84">    }</span>
+
+    public int getHeight() {
+<span class="nc" id="L87">        return height;</span>
+    }
+
+    /**
+     * @param height must not be negative 
+     */
+    public void setHeight(int height) {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        if (height &gt; 0) {</span>
+<span class="nc" id="L95">            this.height = height;</span>
+        }
+<span class="nc" id="L97">    }</span>
+
+    /**
+     * Creates a new texture.
+     * @param width width of the image
+     * @param height height of the image
+     * @param data image data in ByteBuffer
+     * @return new Texture object
+     */
+    public static Texture createTexture(int width, int height, ByteBuffer data) {
+<span class="nc" id="L107">        Texture texture = new Texture();</span>
+<span class="nc" id="L108">        texture.setWidth(width);</span>
+<span class="nc" id="L109">        texture.setHeight(height);</span>
+
+<span class="nc" id="L111">        texture.bind();</span>
+
+<span class="nc" id="L113">        texture.setParameter(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);</span>
+<span class="nc" id="L114">        texture.setParameter(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);</span>
+<span class="nc" id="L115">        texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);</span>
+<span class="nc" id="L116">        texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);</span>
+
+<span class="nc" id="L118">        texture.uploadData(GL_RGBA8, width, height, GL_RGBA, data);</span>
+
+<span class="nc" id="L120">        return texture;</span>
+    }
+
+    /**
+     * Creates a new Texture Object from image
+     * @param path path to image
+     * @return new Texture object
+     */
+    public static Texture loadTexture(String path) {
+        ByteBuffer image;
+        int width, height;
+<span class="nc" id="L131">        try (MemoryStack stack = MemoryStack.stackPush()) {</span>
+<span class="nc" id="L132">            IntBuffer w = stack.mallocInt(1);</span>
+<span class="nc" id="L133">            IntBuffer h = stack.mallocInt(1);</span>
+<span class="nc" id="L134">            IntBuffer comp = stack.mallocInt(1);</span>
+            
+<span class="nc" id="L136">            stbi_set_flip_vertically_on_load(true);</span>
+<span class="nc" id="L137">            image = stbi_load(path, w, h, comp, 4);</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">            if (image == null) {</span>
+<span class="nc" id="L139">                throw new RuntimeException(&quot;Failed to load a texture file!&quot;</span>
+<span class="nc" id="L140">                                           + System.lineSeparator() + stbi_failure_reason());</span>
+            }
+           
+<span class="nc" id="L143">            width = w.get();</span>
+<span class="nc" id="L144">            height = h.get();</span>
+        }
+
+<span class="nc" id="L147">        return createTexture(width, height, image);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
