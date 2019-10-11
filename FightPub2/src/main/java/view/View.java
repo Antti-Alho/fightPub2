@@ -30,6 +30,10 @@ public class View {
     
     private final GLFWKeyCallback keyCallback;
     
+    
+    /**
+     * Constructor for new view class
+     */
     public View(){
         timer = new Timer();
         renderer = new Renderer();
@@ -51,7 +55,9 @@ public class View {
      */
     private static GLFWErrorCallback errorCallback = GLFWErrorCallback.createPrint(System.err);
 
-   
+    /**
+     * Starts the view and runs it as a loop.
+     */
     public void run() {
         long window;
 
@@ -76,47 +82,58 @@ public class View {
         
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
+        
         // v-sync
         glfwSwapInterval(1);
+        
+         // Declare buffers for using inside the loop
         IntBuffer width = MemoryUtil.memAllocInt(1);
         IntBuffer height = MemoryUtil.memAllocInt(1);
         
         glfwSetKeyCallback(window, keyCallback);
+        
+        // Updates view in a loop until esc-button is pressed.
         while (!glfwWindowShouldClose(window)) {
             controller.input();
             controller.update();
+            
             // set background
             glClearColor(1.0f, 0.2f, 0.9f, 0f);
+            
             glfwGetFramebufferSize(window, width, height);
-
             glClear(GL_COLOR_BUFFER_BIT);
             
             // draw objects
             drawObjects(width, height);
-            
+            // gives the view size
             glViewport(0, 0, width.get(), height.get());
-            /* Swap buffers and poll Events */
+            
+            // Swap buffers and poll Events
             glfwSwapBuffers(window);
             glfwPollEvents();
 
-            /* Flip buffers for next loop */
+            // Flip buffers for next loop
             width.flip();
             height.flip();
             
         }
 
-        /* Free buffers */
+        // Free buffers
         MemoryUtil.memFree(width);
         MemoryUtil.memFree(height);
 
-        /* Release window and its callbacks */
+        // Release window and its callbacks
         glfwDestroyWindow(window);
 
-        /* Terminate GLFW and release the error callback */
+        // Terminate GLFW and release the error callback
         glfwTerminate();
         errorCallback.free();
     }
-    
+    /**
+     * Draws all objects to the current window.
+     * @param width integer buffer for width
+     * @param height integer buffer for height
+     */
     public void drawObjects(IntBuffer width, IntBuffer height){
         Colour charColour = new Colour(0f, 1f, 0f);
         Colour hitboxColour = new Colour(1f, 0f, 0f);
@@ -165,22 +182,36 @@ public class View {
         
     }
     
+    /**
+     * Fill the objets by drawing square by two triangles and fills them with colour.
+     * @param x starting plase in x-scale for square
+     * @param y starting plase in y-scale for square
+     * @param width width of the square
+     * @param height height of the square
+     * @param widthbuffer integer buffer for width
+     * @param heightbuffer integer buffer for height
+     * @param col square colour
+     */
     public void drawSquare(int x, int y, int width, int height, IntBuffer widthbuffer, IntBuffer heightbuffer, Colour col){
         widthbuffer.rewind();
         heightbuffer.rewind();
         
+        // gives the object size
         glViewport(x, y, width, height);
-
+        
+        // Start drawing triangles
         glBegin(GL_TRIANGLES);
-
+        // Colour for the triangles
         glColor3f(col.getR(), col.getG(), col.getB());
+        // First triangle
         glVertex3f(-1.0f, -1.0f, 0.0f);
         glVertex3f(1.0f, 1.0f, 0.0f);
         glVertex3f(-1.f, 1.0f, -1.0f);
-
+        // Second triangle
         glVertex3f(-1.0f, -1.0f, 0f);
         glVertex3f(1.0f, 1.0f, 0f);
         glVertex3f(1.0f, -1.0f, 1.0f);
+        // End drawing
         glEnd();
     }
 }

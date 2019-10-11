@@ -16,7 +16,7 @@ import model.HurtBox;
 
 /**
  * This class initializes the game. Contains methods to check game state.
- * @author Heidi, Pate, Joonas
+ * @author Heidi, Pate, Joonas, Antti
  */
 public class Controller {
 
@@ -40,13 +40,13 @@ public class Controller {
     public Controller(String char1, String char2, MapModel map, int timelimit, int rounds) {
         Database db = new Database();
         this.char1 = db.getPlayerEntity(char1);
-
+        this.char1.setFacing(PlayerEntity.Facing.RIGHT);
         this.char2 = db.getPlayerEntity(char2);
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
         this.char1.setxCoord(400);
         this.char2.setxCoord(1200);
-        this.char1.setHurtBox(new HurtBox(200, 400));
-        this.char2.setHurtBox(new HurtBox(200, 400));
+        this.char1.setHurtBox(new HurtBox(200, 400)); // Tilapäinen asetus
+        this.char2.setHurtBox(new HurtBox(200, 400)); // Tilapäinen asetus
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.map = map;
@@ -112,22 +112,31 @@ public class Controller {
     public PlayerEntity getCharacter2() {
         return this.char2;
     }
-
+    /**
+     * Updates players positions.
+     */
     public void update() {
         System.out.println("Players move here");
     }
-
+    /**
+     * Listens keyinputs.
+     */
     public void input() {
         System.out.println("input hetre");
     }
     
-
+    /**
+     * Renders textures to view.
+     */
     public void render() {
         texture.bind();
         System.out.println("Render here");
         // current.state
     }
     
+    /**
+     * @This metod is called by view when we enter game state.
+     */
     public void enter(){
         int width, height; 
         try (MemoryStack stack = MemoryStack.stackPush()) {

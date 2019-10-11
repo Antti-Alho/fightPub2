@@ -9,7 +9,7 @@ import controller.HibernateUtil;
 import java.io.Serializable;
 import org.hibernate.SessionFactory;
 /**
- *
+ * This class adds characters to the Hahmo-table 
  * @author Heidi
  */
 public class InitDatabase {

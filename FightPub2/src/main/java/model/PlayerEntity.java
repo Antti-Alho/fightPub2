@@ -10,7 +10,7 @@ import controller.Database;
  * @see HitBox
  * @see HurtBox
  * 
- * @author Pate, Joonas
+ * @author Pate, Joonas, Heidi, Antti
  */
 @Entity
 @Table(name = "Hahmo")
