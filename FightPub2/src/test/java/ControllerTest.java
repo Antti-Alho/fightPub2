@@ -22,11 +22,15 @@ public class ControllerTest {
     MapModel map;
     //Controller controller = new Controller(new Character(1200, Character.Facing.RIGHT), new Character(false, "Jukka"), new MapModel("Kaisla"), 99, 2);
 
-    Controller controller = new Controller(new PlayerEntity(400, PlayerEntity.Facing.RIGHT), new PlayerEntity(1800, PlayerEntity.Facing.LEFT), new MapModel("Kaisla"), 99, 2);
+    Controller controller = new Controller("Pekka","Pekka",new MapModel("Kaisla"), 99, 2);
 
     //dont use Character classes instances here pls. only use control classes methods. you can get your desired character with controller.getCharacter.
     @BeforeEach
-    public void setHitbox(){
+    public void setHitbox() {
+        controller.getCharacter1().setxCoord(400);
+        controller.getCharacter2().setxCoord(1800);
+        controller.getCharacter1().setFacing(PlayerEntity.Facing.RIGHT);
+        controller.getCharacter2().setFacing(PlayerEntity.Facing.LEFT);
         controller.getCharacter1().getHurtbox().setHeight(20);
         controller.getCharacter2().getHurtbox().setHeight(20);
         controller.getCharacter1().getHurtbox().setWidth(20);

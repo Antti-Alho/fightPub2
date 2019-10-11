@@ -3,44 +3,44 @@ package view;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
 /**
- *
+ * Keeps track of FPS and game time since last frame update.
  * @author Heidi
  */
 public class Timer {
 
     private double lastLoopTime;
     private float timeCount;
-    private int upsCount, fpsCount, fps, ups;
+    private int fpsCount, fps = 0;
     
-    
+    /**
+     * sets current time to lastLoopTime
+     */
     void init() {
         lastLoopTime = glfwGetTime();
     }
 
-    float getDelta() {
+    /**
+     * Updates FPS if more than 1 second has passed since last FPS update
+     * Removes one second from timeCount
+     */
+    void update() {
         double time = glfwGetTime();
         float delta = (float)(time - lastLoopTime);
         lastLoopTime = time;
         timeCount += delta;
-        return delta;
-    }
-
-    void updateUPS() {
-        upsCount++;
-    }
-
-    void updateFPS() {
         fpsCount++;
-    }
-
-    void update() {
         if (timeCount > 1f){
             fps = fpsCount;
             fpsCount = 0;
-            ups = upsCount;
-            upsCount = 0;
-            timeCount -=1f;
+            timeCount -= 1f;
         }
+    }
+
+    public double getLastLoopTime() {
+        return lastLoopTime;
+    }
+    public int getFPS() {
+        return fps;
     }
     
 }

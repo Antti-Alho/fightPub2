@@ -31,17 +31,13 @@ public class Window {
         }
         
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(id,
-                         (vidmode.width() - width) / 2,
-                         (vidmode.height() - height) / 2
-        );
         glfwMakeContextCurrent(id);
         GL.createCapabilities();
-        //v-sync
+        // v-sync
         glfwSwapInterval(1);
         
         
-        /* Pressing ESC closes this window next time its rendered */
+        // Pressing ESC closes this window next time its rendered
         keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
