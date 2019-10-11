@@ -21,13 +21,10 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class View {
  
     public static final int TARGET_FPS = 60;
-    public static final int TARGET_UPS = 30;
-    
     protected Window window;
     protected Timer timer;
     protected Renderer renderer;
     protected Controller controller;
-    private boolean running;
     public static final int monitorHeigt = 1080;
     public static final int monitorWight = 1920;
     

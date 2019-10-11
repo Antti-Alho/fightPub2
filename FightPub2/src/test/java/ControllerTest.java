@@ -19,14 +19,21 @@ import model.InitDatabase;
  * @author Heidi, Pate
  */
 public class ControllerTest {
+    InitDatabase init = new InitDatabase();  
+    Controller controller = new Controller("Pekka","Pekka",new MapModel("Kaisla"), 99, 2);
 
-    MapModel map;
-    InitDatabase init = new InitDatabase();
-//Controller controller = new Controller(new Character(1200, Character.Facing.RIGHT), new Character(false, "Jukka"), new MapModel("Kaisla"), 99, 2);
-    
-    
-    Controller controller = new Controller("Pekka", "Pekka", map, 0, 0);
-
+    @BeforeEach
+    public void setHitbox() {
+        controller.getCharacter1().setxCoord(400);
+        controller.getCharacter2().setxCoord(1800);
+        controller.getCharacter1().setFacing(PlayerEntity.Facing.RIGHT);
+        controller.getCharacter2().setFacing(PlayerEntity.Facing.LEFT);
+        controller.getCharacter1().getHurtbox().setHeight(20);
+        controller.getCharacter2().getHurtbox().setHeight(20);
+        controller.getCharacter1().getHurtbox().setWidth(20);
+        controller.getCharacter2().getHurtbox().setWidth(20);
+    }
+  
     @Test
     public void startLocation() {
         assertEquals(400, controller.getCharacter1().getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
