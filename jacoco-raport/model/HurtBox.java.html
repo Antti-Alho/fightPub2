@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HurtBox.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FightPub2</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">HurtBox.java</span></div><h1>HurtBox.java</h1><pre class="source lang-java linenums">package model;
+
+/**
+ * This class is tied to a character model.
+ * Hurtbox's purpose is to give the character a width and height that are
+ * used to check if the character is colliding with another character, going out of bounds 
+ * or getting hit.
+ * @see Character
+ * @author Pate
+ */
+public class HurtBox {
+    //Width and heigth in pixels.
+    int width, height;
+    
+    /**
+     * Creates the characters hurtbox.
+     * character takes damage when a hitbox is inside hurtbox.
+     * @param width starts from the characters x coordinate.
+     * @param height starts from the characters Y coordinate.
+     */
+<span class="fc" id="L21">    public HurtBox (int width, int height) {</span>
+<span class="fc" id="L22">        this.width = width;</span>
+<span class="fc" id="L23">        this.height = height;</span>
+<span class="fc" id="L24">    }</span>
+
+    public int getWidth() {
+<span class="fc" id="L27">        return this.width;</span>
+    }
+
+    public void setWidth(int width) {
+<span class="fc" id="L31">        this.width = width;</span>
+<span class="fc" id="L32">    }</span>
+
+    public int getHeight() {
+<span class="fc" id="L35">        return height;</span>
+    }
+
+    public void setHeight(int height) {
+<span class="fc" id="L39">        this.height = height;</span>
+<span class="fc" id="L40">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

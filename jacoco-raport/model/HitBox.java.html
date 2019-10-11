@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HitBox.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FightPub2</a> &gt; <a href="index.source.html" class="el_package">model</a> &gt; <span class="el_source">HitBox.java</span></div><h1>HitBox.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Pate
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+ */
+package model;
+
+/**
+ * This class is used to create a rectangle which is used to hit 
+ * another character. Every instance of character class has an instance of this class.
+ * @see Character
+ * @author Pate, Joonas
+ */
+
+
+public class HitBox {
+
+    int width, height, xoffset, yoffset, damage;
+
+    boolean active;
+    private HitLocation hitLocation;
+
+
+    /**
+     * Constructor.
+     * @param width width of the hitbox in pixels.
+     * @param height height of the hitbox in pixels.
+     * @param xoffset distance from characters x coordinate in pixels.
+     * @param yoffset distance from the characters top edge towards maps floor.
+     * @param damage how much damage the hitbox does to other player if the hitbox hits hurtbox
+     * @param hitLocation Describes what type of hit the players uses. This value is used to determine 
+     * what kind of block the opponent player must use in order to block the hit successfully
+     */
+<span class="fc" id="L45">    public HitBox(int width, int height, int xoffset, int yoffset, int damage, HitLocation hitLocation) {</span>
+<span class="fc" id="L46">        this.width = width;</span>
+<span class="fc" id="L47">        this.height = height;</span>
+<span class="fc" id="L48">        this.xoffset = xoffset;</span>
+<span class="fc" id="L49">        this.yoffset = yoffset;</span>
+<span class="fc" id="L50">        this.damage = damage;</span>
+<span class="fc" id="L51">        this.active = false;</span>
+<span class="fc" id="L52">        this.hitLocation = hitLocation;</span>
+<span class="fc" id="L53">    }</span>
+  
+       /**
+     * This enum value indicates if attack is blockable in certain stance.
+     * HIGH attacks must be blocked STANDING
+     * MID attacks can be blocked either STANDING or CROUCHING
+     * LOW attacks must be blocked CROUCHING
+     */
+<span class="fc" id="L61">    public enum HitLocation {</span>
+<span class="fc" id="L62">        HIGH,</span>
+<span class="fc" id="L63">        MID,</span>
+<span class="fc" id="L64">        LOW</span>
+    }
+    
+    /**
+     * Helper method to set all parameters in single method
+     * @param active
+     * @param damage
+     * @param width
+     * @param height
+     * @param xOffset
+     * @param yOffset 
+     * @param hitLocation 
+     */
+    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset, HitLocation hitLocation) {
+<span class="fc" id="L78">        this.active = active;</span>
+<span class="fc" id="L79">        this.damage = damage;</span>
+<span class="fc" id="L80">        this.width = width;</span>
+<span class="fc" id="L81">        this.height = height;</span>
+<span class="fc" id="L82">        this.xoffset = xOffset;</span>
+<span class="fc" id="L83">        this.yoffset = yOffset;</span>
+<span class="fc" id="L84">        this.hitLocation = hitLocation;</span>
+<span class="fc" id="L85">    }</span>
+    // ---------------- GETTERS AND SETTERS ---------------
+
+    public HitLocation getHitLocation() {
+<span class="nc" id="L89">      return this.hitLocation;</span>
+    }
+    public void setHitLocation(HitLocation hitLocation) {
+<span class="nc" id="L92">        this.hitLocation = hitLocation;</span>
+<span class="nc" id="L93">    }</span>
+    
+    public void setActive(boolean active) {
+<span class="nc" id="L96">        this.active = active;</span>
+<span class="nc" id="L97">    }</span>
+
+    public int getXoffset() {
+<span class="fc" id="L100">        return xoffset;</span>
+    }
+
+
+    public void setXoffset(int xoffset) {
+<span class="nc" id="L105">        this.xoffset = xoffset;</span>
+<span class="nc" id="L106">    }</span>
+
+    public int getYoffset() {
+<span class="nc" id="L109">        return yoffset;</span>
+
+    }
+
+    public void setYoffset(int yoffset) {
+<span class="nc" id="L114">        this.yoffset = yoffset;</span>
+<span class="nc" id="L115">    }</span>
+
+    public boolean isActive() {
+<span class="nc" id="L118">        return active;</span>
+    }
+
+    public int getWidth() {
+<span class="fc" id="L122">        return width;</span>
+    }
+
+    public void setWidth(int width) {
+<span class="nc" id="L126">        this.width = width;</span>
+<span class="nc" id="L127">    }</span>
+
+    public int getHeight() {
+<span class="fc" id="L130">        return height;</span>
+    }
+
+    public void setHeight(int height) {
+<span class="nc" id="L134">        this.height = height;</span>
+<span class="nc" id="L135">    }</span>
+
+    public int getDamage() {
+<span class="nc" id="L138">        return damage;</span>
+    }
+
+    public void setDamage(int damage) {
+<span class="nc" id="L142">        this.damage = damage;</span>
+<span class="nc" id="L143">    }</span>
+    
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Controller.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">FightPub2</a> &gt; <a href="index.source.html" class="el_package">controller</a> &gt; <span class="el_source">Controller.java</span></div><h1>Controller.java</h1><pre class="source lang-java linenums">package controller;
+
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.nio.IntBuffer;
+import model.PlayerEntity;
+import model.MapModel;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallback;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import org.lwjgl.system.MemoryStack;
+import controller.Database;
+import model.HitBox;
+import model.HurtBox;
+
+/**
+ * This class initializes the game. Contains methods to check game state.
+ * @author Heidi, Pate, Joonas, Antti
+ */
+public class Controller {
+
+    private PlayerEntity char1;
+    private PlayerEntity char2;
+    private int timelimit;
+    private int rounds;
+    private MapModel map;
+    private view.Texture texture;
+    private KeyEvent keyCallback;
+    private KeyListener listener;
+
+    /**
+     * 
+     * @param char1 character that player 1 controls
+     * @param char2 character that player 2 controls
+     * @param map stage that characters are on
+     * @param timelimit timelimit of the round in seconds
+     * @param rounds number of maximum rounds
+     */
+<span class="fc" id="L40">    public Controller(String char1, String char2, MapModel map, int timelimit, int rounds) {</span>
+<span class="fc" id="L41">        Database db = new Database();</span>
+<span class="fc" id="L42">        this.char1 = db.getPlayerEntity(char1);</span>
+<span class="fc" id="L43">        this.char1.setFacing(PlayerEntity.Facing.RIGHT);</span>
+<span class="fc" id="L44">        this.char2 = db.getPlayerEntity(char2);</span>
+<span class="fc" id="L45">        this.char2.setFacing(PlayerEntity.Facing.LEFT);</span>
+<span class="fc" id="L46">        this.char1.setxCoord(400);</span>
+<span class="fc" id="L47">        this.char2.setxCoord(1200);</span>
+<span class="fc" id="L48">        this.char1.setHurtBox(new HurtBox(200, 400)); // Tilapäinen asetus</span>
+<span class="fc" id="L49">        this.char2.setHurtBox(new HurtBox(200, 400)); // Tilapäinen asetus</span>
+<span class="fc" id="L50">        this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));</span>
+<span class="fc" id="L51">        this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));</span>
+<span class="fc" id="L52">        this.map = map;</span>
+<span class="fc" id="L53">        this.timelimit = timelimit;</span>
+<span class="fc" id="L54">        this.rounds = rounds;</span>
+<span class="fc" id="L55">    }</span>
+    
+    
+    
+    /**
+     * Checks if the hurtboxes of the characters are intersecting. returns
+     * true if characters are in collision.
+     *
+     * @return true if characters collide.
+     */
+    public boolean checkCollision() {
+<span class="fc" id="L66">        Rectangle character1 = new Rectangle(char1.getxCoord(), char1.getyCoord(), char1.getHurtbox().getWidth(), char1.getHurtbox().getHeight());</span>
+<span class="fc" id="L67">        Rectangle character2 = new Rectangle(char2.getxCoord(), char2.getyCoord(), char2.getHurtbox().getWidth(), char2.getHurtbox().getHeight());</span>
+<span class="fc" id="L68">        return character1.intersects(character2);</span>
+    }
+
+    /**
+     * Checks if the hitting characters hitbox collides with 
+     * the other characters hurtbox
+     * 
+     * @param hittingCharacter Character of player with active hitbox
+     * @param characterGettingHit Character of player who might get hit
+     * @return true if hitbox collides with hurtbox
+     */
+    public boolean checkHitboxCollision(PlayerEntity hittingCharacter, PlayerEntity characterGettingHit) {
+        
+<span class="fc" id="L81">        int hitboxWidth = hittingCharacter.getHitBox().getWidth();</span>
+<span class="fc" id="L82">        int hitboxHeight = hittingCharacter.getHitBox().getHeight();</span>
+<span class="fc" id="L83">        int hitboxXcoord = hittingCharacter.getxCoord() + hittingCharacter.getHitBox().getXoffset();</span>
+<span class="fc" id="L84">        int hitboxYcoord = hittingCharacter.getyCoord();</span>
+        
+<span class="fc" id="L86">        int hurtboxWidth = characterGettingHit.getHurtbox().getWidth();</span>
+<span class="fc" id="L87">        int hurtboxHeight = characterGettingHit.getHurtbox().getHeight();</span>
+<span class="fc" id="L88">        int hurtboxXcoord = characterGettingHit.getxCoord();</span>
+<span class="fc" id="L89">        int hurtboxYcoord = characterGettingHit.getyCoord();</span>
+        
+<span class="fc" id="L91">        Rectangle hitbox = new Rectangle(hitboxXcoord, hitboxYcoord, hitboxWidth, hitboxHeight);</span>
+<span class="fc" id="L92">        Rectangle hurtbox = new Rectangle(hurtboxXcoord, hurtboxYcoord, hurtboxWidth, hurtboxHeight);</span>
+
+<span class="fc" id="L94">        return hitbox.intersects(hurtbox);</span>
+    }
+    
+    /**
+     * Checks characters positions and makes sure they are facing eachother.
+     */
+    public void checkFacing() {
+<span class="pc bpc" id="L101" title="1 of 4 branches missed.">        if (char1.getFacing() == PlayerEntity.Facing.RIGHT &amp;&amp; char1.getxCoord() &gt; char2.getxCoord()</span>
+<span class="pc bpc" id="L102" title="2 of 4 branches missed.">                || char1.getFacing() == PlayerEntity.Facing.LEFT &amp;&amp; char1.getxCoord() &lt; char2.getxCoord()) {</span>
+<span class="fc" id="L103">            char1.turn();</span>
+<span class="fc" id="L104">            char2.turn();</span>
+        }
+<span class="fc" id="L106">    }</span>
+
+    public PlayerEntity getCharacter1() {
+<span class="fc" id="L109">        return this.char1;</span>
+    }
+
+    public PlayerEntity getCharacter2() {
+<span class="fc" id="L113">        return this.char2;</span>
+    }
+    /**
+     * Updates players positions.
+     */
+    public void update() {
+<span class="nc" id="L119">        System.out.println(&quot;Players move here&quot;);</span>
+<span class="nc" id="L120">    }</span>
+    /**
+     * Listens keyinputs.
+     */
+    public void input() {
+<span class="nc" id="L125">        System.out.println(&quot;input hetre&quot;);</span>
+<span class="nc" id="L126">    }</span>
+    
+    /**
+     * Renders textures to view.
+     */
+    public void render() {
+<span class="nc" id="L132">        texture.bind();</span>
+<span class="nc" id="L133">        System.out.println(&quot;Render here&quot;);</span>
+        // current.state
+<span class="nc" id="L135">    }</span>
+    
+    /**
+     * @This metod is called by view when we enter game state.
+     */
+    public void enter(){
+        int width, height; 
+<span class="nc" id="L142">        try (MemoryStack stack = MemoryStack.stackPush()) {</span>
+<span class="nc" id="L143">            long window = GLFW.glfwGetCurrentContext();</span>
+<span class="nc" id="L144">            IntBuffer widthBuffer = stack.mallocInt(1);</span>
+<span class="nc" id="L145">            IntBuffer heightBuffer = stack.mallocInt(1);</span>
+<span class="nc" id="L146">            width = widthBuffer.get();</span>
+<span class="nc" id="L147">            height = heightBuffer.get();</span>
+<span class="nc" id="L148">            GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);</span>
+        }
+        
+<span class="nc" id="L151">        glClearColor(1.0f, 0.2f, 0.9f, 0f);</span>
+        
+<span class="nc" id="L153">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>
