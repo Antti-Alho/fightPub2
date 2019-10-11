@@ -25,13 +25,13 @@ public class ControllerTest {
     @BeforeEach
     public void setHitbox() {
         controller.getCharacter1().setxCoord(400);
-        controller.getCharacter2().setxCoord(1800);
+        controller.getCharacter2().setxCoord(1200);
         controller.getCharacter1().setFacing(PlayerEntity.Facing.RIGHT);
         controller.getCharacter2().setFacing(PlayerEntity.Facing.LEFT);
-        controller.getCharacter1().getHurtbox().setHeight(20);
-        controller.getCharacter2().getHurtbox().setHeight(20);
-        controller.getCharacter1().getHurtbox().setWidth(20);
-        controller.getCharacter2().getHurtbox().setWidth(20);
+        controller.getCharacter1().getHurtbox().setHeight(400);
+        controller.getCharacter2().getHurtbox().setHeight(400);
+        controller.getCharacter1().getHurtbox().setWidth(200);
+        controller.getCharacter2().getHurtbox().setWidth(200);
     }
   
     @Test
