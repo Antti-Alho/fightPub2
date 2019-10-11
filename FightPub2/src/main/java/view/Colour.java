@@ -17,7 +17,7 @@
 package view;
 
 /**
- * 
+ * Data class to store RGB values as floats
  * @author antti
  */
 public class Colour {
@@ -26,6 +26,12 @@ public class Colour {
     float g;
     float b;
     
+    /**
+     * Constructor creates a new RGB colour from float values that can be used in rendering
+     * @param r red value between 0.0 and 1.0
+     * @param g green value between 0.0 and 1.0
+     * @param b blue value between 0.0 and 1.0
+     */
     public Colour(float r, float g, float b){
         this.r = r;
         this.g = g;

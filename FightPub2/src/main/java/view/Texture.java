@@ -11,11 +11,10 @@ import static org.lwjgl.stb.STBImage.stbi_set_flip_vertically_on_load;
 import org.lwjgl.system.MemoryStack;
 
 /**
- *
+ * Stores texture data that has been passed to graphics card memory
  * @author Heidi, Antti
  */
 public class Texture {
-    
     
     private final int id;
     private int width;
@@ -25,22 +24,48 @@ public class Texture {
         id = glGenTextures();
     }
 
+    /**
+     * Binds this texture to current GL_TEXTURE_2D context
+     */
     public void bind() {
         glBindTexture(GL_TEXTURE_2D, id);
     }
     
+    /**
+     * sets parameters for current GL_TEXTURE_2D context calling glTexParametri
+     * https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
+     * @param name name of parameter
+     * @param value value of parameter
+     */
     public void setParameter(int name, int value) {
         glTexParameteri(GL_TEXTURE_2D, name, value);
     }
     
+    /**
+     * Uploads image data to graphic memory
+     * @param width width of the image
+     * @param height height of the image
+     * @param data image data in ByteBuffer
+     */
     public void uploadData(int width, int height, ByteBuffer data) {
         uploadData(GL_RGBA8, width, height, GL_RGBA, data);
     }
-    
+
+    /**
+     * Uploads image data to graphic memory calling glTexImage2D
+     * @param internalFormat 
+     * @param width width of the image
+     * @param height height of the image
+     * @param format
+     * @param data image data in ByteBuffer
+     */
     public void uploadData(int internalFormat, int width, int height, int format, ByteBuffer data) {
         glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     }
     
+    /**
+     * Deletes this texture from graphic memory
+     */
     public void delete() {
         glDeleteTextures(id);
     }
@@ -49,6 +74,9 @@ public class Texture {
         return width;
     }
 
+    /**
+     * @param width must not be negative 
+     */
     public void setWidth(int width) {
         if (width > 0) {
             this.width = width;
@@ -59,13 +87,22 @@ public class Texture {
         return height;
     }
 
+    /**
+     * @param height must not be negative 
+     */
     public void setHeight(int height) {
         if (height > 0) {
             this.height = height;
         }
     }
 
-    
+    /**
+     * Creates a new texture.
+     * @param width width of the image
+     * @param height height of the image
+     * @param data image data in ByteBuffer
+     * @return new Texture object
+     */
     public static Texture createTexture(int width, int height, ByteBuffer data) {
         Texture texture = new Texture();
         texture.setWidth(width);
@@ -83,17 +120,18 @@ public class Texture {
         return texture;
     }
 
-    
+    /**
+     * Creates a new Texture Object from image
+     * @param path path to image
+     * @return new Texture object
+     */
     public static Texture loadTexture(String path) {
         ByteBuffer image;
         int width, height;
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            /* Prepare image buffers */
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             IntBuffer comp = stack.mallocInt(1);
-
-            /* Load image */
             
             stbi_set_flip_vertically_on_load(true);
             image = stbi_load(path, w, h, comp, 4);
@@ -102,7 +140,6 @@ public class Texture {
                                            + System.lineSeparator() + stbi_failure_reason());
             }
            
-            /* Get width and height of image */
             width = w.get();
             height = h.get();
         }
@@ -110,8 +147,4 @@ public class Texture {
         return createTexture(width, height, image);
     }
 
-
-    
-    
-    
 }
