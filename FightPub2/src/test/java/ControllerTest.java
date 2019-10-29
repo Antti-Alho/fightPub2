@@ -19,7 +19,7 @@ import model.InitDatabase;
  * @author Heidi, Pate, Joonas
  */
 public class ControllerTest {
-
+    
     InitDatabase init = new InitDatabase();
     Controller controller = new Controller("Pekka", "Pekka", new MapModel("Kaisla"), 99, 2);
 
