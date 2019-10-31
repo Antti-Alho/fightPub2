@@ -4,8 +4,9 @@ import static model.HitBox.HitLocation;
 import view.Renderer;
 import javax.persistence.*;
 import controller.Database;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * This class contains playable character attributes and methods.
@@ -61,10 +62,9 @@ public class PlayerEntity {
     private int stateDuration;
     @Transient
     private boolean blocking = false;
-    @Transient
-    Map<String,Integer> crouchA;
 
-    
+    @Transient
+    public HashMap<String, Integer> crouchA;
 
     public PlayerEntity() {
     }
@@ -83,17 +83,19 @@ public class PlayerEntity {
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         this.stateDuration = 0;
-        crouchA = new HashMap<String, Integer>();
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
-        crouchA.put("damage", 10);
-        crouchA.put("xOffset", 0);
-        crouchA.put("yOffset", 200);
-        crouchA.put("width", 100);
-        crouchA.put("height", 100);
-        crouchA.put("hitStun", 10);
-        crouchA.put("blockStun", 10);
-        
-        
+
+    }
+
+    public void initiateHash() {
+        this.crouchA = new HashMap<String, Integer>();
+        this.crouchA.put("damage", 10);
+        this.crouchA.put("xOffset", 200);
+        this.crouchA.put("yOffset", 200);
+        this.crouchA.put("width", 100);
+        this.crouchA.put("height", 100);
+        this.crouchA.put("hitStun", 10);
+        this.crouchA.put("blockStun", 10);
     }
 
     /**
@@ -116,7 +118,6 @@ public class PlayerEntity {
      * hitstun and can not perform any actions. NEUTRAL: Default state for the
      * character. Can perform most actions
      */
-    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -142,7 +143,6 @@ public class PlayerEntity {
         int lol;
         if (this.facing == Facing.LEFT) {
             this.facing = Facing.RIGHT;
-            lol = this.crouchA.get("damage");
         } else {
             this.facing = Facing.LEFT;
         }
@@ -159,17 +159,16 @@ public class PlayerEntity {
         HitBox hb = this.hitBox;
         switch (ID) {
             case 'A':
-                
+
                 xOffset = this.crouchA.get("xOffset");
                 System.out.println(xOffset);
-
 
                 if (this.facing == Facing.LEFT) {
                     xOffset = this.hurtBox.getWidth() - this.crouchA.get("xOffset") - this.crouchA.get("width");
                 }
                 hb.setAll(this.crouchA.get("damage"), this.crouchA.get("width"),
-                this.crouchA.get("height"), xOffset, this.crouchA.get("yOffset"),
-                this.crouchA.get("hitStun"), this.crouchA.get("blockStun"), HitBox.HitLocation.LOW);
+                        this.crouchA.get("height"), xOffset, this.crouchA.get("yOffset"),
+                        this.crouchA.get("hitStun"), this.crouchA.get("blockStun"), HitBox.HitLocation.LOW);
                 break;
         }
     }
@@ -221,7 +220,6 @@ public class PlayerEntity {
     public void setBlocking(boolean isBlocking) {
         this.blocking = isBlocking;
     }
-    
 
     public void setState(State state) {
         this.state = state;

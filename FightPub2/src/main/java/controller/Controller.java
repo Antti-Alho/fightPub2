@@ -44,6 +44,8 @@ public class Controller {
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
         this.char2 = db.getPlayerEntity(char2);
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
+        this.char1.initiateHash();
+        this.char2.initiateHash();
         this.char1.setxCoord(400);
         this.char2.setxCoord(1200);
         this.char1.setHurtBox(new HurtBox(200, 400)); // Tilapäinen asetus

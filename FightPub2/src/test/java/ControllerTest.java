@@ -22,6 +22,7 @@ public class ControllerTest {
     
     InitDatabase init = new InitDatabase();
     Controller controller = new Controller("Pekka", "Pekka", new MapModel("Kaisla"), 99, 2);
+    
 
     @BeforeEach
     public void setHitbox() {
