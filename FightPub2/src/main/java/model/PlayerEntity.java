@@ -62,9 +62,6 @@ public class PlayerEntity {
     @Transient
     private Attack attackA;
 
-    
-    
-
     public PlayerEntity() {
     }
 
@@ -82,7 +79,7 @@ public class PlayerEntity {
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         this.stateDuration = 0;
-        this.attackA = new Attack(10, 400, 400, 100, 100, HitLocation.LOW, this);
+
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
 
@@ -106,7 +103,6 @@ public class PlayerEntity {
      * hitstun and can not perform any actions. NEUTRAL: Default state for the
      * character. Can perform most actions
      */
-    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -144,9 +140,18 @@ public class PlayerEntity {
     public void attack(char ID) {
         switch (ID) {
             case 'A':
-                attackA.setHitBox();
-
+                attackA.setTimer(0);
+                if (attackA.getActivationTime() == attackA.getTimer()) {
+                    attackA.setHitBox();
+                }
         }
+    }
+
+    public void setAttackTimer() {
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
     }
 
     public HurtBox getHurtbox() {
@@ -196,7 +201,6 @@ public class PlayerEntity {
     public void setBlocking(boolean isBlocking) {
         this.blocking = isBlocking;
     }
-    
 
     public void setState(State state) {
         this.state = state;
@@ -314,6 +318,14 @@ public class PlayerEntity {
      */
     public void setWalkspeed(int walkspeed) {
         this.walkspeed = walkspeed;
+    }
+
+    public Attack getAttackA() {
+        return attackA;
+    }
+
+    public void setAttackA(Attack attackA) {
+        this.attackA = attackA;
     }
 
 }

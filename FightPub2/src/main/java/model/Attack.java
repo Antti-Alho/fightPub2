@@ -16,36 +16,65 @@
  */
 package model;
 
-
 /**
  *
  * @author flatline
  */
-
-
 public class Attack {
+
     int damage;
     int width;
     int height;
     int xOffset;
     int yOffset;
+    int hitStun;
+    int blockStun;
+    int timer;
+    int activationTime;
     HitBox.HitLocation loc;
     PlayerEntity player;
-    
-    public Attack(int damage, int width, int height, int xOffset, int yOffset, HitBox.HitLocation loc, PlayerEntity player) {
+
+    //int winduptime
+    //timer käynynnistyy ku nappii painetaaan
+    //ite säädetään int activationTime joka kertoo missä pisteessä timerin pitää olla jotta hitbox aktivoituu
+    public Attack(int damage, int width, int height, int xOffset, int yOffset, int hitStun, int blockStun, HitBox.HitLocation loc, PlayerEntity player) {
         this.damage = damage;
         this.width = width;
         this.height = height;
-        this. xOffset = xOffset;
+        this.xOffset = xOffset;
         this.yOffset = yOffset;
+        this.hitStun = hitStun;
+        this.blockStun = blockStun;
         this.loc = loc;
         this.player = player;
     }
-    
+
     public void setHitBox() {
-        player.getHitBox().setAll(damage, width, height, xOffset, yOffset, width, xOffset, loc);
+        int tempXoffSet = this.xOffset;
+        if (player.getFacing() == PlayerEntity.Facing.LEFT) {
+            tempXoffSet = player.getHurtbox().getWidth() - this.xOffset - this.width;
+        }
+        if (timer == activationTime) {
+            player.getHitBox().setAll(this.damage, this.width, this.height, tempXoffSet, this.yOffset, this.hitStun, this.blockStun, this.loc);
+        }
+
+        
     }
-    
-    
-    
+
+    public int getTimer() {
+        return timer;
+    }
+
+    public void setTimer(int timer) {
+        this.timer = timer;
+    }
+
+    public int getActivationTime() {
+        return activationTime;
+    }
+
+    public void setActivationTime(int activationTime) {
+        this.activationTime = activationTime;
+    }
+
 }
