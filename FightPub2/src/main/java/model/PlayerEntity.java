@@ -59,6 +59,8 @@ public class PlayerEntity {
     private int stateDuration;
     @Transient
     private boolean blocking = false;
+    @Transient
+    private Attack attackA;
 
     
     
@@ -80,6 +82,7 @@ public class PlayerEntity {
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         this.stateDuration = 0;
+        this.attackA = new Attack(10, 400, 400, 100, 100, HitLocation.LOW, this);
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
 
@@ -139,28 +142,10 @@ public class PlayerEntity {
      * @param ID char value that indicates attack used.
      */
     public void attack(char ID) {
-        int damage;
-        int xOffset;
-        int yOffset;
-        int width;
-        int height;
-        int hitStun;
-        int blockStun;
-        HitBox hb = this.hitBox;
         switch (ID) {
             case 'A':
-                damage = 10;
-                width = 100;
-                height = 100;
-                xOffset = 200;
-                yOffset = 0;
-                hitStun = 10;
-                blockStun = 20;
-                if (this.facing == Facing.LEFT) {
-                    xOffset = this.hurtBox.getWidth() - xOffset - width;
-                }
-                hb.setAll(damage, width, height, xOffset, yOffset, hitStun, blockStun, HitBox.HitLocation.MID);
-                break;
+                attackA.setHitBox();
+
         }
     }
 
