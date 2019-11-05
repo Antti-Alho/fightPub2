@@ -159,11 +159,11 @@ public class Controller {
         if (checkHitboxCollision(char2, char1) && !isHitBlocked(char2, char1)) {
             setStun(char1, char2.getHitBox().getHitStun(), PlayerEntity.State.HITSTUN);
             char1.setHealth(char1.getHealth() - char1.getHitBox().getDamage());
-            char1.getHitBox().deactivate(); // deactivates hitBox
+            char2.getHitBox().deactivate(); // deactivates hitBox
             //blocking
         } else if (checkHitboxCollision(char2, char1) && isHitBlocked(char2, char1)) {
             setStun(char1, char2.getHitBox().getBlockStun(), PlayerEntity.State.BLOCKSTUN);
-            char1.getHitBox().deactivate(); // deactivates hitBox
+            char2.getHitBox().deactivate(); // deactivates hitBox
         }
 
     }
