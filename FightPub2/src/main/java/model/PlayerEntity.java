@@ -6,10 +6,11 @@ import javax.persistence.*;
 import controller.Database;
 
 /**
- *This class contains playable character attributes and methods.
+ * This class contains playable character attributes and methods.
+ *
  * @see HitBox
  * @see HurtBox
- * 
+ *
  * @author Pate, Joonas, Heidi, Antti
  */
 @Entity
@@ -19,27 +20,27 @@ public class PlayerEntity {
     @Id
     @Column(name = "name")
     private String name;
-    
-    @Column (name = "standing_Width")
+
+    @Column(name = "standing_Width")
     private int standingWidth;
-    
-    @Column (name = "standing_Height")
+
+    @Column(name = "standing_Height")
     private int standingHeight;
-    
-    @Column (name = "crouching_Width")
+
+    @Column(name = "crouching_Width")
     private int crouchingWidth;
-    
-    @Column (name = "crouching_Height")
+
+    @Column(name = "crouching_Height")
     private int crouchingHeight;
-    
-    @Column (name = "health")
+
+    @Column(name = "health")
     private int health;
-    
-    @Column (name = "walkspeed")
+
+    @Column(name = "walkspeed")
     private int walkspeed;
-    
+
     @Transient
-    private HitBox hitBox; 
+    private HitBox hitBox;
     @Transient
     private HurtBox hurtBox;
     @Transient
@@ -54,13 +55,20 @@ public class PlayerEntity {
     private Stance stance;
     @Transient
     private Facing facing;
-
+    @Transient
+    private int stateDuration;
+    @Transient
+    private boolean blocking = false;
 
     
-    public PlayerEntity(){
+    
+
+    public PlayerEntity() {
     }
+
     /**
-     * Constructor of character. 
+     * Constructor of character.
+     *
      * @param xCoord sets the characters position in map.
      * @param facing sets the characters direction of facing.
      */
@@ -71,15 +79,15 @@ public class PlayerEntity {
         this.walkspeed = 4;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
+        this.stateDuration = 0;
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
 
     /**
-     * This enum class provides the values that indicate which direction 
-     * the character is facing.
-     *  Character has to have a set facing value.
-     * 
-    */
+     * This enum class provides the values that indicate which direction the
+     * character is facing. Character has to have a set facing value.
+     *
+     */
     public enum Facing {
         RIGHT,
         LEFT
@@ -87,16 +95,15 @@ public class PlayerEntity {
 
     /**
      * This enum class provides the values that indicate in which state the
-     * character is in.
-     * If the characters state is:
-     * ATTACKING: Character is locked in attack animation
-     * and is unable to perform any other actions.
-     * BLOCKSTUN: After successfully blocking an attack, character is in blockstun.
-     * In blockstun the character is unable to perform any other actions than blocking.
-     * HITSTUN: After getting hit, character is in hitstun and can not perform
-     * any actions.
-     * NEUTRAL: Default state for the character. Can perform most actions
+     * character is in. If the characters state is: ATTACKING: Character is
+     * locked in attack animation and is unable to perform any other actions.
+     * BLOCKSTUN: After successfully blocking an attack, character is in
+     * blockstun. In blockstun the character is unable to perform any other
+     * actions than blocking. HITSTUN: After getting hit, character is in
+     * hitstun and can not perform any actions. NEUTRAL: Default state for the
+     * character. Can perform most actions
      */
+    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -105,16 +112,15 @@ public class PlayerEntity {
     }
 
     /**
-     * This enum class provides the values that indicate if the character
-     * is crouching or standing.
-     * Stance affects characters hurtbox dimensions, blockable attacks and
-     * enables the use of stance specific attacks.
+     * This enum class provides the values that indicate if the character is
+     * crouching or standing. Stance affects characters hurtbox dimensions,
+     * blockable attacks and enables the use of stance specific attacks.
      */
     public enum Stance {
         CROUCHING,
         STANDING
     }
-    
+
     /**
      * Turns player facing. Is called when controller detects players swapping
      * sides in relation to each other.
@@ -126,9 +132,10 @@ public class PlayerEntity {
             this.facing = Facing.LEFT;
         }
     }
- 
+
     /**
      * sets hitbox in a position determined by ID.
+     *
      * @param ID char value that indicates attack used.
      */
     public void attack(char ID) {
@@ -137,6 +144,8 @@ public class PlayerEntity {
         int yOffset;
         int width;
         int height;
+        int hitStun;
+        int blockStun;
         HitBox hb = this.hitBox;
         switch (ID) {
             case 'A':
@@ -145,10 +154,12 @@ public class PlayerEntity {
                 height = 100;
                 xOffset = 200;
                 yOffset = 0;
+                hitStun = 10;
+                blockStun = 20;
                 if (this.facing == Facing.LEFT) {
                     xOffset = this.hurtBox.getWidth() - xOffset - width;
                 }
-                hb.setAll(true, damage, width, height, xOffset, yOffset, HitBox.HitLocation.MID);
+                hb.setAll(damage, width, height, xOffset, yOffset, hitStun, blockStun, HitBox.HitLocation.MID);
                 break;
         }
     }
@@ -156,9 +167,10 @@ public class PlayerEntity {
     public HurtBox getHurtbox() {
         return this.hurtBox;
     }
-    public void setHurtBox(HurtBox hurtBox){
+
+    public void setHurtBox(HurtBox hurtBox) {
         this.hurtBox = hurtBox;
-    } 
+    }
 
     public Stance getStance() {
         return this.stance;
@@ -176,6 +188,14 @@ public class PlayerEntity {
         return this.yCoord;
     }
 
+    public int getStateDuration() {
+        return stateDuration;
+    }
+
+    public void setStateDuration(int stateDuration) {
+        this.stateDuration = stateDuration;
+    }
+
     public void setyCoord(int y) {
         this.yCoord = y;
     }
@@ -183,6 +203,15 @@ public class PlayerEntity {
     public void setStance(Stance stance) {
         this.stance = stance;
     }
+
+    public boolean isBlocking() {
+        return blocking;
+    }
+
+    public void setBlocking(boolean isBlocking) {
+        this.blocking = isBlocking;
+    }
+    
 
     public void setState(State state) {
         this.state = state;
@@ -203,6 +232,7 @@ public class PlayerEntity {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -230,6 +260,7 @@ public class PlayerEntity {
     public void setHitBox(HitBox hitBox) {
         this.hitBox = hitBox;
     }
+
     /**
      * @return the standingWidth
      */
@@ -292,12 +323,12 @@ public class PlayerEntity {
     public int getWalkspeed() {
         return walkspeed;
     }
-    
+
     /**
      * @param walkspeed the walkspeed to set
      */
     public void setWalkspeed(int walkspeed) {
         this.walkspeed = walkspeed;
     }
-    
+
 }

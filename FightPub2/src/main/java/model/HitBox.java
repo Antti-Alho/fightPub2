@@ -17,30 +17,30 @@
 package model;
 
 /**
- * This class is used to create a rectangle which is used to hit 
- * another character. Every instance of character class has an instance of this class.
+ * This class is used to create a rectangle which is used to hit another
+ * character. Every instance of character class has an instance of this class.
+ *
  * @see Character
  * @author Pate, Joonas
  */
-
-
 public class HitBox {
 
-    int width, height, xoffset, yoffset, damage;
+    private int width, height, xoffset, yoffset, damage, hitStun, blockStun;
 
-    boolean active;
     private HitLocation hitLocation;
-
 
     /**
      * Constructor.
+     *
      * @param width width of the hitbox in pixels.
      * @param height height of the hitbox in pixels.
      * @param xoffset distance from characters x coordinate in pixels.
      * @param yoffset distance from the characters top edge towards maps floor.
-     * @param damage how much damage the hitbox does to other player if the hitbox hits hurtbox
-     * @param hitLocation Describes what type of hit the players uses. This value is used to determine 
-     * what kind of block the opponent player must use in order to block the hit successfully
+     * @param damage how much damage the hitbox does to other player if the
+     * hitbox hits hurtbox
+     * @param hitLocation Describes what type of hit the players uses. This
+     * value is used to determine what kind of block the opponent player must
+     * use in order to block the hit successfully
      */
     public HitBox(int width, int height, int xoffset, int yoffset, int damage, HitLocation hitLocation) {
         this.width = width;
@@ -48,58 +48,63 @@ public class HitBox {
         this.xoffset = xoffset;
         this.yoffset = yoffset;
         this.damage = damage;
-        this.active = false;
         this.hitLocation = hitLocation;
     }
-  
-       /**
-     * This enum value indicates if attack is blockable in certain stance.
-     * HIGH attacks must be blocked STANDING
-     * MID attacks can be blocked either STANDING or CROUCHING
-     * LOW attacks must be blocked CROUCHING
+
+    /**
+     * This enum value indicates if attack is blockable in certain stance. HIGH
+     * attacks must be blocked STANDING MID attacks can be blocked either
+     * STANDING or CROUCHING LOW attacks must be blocked CROUCHING
      */
     public enum HitLocation {
         HIGH,
         MID,
         LOW
     }
-    
+
     /**
      * Helper method to set all parameters in single method
+     *
      * @param active
      * @param damage
      * @param width
      * @param height
      * @param xOffset
-     * @param yOffset 
-     * @param hitLocation 
+     * @param yOffset
+     * @param hitStun;
+     * @param blockStun
+     * @param hitLocation
      */
-    public void setAll(boolean active, int damage, int width, int height, int xOffset, int yOffset, HitLocation hitLocation) {
-        this.active = active;
+    public void setAll(int damage, int width, int height, int xOffset, int yOffset, int hitStun, int blockStun, HitLocation hitLocation) {
         this.damage = damage;
         this.width = width;
         this.height = height;
         this.xoffset = xOffset;
         this.yoffset = yOffset;
+        this.hitStun = hitStun;
+        this.blockStun = blockStun;
         this.hitLocation = hitLocation;
+    }
+    /**
+     * Deactivates the hitbox.
+     */
+    public void deactivate(){
+        this.width = 0;
+        this.height = 0;
     }
     // ---------------- GETTERS AND SETTERS ---------------
 
     public HitLocation getHitLocation() {
-      return this.hitLocation;
+        return this.hitLocation;
     }
+
     public void setHitLocation(HitLocation hitLocation) {
         this.hitLocation = hitLocation;
-    }
-    
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public int getXoffset() {
         return xoffset;
     }
-
 
     public void setXoffset(int xoffset) {
         this.xoffset = xoffset;
@@ -114,9 +119,6 @@ public class HitBox {
         this.yoffset = yoffset;
     }
 
-    public boolean isActive() {
-        return active;
-    }
 
     public int getWidth() {
         return width;
@@ -141,6 +143,22 @@ public class HitBox {
     public void setDamage(int damage) {
         this.damage = damage;
     }
+
+    public int getHitStun() {
+        return hitStun;
+    }
+
+    public void setHitStun(int hitStun) {
+        this.hitStun = hitStun;
+    }
+
+    public int getBlockStun() {
+        return blockStun;
+    }
+
+    public void setBlockStun(int blockStun) {
+        this.blockStun = blockStun;
+    }
     
-    
+
 }
