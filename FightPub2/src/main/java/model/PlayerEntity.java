@@ -126,7 +126,7 @@ public class PlayerEntity {
             this.facing = Facing.LEFT;
         }
     }
-  
+ 
     /**
      * sets hitbox in a position determined by ID.
      * @param ID char value that indicates attack used.
