@@ -13,6 +13,8 @@ import org.lwjgl.system.MemoryStack;
 import controller.Database;
 import model.HitBox;
 import model.HurtBox;
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.glfwGetKey;
 
 /**
  * This class initializes the game. Contains methods to check game state.
@@ -29,6 +31,7 @@ public class Controller {
     private view.Texture texture;
     private KeyEvent keyCallback;
     private KeyListener listener;
+    private InputBuffer inputB;
 
     /**
      *
@@ -53,6 +56,7 @@ public class Controller {
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
+        this.inputB = new InputBuffer();
     }
 
     /**
@@ -197,15 +201,59 @@ public class Controller {
      * Updates players positions.
      */
     public void update() {
+        String player1Move = "";
+        String player2Move = "";
+        try {
+            player1Move = inputB.player1GetInput();
+        } catch (Exception e) {
+        }
+        try {
+            player2Move = inputB.player2GetInput();
+        } catch (Exception e) {
+        }
+        if (player1Move != ""){
+            if ("Left".equals(player1Move)){
+                char1.setxCoord(char1.getxCoord()-char1.getWalkspeed());
+                if (checkCollision() == true) char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed());
+            }
+            if ("Right".equals(player1Move)){
+                char1.setxCoord(char1.getxCoord()+char1.getWalkspeed());
+                if (checkCollision() == true) char1.setxCoord(char1.getxCoord()- char1.getWalkspeed());
+            }
+        }
+        if (player2Move != ""){
+            if ("Left".equals(player2Move)){
+               char2.setxCoord(char2.getxCoord()-char2.getWalkspeed());
+               if (checkCollision() == true) char2.setxCoord(char2.getxCoord()+char2.getWalkspeed()); 
+            }
+            if ("Right".equals(player2Move)){
+               char2.setxCoord(char2.getxCoord()+char2.getWalkspeed()); 
+               if (checkCollision() == true) char2.setxCoord(char2.getxCoord()-char2.getWalkspeed()); 
+            }
+        }
+        checkFacing();
+        checkHitboxCollision(char1, char2);
+        checkHitboxCollision(char2, char1);
         //hitter();
-        System.out.println("Players move here");
     }
 
     /**
      * Listens keyinputs.
      */
     public void input() {
-        System.out.println("input hetre");
+        long window = GLFW.glfwGetCurrentContext();         
+        if (glfwGetKey(window, GLFW_KEY_A)==GLFW.GLFW_PRESS){
+            inputB.player1Add("Left");
+        }
+        if (glfwGetKey(window, GLFW_KEY_D)==GLFW.GLFW_PRESS){
+            inputB.player1Add("Right");
+        }
+        if (glfwGetKey(window, GLFW_KEY_LEFT)==GLFW.GLFW_PRESS){
+            inputB.player2Add("Left");
+        }
+        if (glfwGetKey(window, GLFW_KEY_RIGHT)==GLFW.GLFW_PRESS){
+            inputB.player2Add("Right");
+        }
     }
 
     /**
@@ -213,7 +261,6 @@ public class Controller {
      */
     public void render() {
         texture.bind();
-        System.out.println("Render here");
         // current.state
     }
 
