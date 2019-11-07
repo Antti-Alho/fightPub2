@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import org.lwjgl.system.MemoryStack;
 import controller.Database;
+import model.Attack;
 import model.HitBox;
 import model.HurtBox;
 import static org.lwjgl.glfw.GLFW.*;
@@ -53,6 +54,8 @@ public class Controller {
         this.char2.setHurtBox(new HurtBox(200, 400)); // Tilapäinen asetus
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
+        this.char1.setAttackA(new Attack(10, 400, 400, 100, 100, 20, 20, HitBox.HitLocation.LOW, this.char1));
+        this.char2.setAttackA(new Attack(10, 400, 400, 100, 100, 20, 20, HitBox.HitLocation.LOW, this.char2));
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
@@ -95,6 +98,11 @@ public class Controller {
         Rectangle hurtbox = new Rectangle(hurtboxXcoord, hurtboxYcoord, hurtboxWidth, hurtboxHeight);
 
         return hitbox.intersects(hurtbox);
+    }
+
+    public void masterCheck() {
+        checkFacing();
+        hitter();
     }
 
     /**
@@ -144,20 +152,24 @@ public class Controller {
         if (checkHitboxCollision(char1, char2) && !isHitBlocked(char1, char2)) {
             setStun(char2, char1.getHitBox().getHitStun(), PlayerEntity.State.HITSTUN);
             char2.setHealth(char2.getHealth() - char1.getHitBox().getDamage());
-        //blocking
+            char1.getHitBox().deactivate(); // deactivates hitBox
+            //blocking
         } else if (checkHitboxCollision(char1, char2) && isHitBlocked(char1, char2)) {
             setStun(char2, char1.getHitBox().getBlockStun(), PlayerEntity.State.BLOCKSTUN);
+            char1.getHitBox().deactivate(); // deactivates hitBox
         }
-        char1.getHitBox().deactivate(); // deactivates hitBox
+
         //Not blocking
         if (checkHitboxCollision(char2, char1) && !isHitBlocked(char2, char1)) {
             setStun(char1, char2.getHitBox().getHitStun(), PlayerEntity.State.HITSTUN);
             char1.setHealth(char1.getHealth() - char1.getHitBox().getDamage());
-        //blocking
+            char2.getHitBox().deactivate(); // deactivates hitBox
+            //blocking
         } else if (checkHitboxCollision(char2, char1) && isHitBlocked(char2, char1)) {
             setStun(char1, char2.getHitBox().getBlockStun(), PlayerEntity.State.BLOCKSTUN);
+            char2.getHitBox().deactivate(); // deactivates hitBox
         }
-        char2.getHitBox().deactivate();
+
     }
 
     /**
