@@ -13,14 +13,15 @@ import model.HurtBox;
 import org.junit.jupiter.api.Disabled;
 import model.HitBox;
 import model.InitDatabase;
+import view.Renderer;
 
 /**
  *
  * @author Heidi, Pate
  */
 public class ControllerTest {
-    InitDatabase init = new InitDatabase();  
-    Controller controller = new Controller("Pekka","Pekka",new MapModel("Kaisla"), 99, 2);
+    InitDatabase init = new InitDatabase();
+    Controller controller = new Controller(new Renderer(), "Pekka","Pekka",new MapModel("Kaisla"), 99, 2);
 
     @BeforeEach
     public void setHitbox() {

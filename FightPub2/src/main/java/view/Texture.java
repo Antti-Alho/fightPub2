@@ -33,7 +33,6 @@ public class Texture {
     
     /**
      * sets parameters for current GL_TEXTURE_2D context calling glTexParametri
-     * https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
      * @param name name of parameter
      * @param value value of parameter
      */

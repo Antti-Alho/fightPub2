@@ -43,4 +43,20 @@ public class Timer {
         return fps;
     }
     
+    public double getTime() {
+        return glfwGetTime();
+    }
+
+    void updateFPS() {
+        fpsCount++;
+    }
+
+    float getDelta() {
+        double time = getTime();
+        float delta = (float) (time - lastLoopTime);
+        lastLoopTime = time;
+        timeCount += delta;
+        return delta;
+    }
+    
 }

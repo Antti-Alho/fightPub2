@@ -18,26 +18,32 @@ public class Window {
     private final GLFWKeyCallback keyCallback;
 
     Window(int width, int height, String title) {
+
         glfwDefaultWindowHints();
+        glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+
         id = glfwCreateWindow(width, height, title, NULL, NULL);
         if (id == NULL) {
             glfwTerminate();
             throw new RuntimeException("Failed to create the GLFW window!");
         }
-        
+
         GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        glfwSetWindowPos(id,
+                         (vidmode.width() - width) / 2,
+                         (vidmode.height() - height) / 2
+        );
+
         glfwMakeContextCurrent(id);
         GL.createCapabilities();
-        // v-sync
+
         glfwSwapInterval(1);
-        
-        
-        // Pressing ESC closes this window next time its rendered
+
         keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
@@ -50,7 +56,6 @@ public class Window {
     }
 
     public boolean isClosing() {
-        System.out.println("Window Closing here");
         return glfwWindowShouldClose(id);
     }
 

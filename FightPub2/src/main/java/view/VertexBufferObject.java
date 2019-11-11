@@ -50,5 +50,9 @@ public class VertexBufferObject {
     public int getID() {
         return id;
     }
+
+    void uploadSubData(int target, int offset, FloatBuffer data) {
+        glBufferSubData(target, offset, data);
+    }
     
 }

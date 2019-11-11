@@ -13,31 +13,39 @@ import org.lwjgl.system.MemoryStack;
 import controller.Database;
 import model.HitBox;
 import model.HurtBox;
+import view.Colour;
+import view.Renderer;
+import view.Texture;
+import view.State;
 
 /**
  * This class initializes the game. Contains methods to check game state.
  * @author Heidi, Pate, Joonas, Antti
  */
-public class Controller {
+public class Controller implements State {
 
     private PlayerEntity char1;
     private PlayerEntity char2;
     private int timelimit;
     private int rounds;
     private MapModel map;
-    private view.Texture texture;
+
     private KeyEvent keyCallback;
     private KeyListener listener;
+    
+    private Texture texture;
+    private final Renderer renderer;
 
     /**
      * 
      * @param char1 character that player 1 controls
      * @param char2 character that player 2 controls
      * @param map stage that characters are on
-     * @param timelimit timelimit of the round in seconds
+     * @param timelimit time limit of the round in seconds
      * @param rounds number of maximum rounds
      */
-    public Controller(String char1, String char2, MapModel map, int timelimit, int rounds) {
+    public Controller(Renderer rendeder, String char1, String char2, MapModel map, int timelimit, int rounds) {
+        this.renderer = rendeder;
         Database db = new Database();
         this.char1 = db.getPlayerEntity(char1);
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
@@ -53,8 +61,6 @@ public class Controller {
         this.timelimit = timelimit;
         this.rounds = rounds;
     }
-    
-    
     
     /**
      * Checks if the hurtboxes of the characters are intersecting. returns
@@ -95,7 +101,7 @@ public class Controller {
     }
     
     /**
-     * Checks characters positions and makes sure they are facing eachother.
+     * Checks characters positions and makes sure they are facing each other.
      */
     public void checkFacing() {
         if (char1.getFacing() == PlayerEntity.Facing.RIGHT && char1.getxCoord() > char2.getxCoord()
@@ -115,40 +121,43 @@ public class Controller {
     /**
      * Updates players positions.
      */
+    @Override
     public void update() {
         System.out.println("Players move here");
     }
     /**
-     * Listens keyinputs.
+     * Listens key inputs.
      */
+    @Override
     public void input() {
-        System.out.println("input hetre");
+        System.out.println("input here");
     }
     
     /**
      * Renders textures to view.
      */
+    @Override
     public void render() {
-        texture.bind();
-        System.out.println("Render here");
-        // current.state
+        renderer.clear();
+        //texture.bind();
+        renderer.begin();
+        char1.render(renderer, char1.getxCoord(), char1.getyCoord(), Colour.RED);
+        char2.render(renderer, char2.getxCoord(), char2.getyCoord(), Colour.BLUE);
+        renderer.end();
     }
     
     /**
-     * @This metod is called by view when we enter game state.
+     * @This method is called by view when we enter game state.
      */
+    @Override
     public void enter(){
-        int width, height; 
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            long window = GLFW.glfwGetCurrentContext();
-            IntBuffer widthBuffer = stack.mallocInt(1);
-            IntBuffer heightBuffer = stack.mallocInt(1);
-            width = widthBuffer.get();
-            height = heightBuffer.get();
-            GLFW.glfwGetFramebufferSize(window, widthBuffer, heightBuffer);
-        }
         
         glClearColor(1.0f, 0.2f, 0.9f, 0f);
+        
+    }
+
+    @Override
+    public void exit() {
         
     }
     

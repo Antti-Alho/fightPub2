@@ -10,7 +10,7 @@ import model.InitDatabase;
 public class Main {
     public static void main(String[] args) {
         InitDatabase initDatabase = new InitDatabase();
-        view.View view = new View();
-        view.run();
+        View view = new View();
+        view.start();
     }
 }

@@ -22,9 +22,16 @@ package view;
  */
 public class Colour {
     
-    float r;
-    float g;
-    float b;
+    public static final Colour WHITE = new Colour(1f, 1f, 1f);
+    public static final Colour BLACK = new Colour(0f, 0f, 0f);
+    public static final Colour RED = new Colour(1f, 0f, 0f);
+    public static final Colour GREEN = new Colour(0f, 1f, 0f);
+    public static final Colour BLUE = new Colour(0f, 0f, 1f);
+    
+    private float r;
+    private float g;
+    private float b;
+    private float a;
     
     /**
      * Constructor creates a new RGB colour from float values that can be used in rendering
@@ -36,6 +43,21 @@ public class Colour {
         this.r = r;
         this.g = g;
         this.b = b;
+        this.a = 1f;
+    }
+    
+     /**
+     * Constructor creates a new RGB colour from float values that can be used in rendering
+     * @param r red value between 0.0 and 1.0
+     * @param g green value between 0.0 and 1.0
+     * @param b blue value between 0.0 and 1.0
+     * @param a blue value between 0.0 and 1.0
+     */
+    public Colour(float r, float g, float b, float a) {
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.a = a;
     }
     
     public void setR(float r){
@@ -49,6 +71,10 @@ public class Colour {
     public void setB(float b){
         this.b = b;
     }
+
+    public void setA(float a) {
+        this.a = a;
+    }   
     
     public float getR(){
         return this.r;
@@ -60,6 +86,10 @@ public class Colour {
     
     public float getB(){
         return this.b;
+    }
+
+    public float getA() {
+        return a;
     }
     
 }

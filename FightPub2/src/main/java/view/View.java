@@ -20,16 +20,18 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  */
 public class View {
  
-    public static final int TARGET_FPS = 60;
     protected Window window;
     protected Timer timer;
     protected Renderer renderer;
+    protected StateMachine stateMachine;
     protected Controller controller;
+    
+    public static final int TARGET_FPS = 60;
     public static final int monitorHeigt = 1080;
-    public static final int monitorWight = 1920;
-    
-    private final GLFWKeyCallback keyCallback;
-    
+    public static final int monitorWidth = 1920;
+    private GLFWErrorCallback errorCallback;
+
+    private boolean running;
     
     /**
      * Constructor for new view class
@@ -37,182 +39,79 @@ public class View {
     public View(){
         timer = new Timer();
         renderer = new Renderer();
-        controller = new Controller("Pekka", "Pekka", new MapModel("Jee"), 100, 1);
-        
-        keyCallback = new GLFWKeyCallback() {
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
-                    glfwSetWindowShouldClose(window, true);
-                }
-            }
-        };
+        stateMachine = new StateMachine();
+    }
+
+    public void start() {
+        init();
+        run();
+        dispose();
     }
     
-    /**
-     * This error callback will simply print the error to
-     * <code>System.err</code>.
-     */
-    private static GLFWErrorCallback errorCallback = GLFWErrorCallback.createPrint(System.err);
-
-    /**
-     * Starts the view and runs it as a loop.
-     */
     public void run() {
-        long window;
+        float deltaTime;
+        float accumulator = 0f;
+        float interval = 1f / TARGET_FPS;
 
+        while (running) {
+            if (window.isClosing()) {
+                running = false;
+            }
+            deltaTime = timer.getDelta();
+            accumulator += deltaTime;
+
+            stateMachine.input();
+            while (accumulator >= interval) {
+                stateMachine.update();
+                accumulator -= interval;
+            }
+            stateMachine.render();
+            timer.updateFPS();
+            timer.update();
+            window.update();
+
+            sync(TARGET_FPS);
+        }
+    } 
+   
+    private void init() {
+        errorCallback = GLFWErrorCallback.createPrint();
         glfwSetErrorCallback(errorCallback);
 
         if (!glfwInit()) {
-            throw new IllegalStateException("Unable to initialize GLFW");
+            throw new IllegalStateException("Unable to initialize GLFW!");
         }
 
-        window = glfwCreateWindow(monitorWight, monitorHeigt, "Simple example", NULL, NULL);
-        if (window == NULL) {
-            glfwTerminate();
-            throw new RuntimeException("Failed to create the GLFW window");
-        }
-
-        /* Center the window on screen */
-        GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        glfwSetWindowPos(window,
-                         (vidMode.width() - monitorWight) / 2,
-                         (vidMode.height() - monitorHeigt) / 2
-        );
+        window = new Window(monitorWidth, monitorHeigt, "Fight Pub 2");
         
-        glfwMakeContextCurrent(window);
-        GL.createCapabilities();
-        
-        // v-sync
-        glfwSwapInterval(1);
-        
-         // Declare buffers for using inside the loop
-        IntBuffer width = MemoryUtil.memAllocInt(1);
-        IntBuffer height = MemoryUtil.memAllocInt(1);
-        
-        glfwSetKeyCallback(window, keyCallback);
-        
-        // Updates view in a loop until esc-button is pressed.
-        while (!glfwWindowShouldClose(window)) {
-            controller.input();
-            controller.update();
-            
-            // set background
-            glClearColor(1.0f, 0.2f, 0.9f, 0f);
-            
-            glfwGetFramebufferSize(window, width, height);
-            glClear(GL_COLOR_BUFFER_BIT);
-            
-            // draw objects
-            drawObjects(width, height);
-            // gives the view size
-            glViewport(0, 0, width.get(), height.get());
-            
-            // Swap buffers and poll Events
-            glfwSwapBuffers(window);
-            glfwPollEvents();
+        timer.init();
+        renderer.init();
+        initStates();
+        running = true;
+    }
 
-            // Flip buffers for next loop
-            width.flip();
-            height.flip();
-            
-        }
-
-        // Free buffers
-        MemoryUtil.memFree(width);
-        MemoryUtil.memFree(height);
-
-        // Release window and its callbacks
-        glfwDestroyWindow(window);
-
-        // Terminate GLFW and release the error callback
+    private void dispose() {
+        renderer.dispose();
+        stateMachine.change(null);
+        window.destroy();
         glfwTerminate();
         errorCallback.free();
     }
-    /**
-     * Draws all objects to the current window.
-     * @param width integer buffer for width
-     * @param height integer buffer for height
-     */
-    public void drawObjects(IntBuffer width, IntBuffer height){
-        Colour charColour = new Colour(0f, 1f, 0f);
-        Colour hitboxColour = new Colour(1f, 0f, 0f);
-        
-        // char1
-        drawSquare(controller.getCharacter1().getxCoord(),
-            0,
-            controller.getCharacter1().getStandingWidth(),
-            controller.getCharacter1().getStandingHeight(),
-            width,
-            height,
-            charColour
-        );
-            
-        // char 2
-        drawSquare(controller.getCharacter2().getxCoord(),
-            0,
-            controller.getCharacter2().getStandingWidth(), 
-            controller.getCharacter2().getStandingHeight(),
-            width,
-            height,
-            charColour
-        );
-        
-        controller.getCharacter1().attack('A');
-        controller.getCharacter2().attack('A');
-        // hitbox 1
-        drawSquare(controller.getCharacter1().getHitBox().getXoffset() + controller.getCharacter1().getxCoord(),
-            controller.getCharacter1().getHitBox().getYoffset() + controller.getCharacter1().getyCoord(),
-            controller.getCharacter1().getHitBox().getWidth(), 
-            controller.getCharacter1().getHitBox().getHeight(),
-            width,
-            height,
-            hitboxColour
-        );
-        
-        //hitbox 2
-        drawSquare(controller.getCharacter2().getHitBox().getXoffset() + controller.getCharacter2().getxCoord(),
-            controller.getCharacter2().getHitBox().getYoffset() + controller.getCharacter2().getyCoord(),
-            controller.getCharacter2().getHitBox().getWidth(), 
-            controller.getCharacter2().getHitBox().getHeight(),
-            width,
-            height,
-            hitboxColour
-        );
-        
+
+    private void initStates() {
+        stateMachine.add("game", new Controller(renderer, "Jukka", "Pekka", new MapModel("Kannunkulma"), GL_MULT, GL_ADD));
+        stateMachine.change("game");
     }
     
-    /**
-     * Fill the objets by drawing square by two triangles and fills them with colour.
-     * @param x starting plase in x-scale for square
-     * @param y starting plase in y-scale for square
-     * @param width width of the square
-     * @param height height of the square
-     * @param widthbuffer integer buffer for width
-     * @param heightbuffer integer buffer for height
-     * @param col square colour
-     */
-    public void drawSquare(int x, int y, int width, int height, IntBuffer widthbuffer, IntBuffer heightbuffer, Colour col){
-        widthbuffer.rewind();
-        heightbuffer.rewind();
-        
-        // gives the object size
-        glViewport(x, y, width, height);
-        
-        // Start drawing triangles
-        glBegin(GL_TRIANGLES);
-        // Colour for the triangles
-        glColor3f(col.getR(), col.getG(), col.getB());
-        // First triangle
-        glVertex3f(-1.0f, -1.0f, 0.0f);
-        glVertex3f(1.0f, 1.0f, 0.0f);
-        glVertex3f(-1.f, 1.0f, -1.0f);
-        // Second triangle
-        glVertex3f(-1.0f, -1.0f, 0f);
-        glVertex3f(1.0f, 1.0f, 0f);
-        glVertex3f(1.0f, -1.0f, 1.0f);
-        // End drawing
-        glEnd();
-    }
-}
+    public void sync(int fps) {
+        double lastLoopTime = timer.getLastLoopTime();
+        double now = timer.getTime();
+        float targetTime = 1f / fps;
 
+        while (now - lastLoopTime < targetTime) {
+            Thread.yield();
+            now = timer.getTime();
+        }
+    }
+    
+}

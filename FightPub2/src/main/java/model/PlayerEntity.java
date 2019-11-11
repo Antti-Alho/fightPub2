@@ -4,6 +4,7 @@ import static model.HitBox.HitLocation;
 import view.Renderer;
 import javax.persistence.*;
 import controller.Database;
+import view.Colour;
 
 /**
  *This class contains playable character attributes and methods.
@@ -14,7 +15,7 @@ import controller.Database;
  */
 @Entity
 @Table(name = "Hahmo")
-public class PlayerEntity {
+public class PlayerEntity extends RenderableEntity {
 
     @Id
     @Column(name = "name")
@@ -54,10 +55,9 @@ public class PlayerEntity {
     private Stance stance;
     @Transient
     private Facing facing;
-
-
     
     public PlayerEntity(){
+        super(Colour.WHITE , 200, 400, 0, 0);
     }
     /**
      * Constructor of character. 
@@ -65,6 +65,7 @@ public class PlayerEntity {
      * @param facing sets the characters direction of facing.
      */
     public PlayerEntity(int xCoord, PlayerEntity.Facing facing) {
+        super(Colour.BLUE , 200, 400, xCoord, 0);
         this.xCoord = xCoord;
         this.facing = facing;
         this.hurtBox = new HurtBox(getStandingHeight(), getStandingWidth());
@@ -75,7 +76,7 @@ public class PlayerEntity {
     }
 
     /**
-     * This enum class provides the values that indicate which direction 
+     * This enum provides the values that indicate which direction 
      * the character is facing.
      *  Character has to have a set facing value.
      * 
@@ -86,7 +87,7 @@ public class PlayerEntity {
     }
 
     /**
-     * This enum class provides the values that indicate in which state the
+     * This enum provides the values that indicate in which state the
      * character is in.
      * If the characters state is:
      * ATTACKING: Character is locked in attack animation
@@ -105,7 +106,7 @@ public class PlayerEntity {
     }
 
     /**
-     * This enum class provides the values that indicate if the character
+     * This enum provides the values that indicate if the character
      * is crouching or standing.
      * Stance affects characters hurtbox dimensions, blockable attacks and
      * enables the use of stance specific attacks.
