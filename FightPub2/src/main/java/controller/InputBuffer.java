@@ -16,37 +16,97 @@
  */
 package controller;
 
-import java.util.PriorityQueue;
+import java.util.List;
+import java.util.LinkedList;
+import java.util.Stack;
+import controller.inputcheck;
 
 /**
  *
  * @author Heidi, Antti
  */
 public class InputBuffer {
-    PriorityQueue<String> player1Q = new PriorityQueue<>();
-    PriorityQueue<String> player2Q = new PriorityQueue<>();
+    inputcheck check = new inputcheck();
+    Stack<String> player1ST = new Stack<>();
+    Stack<String> player2ST = new Stack<>();
+    LinkedList<String> player1Q = new LinkedList<>();
+    LinkedList<String> player2Q = new LinkedList<>();
+    private String latest1 = "";
+    private String latest2 = "";
     
     public void player1Add(String string){
-        player1Q.add(string);
+        player1ST.add(string);
+        if (latest1 != ""){
+            if (latest1 != string){
+                player1Q.add(string);
+                latest1 = string;
+            }
+        }else{
+            player1Q.add(string);
+            latest1 = string;
+        } 
+        if (player1Q.size() > 4){
+            String p =player1Q.poll();
+        }   
     }
     
     public void player2Add(String string){
-        player2Q.add(string);
+        player2ST.add(string);
+        if (latest2 != ""){
+            if (latest2 != string){
+                player2Q.add(string);
+                latest2 = string;
+            }
+        }else{
+            player2Q.add(string);
+            latest2 = string;
+        } 
+        if (player2Q.size() > 4){
+            String p =player2Q.poll();
+        }
     }
     
-    public String player1GetInput(){
-        String polled = "";
-        polled = player1Q.poll();
-        player1Q.clear();
-        if (polled == null) return "";
-        return polled;
+    public String player1GetMove(){
+        String polled1 ="";
+        String polled2 ="";
+        polled1 = player1ST.pop();
+        try {
+            polled2 = player1ST.pop();
+        }catch (Exception e){};
+        player1ST.clear();
+        return check.checkInputs(polled1, polled2);
     }
     
-     public String player2GetInput(){
-        String polled = "";
-        polled = player2Q.poll();
-        player2Q.clear();
-        if (polled == null) return "";
-        return polled;
+    public String player2GetMove(){
+        String polled1 ="";
+        String polled2 ="";
+        polled1 = player2ST.pop();
+        try {
+            polled2 = player2ST.pop();
+        }catch (Exception e){};
+        player2ST.clear();
+        return check.checkInputs(polled1, polled2);
     }
+
+    //Iskuille oma imputbuffer, joka tyhjenee ku painaa (A)(B)(C),jne
+    public String[] player1Inputs(){
+         String[] inputs = null;
+         for (int i = 0; player1Q.size()>i; i++) {
+             inputs[i] = player1Q.poll();
+         }
+         player2Q.clear();
+         return inputs;
+     }
+     
+    public String[] player2Inputs(){
+         String[] inputs = null;
+         for (int i = 0; player2Q.size()>i; i++) {
+             inputs[i] = player2Q.poll();
+             
+         }
+         player2Q.clear();
+         return inputs;
+     }
+    //Iskut arraylistaan move-osastolle
+    
 }

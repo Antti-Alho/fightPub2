@@ -98,7 +98,7 @@ public class View {
             controller.update();
             
             // set background
-            glClearColor(1.0f, 0.2f, 0.9f, 0f);
+            glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
             
             glfwGetFramebufferSize(window, width, height);
             glClear(GL_COLOR_BUFFER_BIT);
@@ -135,31 +135,29 @@ public class View {
      * @param height integer buffer for height
      */
     public void drawObjects(IntBuffer width, IntBuffer height){
-        Colour charColour = new Colour(0f, 1f, 0f);
+        Colour char1Colour = new Colour(0f, 1f, 0f);
+        Colour char2Colour = new Colour(0f, 0f, 1f);
         Colour hitboxColour = new Colour(1f, 0f, 0f);
-        
         // char1
         drawSquare(controller.getCharacter1().getxCoord(),
             0,
-            controller.getCharacter1().getStandingWidth(),
-            controller.getCharacter1().getStandingHeight(),
+            controller.getCharacter1().getWidth(),
+            controller.getCharacter1().getHeight(),
             width,
             height,
-            charColour
+            char1Colour
         );
             
         // char 2
         drawSquare(controller.getCharacter2().getxCoord(),
             0,
-            controller.getCharacter2().getStandingWidth(), 
-            controller.getCharacter2().getStandingHeight(),
+            controller.getCharacter2().getWidth(),
+            controller.getCharacter2().getHeight(),
             width,
             height,
-            charColour
+            char2Colour
         );
-        
-        controller.getCharacter1().attack('A');
-        controller.getCharacter2().attack('A');
+
         // hitbox 1
         drawSquare(controller.getCharacter1().getHitBox().getXoffset() + controller.getCharacter1().getxCoord(),
             controller.getCharacter1().getHitBox().getYoffset() + controller.getCharacter1().getyCoord(),
