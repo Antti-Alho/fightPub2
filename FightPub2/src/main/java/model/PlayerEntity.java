@@ -57,9 +57,8 @@ public class PlayerEntity {
     private int stateDuration;
     @Transient
     private boolean blocking = false;
-
-    
-    
+    @Transient
+    private Attack attackA;
 
     public PlayerEntity() {
     }
@@ -77,6 +76,7 @@ public class PlayerEntity {
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         this.stateDuration = 0;
+
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
 
@@ -100,7 +100,6 @@ public class PlayerEntity {
      * hitstun and can not perform any actions. NEUTRAL: Default state for the
      * character. Can perform most actions
      */
-    
     public enum State {
         ATTACKING,
         BLOCKSTUN,
@@ -136,30 +135,15 @@ public class PlayerEntity {
      * @param ID char value that indicates attack used.
      */
     public void attack(char ID) {
-        int damage;
-        int xOffset;
-        int yOffset;
-        int width;
-        int height;
-        int hitStun;
-        int blockStun;
-        HitBox hb = this.hitBox;
         switch (ID) {
             case 'A':
-                damage = 10;
-                width = 100;
-                height = 100;
-                xOffset = getCrouchingWidth();
-                yOffset = 0;
-                hitStun = 10;
-                blockStun = 20;
-                if (this.facing == Facing.LEFT) {
-                    xOffset = this.standingWidth - xOffset - width;
+                attackA.setTimer(0);
+                if (attackA.getActivationTime() == attackA.getTimer()) {
+                    attackA.setHitBox();
                 }
-                hb.setAll(damage, width, height, xOffset, yOffset, hitStun, blockStun, HitBox.HitLocation.MID);
-                break;
         }
     }
+
 
     public int getHeight(){
         if (stance == Stance.CROUCHING){
@@ -169,6 +153,17 @@ public class PlayerEntity {
             return this.standingHeight;
         }
         return this.standingHeight;
+    }
+
+    public void setAttackTimer() {
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+    }
+
+    public HurtBox getHurtbox() {
+        return this.hurtBox;
     }
     
     public int getWidth(){
@@ -180,6 +175,7 @@ public class PlayerEntity {
         }
         return this.standingWidth;
     }
+  
     public Stance getStance() {
         return this.stance;
     }
@@ -219,7 +215,6 @@ public class PlayerEntity {
     public void setBlocking(boolean isBlocking) {
         this.blocking = isBlocking;
     }
-    
 
     public void setState(State state) {
         this.state = state;
@@ -337,6 +332,14 @@ public class PlayerEntity {
      */
     public void setWalkspeed(int walkspeed) {
         this.walkspeed = walkspeed;
+    }
+
+    public Attack getAttackA() {
+        return attackA;
+    }
+
+    public void setAttackA(Attack attackA) {
+        this.attackA = attackA;
     }
 
 }
