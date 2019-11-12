@@ -145,6 +145,10 @@ public class PlayerEntity {
     }
 
 
+    /**
+    * not implemented yet  
+    */
+
     public int getHeight(){
         if (stance == Stance.CROUCHING){
             return this.crouchingHeight;
@@ -155,6 +159,9 @@ public class PlayerEntity {
         return this.standingHeight;
     }
 
+    /**
+    * not implemented yet  
+    */
     public void setAttackTimer() {
         attackA.setTimer(attackA.getTimer() + 1);
         attackA.setTimer(attackA.getTimer() + 1);
