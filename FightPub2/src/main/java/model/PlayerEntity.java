@@ -144,7 +144,17 @@ public class PlayerEntity {
         }
     }
 
+    public void setAttackTimer() {
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+        attackA.setTimer(attackA.getTimer() + 1);
+    }
 
+    /**
+     * check characters stance and retuns heigt
+     * @return height
+     */
     public int getHeight(){
         if (stance == Stance.CROUCHING){
             return this.crouchingHeight;
@@ -154,18 +164,10 @@ public class PlayerEntity {
         }
         return this.standingHeight;
     }
-
-    public void setAttackTimer() {
-        attackA.setTimer(attackA.getTimer() + 1);
-        attackA.setTimer(attackA.getTimer() + 1);
-        attackA.setTimer(attackA.getTimer() + 1);
-        attackA.setTimer(attackA.getTimer() + 1);
-    }
-
-    public HurtBox getHurtbox() {
-        return this.hurtBox;
-    }
-    
+    /**
+     * check characters stance and retuns width
+     * @return width
+     */
     public int getWidth(){
         if (stance == Stance.CROUCHING){
         return this.crouchingWidth;

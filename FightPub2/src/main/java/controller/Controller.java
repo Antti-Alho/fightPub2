@@ -214,7 +214,6 @@ public class Controller {
      * Updates players positions.
      */
     public void update() {
-        //long window = GLFW.glfwGetCurrentContext(); 
         String player1Move = "";
         String player2Move = "";
         try {
@@ -225,6 +224,7 @@ public class Controller {
             player2Move = inputB.player2GetMove();
         } catch (Exception e) {
         }
+        
         // Player 1 moves
         if (player1Move != ""){
             if ("Left".equals(player1Move)){
@@ -302,6 +302,7 @@ public class Controller {
             }
             
         }
+        
         //Player 2 moves
         if (player2Move != ""){
             if ("Left".equals(player2Move)){
@@ -376,10 +377,6 @@ public class Controller {
                 
             }
         }
-        
-        
-        
-        
         checkFacing();
         checkHitboxCollision(char1, char2);
         checkHitboxCollision(char2, char1);
