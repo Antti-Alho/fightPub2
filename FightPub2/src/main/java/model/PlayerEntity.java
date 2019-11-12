@@ -42,8 +42,6 @@ public class PlayerEntity {
     @Transient
     private HitBox hitBox;
     @Transient
-    private HurtBox hurtBox;
-    @Transient
     private int xCoord;
     @Transient
     private int yCoord = 0;
@@ -75,8 +73,7 @@ public class PlayerEntity {
     public PlayerEntity(int xCoord, PlayerEntity.Facing facing) {
         this.xCoord = xCoord;
         this.facing = facing;
-        this.hurtBox = new HurtBox(getStandingHeight(), getStandingWidth());
-        this.walkspeed = 4;
+        this.walkspeed = walkspeed;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         this.stateDuration = 0;
@@ -152,26 +149,37 @@ public class PlayerEntity {
                 damage = 10;
                 width = 100;
                 height = 100;
-                xOffset = 200;
+                xOffset = getCrouchingWidth();
                 yOffset = 0;
                 hitStun = 10;
                 blockStun = 20;
                 if (this.facing == Facing.LEFT) {
-                    xOffset = this.hurtBox.getWidth() - xOffset - width;
+                    xOffset = this.standingWidth - xOffset - width;
                 }
                 hb.setAll(damage, width, height, xOffset, yOffset, hitStun, blockStun, HitBox.HitLocation.MID);
                 break;
         }
     }
 
-    public HurtBox getHurtbox() {
-        return this.hurtBox;
+    public int getHeight(){
+        if (stance == Stance.CROUCHING){
+            return this.crouchingHeight;
+        }
+        else if (stance == Stance.STANDING) {
+            return this.standingHeight;
+        }
+        return this.standingHeight;
     }
-
-    public void setHurtBox(HurtBox hurtBox) {
-        this.hurtBox = hurtBox;
+    
+    public int getWidth(){
+        if (stance == Stance.CROUCHING){
+        return this.crouchingWidth;
+        }
+        else if (stance == Stance.STANDING) {
+            return this.standingWidth;
+        }
+        return this.standingWidth;
     }
-
     public Stance getStance() {
         return this.stance;
     }

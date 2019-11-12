@@ -26,16 +26,22 @@ public class InitDatabase {
             pEntity.setName("Pekka");
             pEntity.setHealth(5);
             pEntity.setStandingHeight(400);
-            pEntity.setStandingWidth(200);
+            pEntity.setStandingWidth(250);
+            pEntity.setCrouchingHeight(200);
+            pEntity.setCrouchingWidth(280);
+            pEntity.setWalkspeed(4);
 
             //Save the employee in database
             session.save(pEntity);
             
             PlayerEntity pEntity2 = new PlayerEntity(1, PlayerEntity.Facing.RIGHT);
             pEntity2.setName("Jukka");
-            pEntity2.setHealth(5);
+            pEntity2.setHealth(9);
             pEntity2.setStandingHeight(400);
-            pEntity2.setStandingWidth(200);
+            pEntity2.setStandingWidth(180);
+            pEntity2.setCrouchingHeight(200);
+            pEntity2.setCrouchingWidth(220);
+            pEntity2.setWalkspeed(6);
 
             //Save the employee in database
             session.save(pEntity2);

@@ -9,7 +9,6 @@ import model.MapModel;
 import model.PlayerEntity;
 import controller.Controller;
 import java.awt.event.KeyEvent;
-import model.HurtBox;
 import org.junit.jupiter.api.Disabled;
 import model.HitBox;
 import model.InitDatabase;
@@ -29,10 +28,10 @@ public class ControllerTest {
         controller.getCharacter2().setxCoord(1200);
         controller.getCharacter1().setFacing(PlayerEntity.Facing.RIGHT);
         controller.getCharacter2().setFacing(PlayerEntity.Facing.LEFT);
-        controller.getCharacter1().getHurtbox().setHeight(400);
-        controller.getCharacter2().getHurtbox().setHeight(400);
-        controller.getCharacter1().getHurtbox().setWidth(200);
-        controller.getCharacter2().getHurtbox().setWidth(200);
+        controller.getCharacter1().setStandingHeight(400);
+        controller.getCharacter2().setStandingHeight(400);
+        controller.getCharacter1().setStandingWidth(200);
+        controller.getCharacter2().setStandingWidth(200);
     }
 
     @Test
@@ -180,7 +179,7 @@ public class ControllerTest {
         char1.setState(PlayerEntity.State.NEUTRAL);
         char2.setState(PlayerEntity.State.NEUTRAL);
         char1.getHitBox().setAll( 10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.MID);
-        char2.getHitBox().setAll( 10, 300, 300, char2.getHurtbox().getWidth() - 300, 0, 10, 20, HitBox.HitLocation.MID);
+        char2.getHitBox().setAll( 10, 300, 300, char2.getStandingWidth() - 300, 0, 10, 20, HitBox.HitLocation.MID);
         System.out.println(controller.checkHitboxCollision(char2, char1));
         System.out.println(char2.getFacing());
         System.out.println(char1.getFacing());
