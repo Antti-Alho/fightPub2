@@ -33,7 +33,7 @@ public class HibernateUtil {
                 // Hibernate settings equivalent to hibernate.cfg.xml's properties
                 Properties settings = new Properties();
                 settings.put(Environment.DRIVER, "org.mariadb.jdbc.Driver");
-                settings.put(Environment.URL, "jdbc:mariadb://127.0.0.1/FightPub2DB");
+                settings.put(Environment.URL, "jdbc:mariadb://10.114.48.32/FightPub2DB");
                 settings.put(Environment.USER, "root");
                 settings.put(Environment.PASS, "root");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MariaDBDialect");
