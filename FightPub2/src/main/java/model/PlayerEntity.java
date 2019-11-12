@@ -147,6 +147,9 @@ public class PlayerEntity {
         }
     }
 
+    /**
+     * not implemented yet  
+     */
     public void setAttackTimer() {
         attackA.setTimer(attackA.getTimer() + 1);
         attackA.setTimer(attackA.getTimer() + 1);

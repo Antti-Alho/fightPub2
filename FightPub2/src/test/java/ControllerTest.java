@@ -23,6 +23,9 @@ public class ControllerTest {
     InitDatabase init = new InitDatabase();
     Controller controller = new Controller("Pekka", "Pekka", new MapModel("Kaisla"), 99, 2);
 
+    /**
+     * before each test set the character to certain places and their values
+     */
     @BeforeEach
     public void setHitbox() {
         controller.getCharacter1().setxCoord(400);
@@ -35,12 +38,18 @@ public class ControllerTest {
         controller.getCharacter2().getHurtbox().setWidth(200);
     }
 
+    /**
+     * tests if the characters are in their starting location
+     */
     @Test
     public void startLocation() {
         assertEquals(400, controller.getCharacter1().getxCoord(), "Hahmo 1 ei ole aloituspaikassaan");
         assertEquals(1200, controller.getCharacter2().getxCoord(), "Hahmo 2 ei ole aloituspaikallaan");
     }
 
+    /**
+     * Checks if the character turns around when he moves to the other side of the other character
+     */
     @Test
     public void turn() {
         assertEquals(PlayerEntity.Facing.RIGHT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso oikealle lähtöpaikassaan.");
@@ -51,6 +60,9 @@ public class ControllerTest {
         assertEquals(PlayerEntity.Facing.RIGHT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso oikealle liikuttuaan toisen pelaajan ohi.");
     }
 
+    /**
+     * Checks that the characters cant collide
+     */
     @Test
     void collisionCheck() {
 
@@ -86,6 +98,9 @@ public class ControllerTest {
         controller.getCharacter1().setyCoord(0);
     }
 
+    /**
+     * cheks that the checkfacing works properly when called again but characters havent moved.
+     */   
     @Test
     void CheckFacing() {
         PlayerEntity char1 = controller.getCharacter1();
@@ -100,7 +115,9 @@ public class ControllerTest {
         assertEquals(PlayerEntity.Facing.RIGHT, char2.getFacing(), "Hahmo 2 kääntynyt vaikka ei saisi");
 
     }
-
+    /**
+     * Checks that the hit hits the other character or doesent
+     */
     @Test
     void checkHitBoxCollision() {
         controller.getCharacter1().setxCoord(1000);
@@ -118,6 +135,10 @@ public class ControllerTest {
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 vasemmalta");
     }
 
+    /**
+     * checks that the other character goes into a hitstun after the hitting character has succesfly landed a hit
+     * also it tests that the character goes back to a neutral state after a certain period of frames.
+     */
     @Test
     void checkStateChanged() {
         PlayerEntity char1 = controller.getCharacter1();
@@ -137,6 +158,10 @@ public class ControllerTest {
         assertEquals(PlayerEntity.State.NEUTRAL, char1.getState(), "char1 pitäisi olla palautunut neutral stateen");
     }
 
+    /**
+     * checks that the blocking character goes into a blockstun state.
+     * also cheks for weird situations where characters hit at the same exact frame.
+     */
     @Test
     void blocking() {
         PlayerEntity char1 = controller.getCharacter1();
