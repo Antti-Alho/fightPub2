@@ -68,7 +68,7 @@ public class Attack {
     public void setHitBox() {
         int tempXoffSet = this.xOffset;
         if (player.getFacing() == PlayerEntity.Facing.LEFT) {
-            tempXoffSet = player.getHurtbox().getWidth() - this.xOffset - this.width;
+            tempXoffSet = player.getWidth() - this.xOffset - this.width;
         }
         if (timer == activationTime) {
             player.getHitBox().setAll(this.damage, this.width, this.height, tempXoffSet, this.yOffset, this.hitStun, this.blockStun, this.loc);

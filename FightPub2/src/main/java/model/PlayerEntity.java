@@ -168,10 +168,6 @@ public class PlayerEntity {
         attackA.setTimer(attackA.getTimer() + 1);
         attackA.setTimer(attackA.getTimer() + 1);
     }
-
-    public HurtBox getHurtbox() {
-        return this.hurtBox;
-    }
     
     public int getWidth(){
         if (stance == Stance.CROUCHING){
