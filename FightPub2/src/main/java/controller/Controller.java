@@ -46,9 +46,11 @@ public class Controller {
         this.char1 = db.getPlayerEntity("Pekka");
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
         this.char1.setStance(PlayerEntity.Stance.STANDING);
+        this.char1.setState(PlayerEntity.State.NEUTRAL);
         this.char2 = db.getPlayerEntity("Jukka");
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
         this.char2.setStance(PlayerEntity.Stance.STANDING);
+        this.char2.setState(PlayerEntity.State.NEUTRAL);
         this.char1.setxCoord(400);
         this.char2.setxCoord(1200);
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
@@ -215,7 +217,10 @@ public class Controller {
     /**
      * Updates players positions.
      */
-    public void update() {
+    public void update() {        
+        char1.getAttackA().updateHitbox();
+        char2.getAttackA().updateHitbox();
+        
         String player1Move = "";
         String player2Move = "";
         try {
@@ -414,8 +419,7 @@ public class Controller {
             if (checkCorner(char1) && char1.getFacing()==PlayerEntity.Facing.LEFT)
                 char1.setxCoord(char1.getxCoord()- char2.getWalkspeed());
         }
-        checkFacing();
-        hitter();
+        masterCheck();
     }
 
     /**
