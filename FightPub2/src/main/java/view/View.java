@@ -35,7 +35,7 @@ public class View {
      * Constructor for new view class
      */
     public View(){
-        timer = new Timer();
+        timer = timer.getInstance();
         renderer = new Renderer();
         controller = new Controller("Pekka", "Pekka", new MapModel("Jee"), 100, 1);
         

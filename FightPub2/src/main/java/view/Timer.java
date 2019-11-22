@@ -10,7 +10,7 @@ public class Timer {
 
     private double lastLoopTime;
     private float timeCount;
-    private int fpsCount, fps = 0;
+    private int fpsCount, fps = 0, fpsCounter;
     
     /**
      * sets current time to lastLoopTime
@@ -18,7 +18,18 @@ public class Timer {
     void init() {
         lastLoopTime = glfwGetTime();
     }
+    
+    private Timer(){
+        
+    }
 
+    public static Timer getInstance(){
+        return TimerContainer.timer;
+    }
+    private static class TimerContainer {
+        private static final Timer timer = new Timer();
+   
+    }
     /**
      * Updates FPS if more than 1 second has passed since last FPS update
      * Removes one second from timeCount
@@ -29,6 +40,7 @@ public class Timer {
         lastLoopTime = time;
         timeCount += delta;
         fpsCount++;
+        fpsCounter++;
         if (timeCount > 1f){
             fps = fpsCount;
             fpsCount = 0;
@@ -41,6 +53,9 @@ public class Timer {
     }
     public int getFPS() {
         return fps;
+    }
+    public int getFpsCounter(){
+        return this.fpsCounter;
     }
     
 }
