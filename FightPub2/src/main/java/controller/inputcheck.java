@@ -34,6 +34,7 @@ public class inputcheck {
             if (first == "Right" && second == "") return "Right";
             if (first == "Down" && second == "") return "Down";
             if (first == "Up" && second == "") return "Up";
+            if (first == "A" && second == "") return "A";
             if (first == "Left" && second == "Down" || first == "Down" && second == "Left"){
                 return "Down Left";
             }
