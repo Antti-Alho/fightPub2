@@ -138,9 +138,10 @@ public class View {
         Colour char1Colour = new Colour(0f, 1f, 0f);
         Colour char2Colour = new Colour(0f, 0f, 1f);
         Colour hitboxColour = new Colour(1f, 0f, 0f);
+        Colour healthColour = new Colour(0f, 1f, 1f);
         // char1
         drawSquare(controller.getCharacter1().getxCoord(),
-            0,
+            controller.getCharacter1().getyCoord(),
             controller.getCharacter1().getWidth(),
             controller.getCharacter1().getHeight(),
             width,
@@ -150,7 +151,7 @@ public class View {
             
         // char 2
         drawSquare(controller.getCharacter2().getxCoord(),
-            0,
+            controller.getCharacter2().getyCoord(),
             controller.getCharacter2().getWidth(),
             controller.getCharacter2().getHeight(),
             width,
@@ -176,6 +177,24 @@ public class View {
             width,
             height,
             hitboxColour
+        );
+        
+        //healthbox 1
+        drawSquare(0, 1000,
+            controller.getCharacter1().getHealth()*5, 
+            1080,
+            width,
+            height,
+            healthColour
+        );
+        
+        //healthbox 1
+        drawSquare(1420, 1000,
+            controller.getCharacter2().getHealth()*5, 
+            1080,
+            width,
+            height,
+            healthColour
         );
         
     }

@@ -45,8 +45,10 @@ public class Controller {
         Database db = new Database();
         this.char1 = db.getPlayerEntity("Pekka");
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
+        this.char1.setStance(PlayerEntity.Stance.STANDING);
         this.char2 = db.getPlayerEntity("Jukka");
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
+        this.char2.setStance(PlayerEntity.Stance.STANDING);
         this.char1.setxCoord(400);
         this.char2.setxCoord(1200);
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
@@ -228,6 +230,7 @@ public class Controller {
         // Player 1 moves
         if (player1Move != ""){
             if ("Left".equals(player1Move)){
+                if (checkCorner(char1));
                 char1.setxCoord(char1.getxCoord()-char1.getWalkspeed());
                 if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed());
                 if (checkCollision() == true){
@@ -239,6 +242,7 @@ public class Controller {
                 
             }
             if ("Right".equals(player1Move)){
+                if (checkCorner(char1));
                 char1.setxCoord(char1.getxCoord()+char1.getWalkspeed());
                 if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()- char1.getWalkspeed());
                 if (checkCollision() == true){
@@ -251,6 +255,12 @@ public class Controller {
             }
             if ("Down".equals(player1Move)){
                 char1.setStance(PlayerEntity.Stance.CROUCHING);
+                if (checkCollision() == true){
+                    while (checkCollision() == true){
+                        char1.setxCoord(char1.getxCoord()- 2);
+                        char2.setxCoord(char2.getxCoord()+ 2);
+                    }
+                }
             }
             if ("Up".equals(player1Move)){
                 char1.setStance(PlayerEntity.Stance.STANDING);
@@ -300,11 +310,21 @@ public class Controller {
                 }
                 
             }
+            if ("A".equals(player1Move)){
+                //inputB.player1Inputs();
+                char1.attack('A');
+                
+                
+            }
+            if (checkCorner(char2)&&char2.getFacing()==PlayerEntity.Facing.LEFT) char2.setxCoord(char2.getxCoord()- char1.getWalkspeed());
+            if (checkCorner(char2)&&char2.getFacing()==PlayerEntity.Facing.RIGHT) char2.setxCoord(char2.getxCoord()+ char1.getWalkspeed());
+            checkHitboxCollision(char1, char2);
             
         }
         //Player 2 moves
         if (player2Move != ""){
             if ("Left".equals(player2Move)){
+                if (checkCorner(char2));
                 char2.setxCoord(char2.getxCoord()-char2.getWalkspeed());
                 if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()+ char2.getWalkspeed());
                 if (checkCollision() == true){
@@ -315,6 +335,7 @@ public class Controller {
                 }  
             }    
             if ("Right".equals(player2Move)){
+                if (checkCorner(char2));
                 char2.setxCoord(char2.getxCoord()+char2.getWalkspeed());
                 if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()- char2.getWalkspeed());
                 if (checkCollision() == true){
@@ -326,9 +347,16 @@ public class Controller {
             }
             if ("Down".equals(player2Move)){
                 char2.setStance(PlayerEntity.Stance.CROUCHING);  
+                if (checkCollision() == true){
+                    while (checkCollision() == true){
+                        char1.setxCoord(char1.getxCoord()- 2);
+                        char2.setxCoord(char2.getxCoord()+ 2);
+                    }
+                }
             }
             if ("Up".equals(player2Move)){
                 char2.setStance(PlayerEntity.Stance.STANDING);
+                
             }
             if ("Down Left".equals(player2Move)){
                 char2.setStance(PlayerEntity.Stance.CROUCHING);
@@ -375,15 +403,18 @@ public class Controller {
                 }
                 
             }
+            if ("A".equals(player2Move)){
+                //inputB.player2Inputs();
+                char2.attack('A');
+            }
+            checkHitboxCollision(char2, char1);
+            if (checkCorner(char1) && char1.getFacing()==PlayerEntity.Facing.RIGHT)
+                char1.setxCoord(char1.getxCoord()+ char2.getWalkspeed());
+            if (checkCorner(char1) && char1.getFacing()==PlayerEntity.Facing.LEFT)
+                char1.setxCoord(char1.getxCoord()- char2.getWalkspeed());
         }
-        
-        
-        
-        
         checkFacing();
-        checkHitboxCollision(char1, char2);
-        checkHitboxCollision(char2, char1);
-        //hitter();
+        hitter();
     }
 
     /**
@@ -403,6 +434,9 @@ public class Controller {
         if (glfwGetKey(window, GLFW_KEY_S)==GLFW.GLFW_PRESS){
             inputB.player1Add("Down");
         }
+        if (glfwGetKey(window, GLFW_KEY_R)==GLFW.GLFW_PRESS){
+            inputB.player1Add("A");
+        }
         if (glfwGetKey(window, GLFW_KEY_LEFT)==GLFW.GLFW_PRESS){
             inputB.player2Add("Left");
         }
@@ -414,6 +448,9 @@ public class Controller {
         }
         if (glfwGetKey(window, GLFW_KEY_DOWN)==GLFW.GLFW_PRESS){
             inputB.player2Add("Down");
+        }
+        if (glfwGetKey(window, GLFW_KEY_PAGE_UP)==GLFW.GLFW_PRESS){
+            inputB.player2Add("A");
         }
         
         
