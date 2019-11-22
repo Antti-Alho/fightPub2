@@ -23,7 +23,13 @@ package controller;
 public class inputcheck {
     public inputcheck(){};
     
-    public String checkInputs(String first, String second){
+    /**
+     * check what inputs player has used
+     * @param first
+     * @param second
+     * @return move
+     */
+    public String checkMoveInputs(String first, String second){
             if (first == "Left" && second == "") return "Left";
             if (first == "Right" && second == "") return "Right";
             if (first == "Down" && second == "") return "Down";
@@ -40,7 +46,6 @@ public class inputcheck {
             if (first == "Right" && second == "Up" || first == "Up" && second == "Right"){
                 return "Up Right";
             }
-        
             return "";
     }
 }

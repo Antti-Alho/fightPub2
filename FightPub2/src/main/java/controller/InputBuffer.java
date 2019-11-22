@@ -34,6 +34,10 @@ public class InputBuffer {
     private String latest1 = "";
     private String latest2 = "";
     
+    /**
+     * saves string to Stack and LinkedList for player 1
+     * @param string 
+     */
     public void player1Add(String string){
         player1ST.add(string);
         if (latest1 != ""){
@@ -50,6 +54,10 @@ public class InputBuffer {
         }   
     }
     
+    /**
+     * saves string to Stack and LinkedList for player 2
+     * @param string 
+     */
     public void player2Add(String string){
         player2ST.add(string);
         if (latest2 != ""){
@@ -66,6 +74,10 @@ public class InputBuffer {
         }
     }
     
+    /**
+     * uses checkinput to get current move for player1
+     * @return move
+     */
     public String player1GetMove(){
         String polled1 ="";
         String polled2 ="";
@@ -74,9 +86,13 @@ public class InputBuffer {
             polled2 = player1ST.pop();
         }catch (Exception e){};
         player1ST.clear();
-        return check.checkInputs(polled1, polled2);
+        return check.checkMoveInputs(polled1, polled2);
     }
     
+    /**
+     * uses checkinput to get current move for player2
+     * @return move
+     */
     public String player2GetMove(){
         String polled1 ="";
         String polled2 ="";
@@ -85,10 +101,14 @@ public class InputBuffer {
             polled2 = player2ST.pop();
         }catch (Exception e){};
         player2ST.clear();
-        return check.checkInputs(polled1, polled2);
+        return check.checkMoveInputs(polled1, polled2);
     }
 
     //Iskuille oma imputbuffer, joka tyhjenee ku painaa (A)(B)(C),jne
+    /**
+     * uses checkinput to get current attack for player1
+     * @return attack
+     */
     public String[] player1Inputs(){
          String[] inputs = null;
          for (int i = 0; player1Q.size()>i; i++) {
@@ -98,15 +118,19 @@ public class InputBuffer {
          return inputs;
      }
      
-    public String[] player2Inputs(){
-         String[] inputs = null;
-         for (int i = 0; player2Q.size()>i; i++) {
-             inputs[i] = player2Q.poll();
+    /**
+     * uses checkinput to get current attack for player2
+     * @return attack
+     */
+     public String[] player2Inputs(){
+        String[] inputs = null;
+        for (int i = 0; player2Q.size()>i; i++) {
+            inputs[i] = player2Q.poll();
              
-         }
-         player2Q.clear();
-         return inputs;
-     }
+        }
+        player2Q.clear();
+        return inputs;
+    }
     //Iskut arraylistaan move-osastolle
     
 }

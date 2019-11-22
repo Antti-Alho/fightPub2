@@ -145,24 +145,21 @@ public class PlayerEntity {
     }
 
     /**
-     * not implemented yet
+     * check characters stance and retuns heigt
+     * @return height
      */
-    public int getHeight() {
-        if (stance == Stance.CROUCHING) {
+    public int getHeight(){
+        if (stance == Stance.CROUCHING){
             return this.crouchingHeight;
         } else if (stance == Stance.STANDING) {
             return this.standingHeight;
         }
         return this.standingHeight;
     }
-
     /**
-     * not implemented yet
+     * check characters stance and retuns width
+     * @return width
      */
-    public void setAttackTimer() {
-
-    }
-
     public int getWidth() {
         if (stance == Stance.CROUCHING) {
             return this.crouchingWidth;
