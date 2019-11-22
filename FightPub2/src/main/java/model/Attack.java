@@ -16,6 +16,8 @@
  */
 package model;
 
+import view.Timer;
+
 /**
  * This class is used to set attack values of playerEntitys hitbox when he uses Attack
  * @see PlayerEntity
@@ -31,10 +33,10 @@ public class Attack {
     int yOffset;
     int hitStun;
     int blockStun;
-    int timer; //sets the timer how long the attack will take
     int activationTime; //this is the time when the hit will activate so when timer == activation time the hit activates
     HitBox.HitLocation loc;
     PlayerEntity player;
+    Timer frameClock;
 
     /**
      * 
@@ -59,6 +61,7 @@ public class Attack {
         this.blockStun = blockStun;
         this.loc = loc;
         this.player = player;
+        this.frameClock = frameClock.getInstance();
     }
     
     /**
@@ -70,25 +73,11 @@ public class Attack {
         if (player.getFacing() == PlayerEntity.Facing.LEFT) {
             tempXoffSet = player.getWidth() - this.xOffset - this.width;
         }
-        if (timer == activationTime) {
+        if (frameClock.getFpsCounter() == frameClock.getFpsCounter() + activationTime) {
             player.getHitBox().setAll(this.damage, this.width, this.height, tempXoffSet, this.yOffset, this.hitStun, this.blockStun, this.loc);
         }   
     }
 
-    public int getTimer() {
-        return timer;
-    }
 
-    public void setTimer(int timer) {
-        this.timer = timer;
-    }
-
-    public int getActivationTime() {
-        return activationTime;
-    }
-
-    public void setActivationTime(int activationTime) {
-        this.activationTime = activationTime;
-    }
 
 }

@@ -4,6 +4,7 @@ import static model.HitBox.HitLocation;
 import view.Renderer;
 import javax.persistence.*;
 import controller.Database;
+import view.Timer;
 
 /**
  * This class contains playable character attributes and methods.
@@ -59,6 +60,7 @@ public class PlayerEntity {
     private boolean blocking = false;
     @Transient
     private Attack attackA;
+    @Transient static Timer timer;
 
     public PlayerEntity() {
     }
@@ -137,48 +139,39 @@ public class PlayerEntity {
     public void attack(char ID) {
         switch (ID) {
             case 'A':
-                attackA.setTimer(0);
-                if (attackA.getActivationTime() == attackA.getTimer()) {
-                    attackA.setHitBox();
-                }
+                
+                attackA.setHitBox();
         }
     }
 
-
     /**
-    * not implemented yet  
-    */
-
-    public int getHeight(){
-        if (stance == Stance.CROUCHING){
+     * not implemented yet
+     */
+    public int getHeight() {
+        if (stance == Stance.CROUCHING) {
             return this.crouchingHeight;
-        }
-        else if (stance == Stance.STANDING) {
+        } else if (stance == Stance.STANDING) {
             return this.standingHeight;
         }
         return this.standingHeight;
     }
 
     /**
-    * not implemented yet  
-    */
+     * not implemented yet
+     */
     public void setAttackTimer() {
-        attackA.setTimer(attackA.getTimer() + 1);
-        attackA.setTimer(attackA.getTimer() + 1);
-        attackA.setTimer(attackA.getTimer() + 1);
-        attackA.setTimer(attackA.getTimer() + 1);
+
     }
-    
-    public int getWidth(){
-        if (stance == Stance.CROUCHING){
-        return this.crouchingWidth;
-        }
-        else if (stance == Stance.STANDING) {
+
+    public int getWidth() {
+        if (stance == Stance.CROUCHING) {
+            return this.crouchingWidth;
+        } else if (stance == Stance.STANDING) {
             return this.standingWidth;
         }
         return this.standingWidth;
     }
-  
+
     public Stance getStance() {
         return this.stance;
     }
