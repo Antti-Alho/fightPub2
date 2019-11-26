@@ -22,7 +22,8 @@ import java.util.Map;
 import model.MapModel;
 
 /**
- *
+ * State machine holds the current state of the program and all the other states.
+ * So that we can change the state when need be.
  * @author antti
  */
 public class StateMachine implements State {

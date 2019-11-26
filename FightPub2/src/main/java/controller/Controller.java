@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import static org.lwjgl.opengl.GL11.glClearColor;
 import org.lwjgl.system.MemoryStack;
 import controller.Database;
+import java.io.File;
 import model.HitBox;
 import model.HurtBox;
 import view.Colour;
@@ -37,7 +38,7 @@ public class Controller implements State {
     private final Renderer renderer;
 
     /**
-     * 
+     * @param rendeder that the view currently uses
      * @param char1 character that player 1 controls
      * @param char2 character that player 2 controls
      * @param map stage that characters are on
@@ -123,14 +124,14 @@ public class Controller implements State {
      */
     @Override
     public void update() {
-        System.out.println("Players move here");
+        
     }
     /**
      * Listens key inputs.
      */
     @Override
     public void input() {
-        System.out.println("input here");
+        
     }
     
     /**
@@ -139,7 +140,7 @@ public class Controller implements State {
     @Override
     public void render() {
         renderer.clear();
-        //texture.bind();
+        texture.bind();
         renderer.begin();
         char1.render(renderer, char1.getxCoord(), char1.getyCoord(), Colour.RED);
         char2.render(renderer, char2.getxCoord(), char2.getyCoord(), Colour.BLUE);
@@ -151,14 +152,16 @@ public class Controller implements State {
      */
     @Override
     public void enter(){
-        
+        File f = new File("");
+        texture = Texture.loadTexture(f.getAbsolutePath() + "/src/main/java/assets/ruy.png");
+        char1.setTexture(texture);
+        char2.setTexture(texture);
         glClearColor(1.0f, 0.2f, 0.9f, 0f);
-        
     }
 
     @Override
     public void exit() {
-        
+        texture.delete();
     }
     
 }

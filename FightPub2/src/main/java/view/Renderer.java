@@ -2,6 +2,7 @@
 package view;
 
 import java.nio.FloatBuffer;
+import org.lwjgl.opengl.GL11;
 import static org.lwjgl.opengl.GL11.GL_BLEND;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
@@ -15,8 +16,9 @@ import static org.lwjgl.opengl.GL11.glEnable;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_DYNAMIC_DRAW;
 import org.lwjgl.system.MemoryUtil;
+
 /**
- * WIP: Renderer stores Vertex data that has been passed to Graphics card memory.
+ * Renderer stores Vertex data that has been passed to Graphics card memory.
  * So that we can later use or change that data from the graphic card memory.
  * @author Heidi, Antti
  */
@@ -67,6 +69,7 @@ public class Renderer {
             glDrawArrays(GL_TRIANGLES, 0, numVertices);
             vertices.clear();
             numVertices = 0;
+            System.out.println(GL11.glGetError());
         }
     }
 
@@ -83,12 +86,19 @@ public class Renderer {
 
         drawColour(x1, y1, x2, y2, s1, t1, s2, t2, c);
     }
+    
+    public void drawArea(float x1, float y1, float x2, float y2, Colour c) {
+        float s1 = 0f;
+        float t1 = 0f;
+        float s2 = 1f;
+        float t2 = 1f;
 
+        drawColour(x1, y1, x2, y2, s1, t1, s2, t2, c);
+    }
  
     public void drawWhiteTextureRegion(Texture texture, float x, float y, float regX, float regY, float regWidth, float regHeight) {
         drawTextureRegionWithColour(texture, x, y, regX, regY, regWidth, regHeight, Colour.WHITE);
     }
-
 
     public void drawTextureRegionWithColour(Texture texture, float x, float y, float regX, float regY, float regWidth, float regHeight, Colour c) {
         float x1 = x;
@@ -135,6 +145,9 @@ public class Renderer {
         vbo.delete();
     }
     
+    /**
+     * Allocates mamory for vectors and 
+     */
     private void setup() {
         vao = new VertexArrayObject();
         vao.bind();

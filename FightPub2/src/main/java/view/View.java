@@ -25,14 +25,14 @@ public class View {
     protected Renderer renderer;
     protected StateMachine stateMachine;
     protected Controller controller;
-    
+
     public static final int TARGET_FPS = 60;
     public static final int monitorHeigt = 1080;
     public static final int monitorWidth = 1920;
     private GLFWErrorCallback errorCallback;
 
     private boolean running;
-    
+
     /**
      * Constructor for new view class
      */
@@ -47,7 +47,7 @@ public class View {
         run();
         dispose();
     }
-    
+
     public void run() {
         float deltaTime;
         float accumulator = 0f;
@@ -66,24 +66,22 @@ public class View {
                 accumulator -= interval;
             }
             stateMachine.render();
-            timer.updateFPS();
             timer.update();
             window.update();
 
             sync(TARGET_FPS);
         }
     } 
-   
+
     private void init() {
         errorCallback = GLFWErrorCallback.createPrint();
         glfwSetErrorCallback(errorCallback);
-
         if (!glfwInit()) {
             throw new IllegalStateException("Unable to initialize GLFW!");
         }
 
         window = new Window(monitorWidth, monitorHeigt, "Fight Pub 2");
-        
+
         timer.init();
         renderer.init();
         initStates();

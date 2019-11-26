@@ -5,6 +5,7 @@ import view.Renderer;
 import javax.persistence.*;
 import controller.Database;
 import view.Colour;
+import view.Texture;
 
 /**
  *This class contains playable character attributes and methods.
@@ -56,16 +57,16 @@ public class PlayerEntity extends RenderableEntity {
     @Transient
     private Facing facing;
     
-    public PlayerEntity(){
-        super(Colour.WHITE , 200, 400, 0, 0);
+    public PlayerEntity(Texture texture){
+        super(Colour.RED , texture, (float) 100, (float) 100, 300, 300, 200, 200);
     }
-    /**
+    /*
      * Constructor of character. 
      * @param xCoord sets the characters position in map.
      * @param facing sets the characters direction of facing.
      */
-    public PlayerEntity(int xCoord, PlayerEntity.Facing facing) {
-        super(Colour.BLUE , 200, 400, xCoord, 0);
+    public PlayerEntity(int xCoord, Texture texture, PlayerEntity.Facing facing) {
+        super(Colour.RED , texture, (float) 100, (float) 100, 300, 300, 200, 200);
         this.xCoord = xCoord;
         this.facing = facing;
         this.hurtBox = new HurtBox(getStandingHeight(), getStandingWidth());
@@ -73,6 +74,9 @@ public class PlayerEntity extends RenderableEntity {
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
+    }
+
+    public PlayerEntity() {
     }
 
     /**

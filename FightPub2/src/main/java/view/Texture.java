@@ -131,14 +131,14 @@ public class Texture {
             IntBuffer w = stack.mallocInt(1);
             IntBuffer h = stack.mallocInt(1);
             IntBuffer comp = stack.mallocInt(1);
-            
+
             stbi_set_flip_vertically_on_load(true);
             image = stbi_load(path, w, h, comp, 4);
             if (image == null) {
                 throw new RuntimeException("Failed to load a texture file!"
                                            + System.lineSeparator() + stbi_failure_reason());
             }
-           
+
             width = w.get();
             height = h.get();
         }

@@ -8,6 +8,7 @@ import org.hibernate.Transaction;
 import controller.HibernateUtil;
 import java.io.Serializable;
 import org.hibernate.SessionFactory;
+import view.Texture;
 /**
  * This class adds characters to the Hahmo-table 
  * @author Heidi
@@ -22,7 +23,7 @@ public class InitDatabase {
 
         try {
             tx = session.beginTransaction();
-            PlayerEntity pEntity = new PlayerEntity(1, PlayerEntity.Facing.RIGHT);
+            PlayerEntity pEntity = new PlayerEntity();
             pEntity.setName("Pekka");
             pEntity.setHealth(5);
             pEntity.setStandingHeight(400);
@@ -31,7 +32,7 @@ public class InitDatabase {
             //Save the employee in database
             session.save(pEntity);
             
-            PlayerEntity pEntity2 = new PlayerEntity(1, PlayerEntity.Facing.RIGHT);
+            PlayerEntity pEntity2 = new PlayerEntity();
             pEntity2.setName("Jukka");
             pEntity2.setHealth(5);
             pEntity2.setStandingHeight(400);
