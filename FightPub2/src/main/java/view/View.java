@@ -19,7 +19,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * @author Heidi, Antti
  */
 public class View {
- 
+
     public static final int TARGET_FPS = 60;
     protected Window window;
     protected Timer timer;
@@ -27,18 +27,17 @@ public class View {
     protected Controller controller;
     public static final int monitorHeigt = 1080;
     public static final int monitorWight = 1920;
-    
+
     private final GLFWKeyCallback keyCallback;
-    
-    
+
     /**
      * Constructor for new view class
      */
-    public View(){
-        timer = new Timer();
+    public View() {
+        timer = timer.getInstance();
         renderer = new Renderer();
         controller = new Controller("Pekka", "Pekka", new MapModel("Jee"), 100, 1);
-        
+
         keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(long window, int key, int scancode, int action, int mods) {
@@ -48,7 +47,7 @@ public class View {
             }
         };
     }
-    
+
     /**
      * This error callback will simply print the error to
      * <code>System.err</code>.
@@ -76,38 +75,45 @@ public class View {
         /* Center the window on screen */
         GLFWVidMode vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
         glfwSetWindowPos(window,
-                         (vidMode.width() - monitorWight) / 2,
-                         (vidMode.height() - monitorHeigt) / 2
+                (vidMode.width() - monitorWight) / 2,
+                (vidMode.height() - monitorHeigt) / 2
         );
-        
+
         glfwMakeContextCurrent(window);
         GL.createCapabilities();
-        
+
         // v-sync
         glfwSwapInterval(1);
-        
-         // Declare buffers for using inside the loop
+
+        // Declare buffers for using inside the loop
         IntBuffer width = MemoryUtil.memAllocInt(1);
         IntBuffer height = MemoryUtil.memAllocInt(1);
-        
+
         glfwSetKeyCallback(window, keyCallback);
-        
+
+        float deltaTime, accumulator = 0f, interval = 1f / TARGET_FPS;
         // Updates view in a loop until esc-button is pressed.
         while (!glfwWindowShouldClose(window)) {
             controller.input();
-            controller.update();
-            
+            deltaTime = timer.getDelta();
+            accumulator += deltaTime;
+            while (accumulator >= interval) {
+                controller.update();
+                timer.update();
+                accumulator -= interval;
+            }
+
             // set background
             glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            
+
             glfwGetFramebufferSize(window, width, height);
             glClear(GL_COLOR_BUFFER_BIT);
-            
+
             // draw objects
             drawObjects(width, height);
             // gives the view size
             glViewport(0, 0, width.get(), height.get());
-            
+
             // Swap buffers and poll Events
             glfwSwapBuffers(window);
             glfwPollEvents();
@@ -115,7 +121,7 @@ public class View {
             // Flip buffers for next loop
             width.flip();
             height.flip();
-            
+
         }
 
         // Free buffers
@@ -129,59 +135,82 @@ public class View {
         glfwTerminate();
         errorCallback.free();
     }
+
     /**
      * Draws all objects to the current window.
+     *
      * @param width integer buffer for width
      * @param height integer buffer for height
      */
-    public void drawObjects(IntBuffer width, IntBuffer height){
+    public void drawObjects(IntBuffer width, IntBuffer height) {
         Colour char1Colour = new Colour(0f, 1f, 0f);
         Colour char2Colour = new Colour(0f, 0f, 1f);
         Colour hitboxColour = new Colour(1f, 0f, 0f);
+        Colour healthColour = new Colour(0f, 1f, 1f);
         // char1
         drawSquare(controller.getCharacter1().getxCoord(),
-            0,
-            controller.getCharacter1().getWidth(),
-            controller.getCharacter1().getHeight(),
-            width,
-            height,
-            char1Colour
+                controller.getCharacter1().getyCoord(),
+                controller.getCharacter1().getWidth(),
+                controller.getCharacter1().getHeight(),
+                width,
+                height,
+                char1Colour
         );
-            
+
         // char 2
         drawSquare(controller.getCharacter2().getxCoord(),
-            0,
-            controller.getCharacter2().getWidth(),
-            controller.getCharacter2().getHeight(),
-            width,
-            height,
-            char2Colour
+                controller.getCharacter2().getyCoord(),
+                controller.getCharacter2().getWidth(),
+                controller.getCharacter2().getHeight(),
+                width,
+                height,
+                char2Colour
         );
 
         // hitbox 1
         drawSquare(controller.getCharacter1().getHitBox().getXoffset() + controller.getCharacter1().getxCoord(),
-            controller.getCharacter1().getHitBox().getYoffset() + controller.getCharacter1().getyCoord(),
-            controller.getCharacter1().getHitBox().getWidth(), 
-            controller.getCharacter1().getHitBox().getHeight(),
-            width,
-            height,
-            hitboxColour
+                controller.getCharacter1().getHitBox().getYoffset() + controller.getCharacter1().getyCoord(),
+                controller.getCharacter1().getHitBox().getWidth(),
+                controller.getCharacter1().getHitBox().getHeight(),
+                width,
+                height,
+                hitboxColour
         );
-        
+
         //hitbox 2
         drawSquare(controller.getCharacter2().getHitBox().getXoffset() + controller.getCharacter2().getxCoord(),
-            controller.getCharacter2().getHitBox().getYoffset() + controller.getCharacter2().getyCoord(),
-            controller.getCharacter2().getHitBox().getWidth(), 
-            controller.getCharacter2().getHitBox().getHeight(),
-            width,
-            height,
-            hitboxColour
+                controller.getCharacter2().getHitBox().getYoffset() + controller.getCharacter2().getyCoord(),
+                controller.getCharacter2().getHitBox().getWidth(),
+                controller.getCharacter2().getHitBox().getHeight(),
+                width,
+                height,
+                hitboxColour
         );
-        
+
+        //healthbox 1
+        drawSquare(0, 1000,
+                controller.getCharacter1().getHealth() * 5,
+                1080,
+                width,
+                height,
+                healthColour
+        );
+
+        //healthbox 1
+        drawSquare(1420, 1000,
+                controller.getCharacter2().getHealth() * 5,
+                1080,
+                width,
+                height,
+                healthColour
+        );
+
     }
-    
+
     /**
-     * Fill the objets by drawing square by two triangles and fills them with colour.
+     * Fill the objets by drawing square by two triangles and fills them with
+     * colour.
+     *
      * @param x starting plase in x-scale for square
      * @param y starting plase in y-scale for square
      * @param width width of the square
@@ -190,13 +219,13 @@ public class View {
      * @param heightbuffer integer buffer for height
      * @param col square colour
      */
-    public void drawSquare(int x, int y, int width, int height, IntBuffer widthbuffer, IntBuffer heightbuffer, Colour col){
+    public void drawSquare(int x, int y, int width, int height, IntBuffer widthbuffer, IntBuffer heightbuffer, Colour col) {
         widthbuffer.rewind();
         heightbuffer.rewind();
-        
+
         // gives the object size
         glViewport(x, y, width, height);
-        
+
         // Start drawing triangles
         glBegin(GL_TRIANGLES);
         // Colour for the triangles
@@ -213,4 +242,3 @@ public class View {
         glEnd();
     }
 }
-

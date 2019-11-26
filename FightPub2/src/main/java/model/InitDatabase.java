@@ -24,7 +24,7 @@ public class InitDatabase {
             tx = session.beginTransaction();
             PlayerEntity pEntity = new PlayerEntity(1, PlayerEntity.Facing.RIGHT);
             pEntity.setName("Pekka");
-            pEntity.setHealth(5);
+            pEntity.setHealth(100);
             pEntity.setStandingHeight(400);
             pEntity.setStandingWidth(250);
             pEntity.setCrouchingHeight(200);
@@ -36,7 +36,7 @@ public class InitDatabase {
             
             PlayerEntity pEntity2 = new PlayerEntity(1, PlayerEntity.Facing.RIGHT);
             pEntity2.setName("Jukka");
-            pEntity2.setHealth(9);
+            pEntity2.setHealth(100);
             pEntity2.setStandingHeight(400);
             pEntity2.setStandingWidth(180);
             pEntity2.setCrouchingHeight(200);
