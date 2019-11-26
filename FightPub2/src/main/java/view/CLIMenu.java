@@ -1,26 +1,24 @@
 
-package controller;
+package view;
 import model.MenuElement;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 /**
  * CLI Menu that can be used when all else fails.
  * @author Joonas
  */
 
-public class CLIMenu {
+public class CLIMenu extends MenuIF {
     
-    Locale current = new Locale("fi", "FI", "UNIX");
-    ResourceBundle texts = ResourceBundle.getBundle("textResources", current);
-    private ArrayList<MenuElement> menuelements = new ArrayList<MenuElement>();
+    // Setting up localisation.
+    
+    
+    Scanner input = new Scanner(System.in);
     
     
     public CLIMenu() {
-        MenuElement play = new MenuElement(texts.getString("PLAY"));
-        MenuElement options = new MenuElement(texts.getString("OPTIONS"));
-        menuelements.add(play);
-        menuelements.add(options);
      
      }
     /**
@@ -31,12 +29,24 @@ public class CLIMenu {
        String menu = "";
        int index = 1;
        for (MenuElement element : menuelements) {
-           menu = menu + index + " " + element.label + "\n";
+           menu = menu + index + " " + element.getLabel() + "\n";
            index++;
        }
        return menu;
     }
+    @Override
+    public void showMenu() {
+        System.out.println(menuString());
+    }
     
+    @Override
+    public void activateMenuElement() {
+        int selection = input.nextInt();
+        if (selection < 0 || selection > menuelements.size()) {
+            menuelements.get(selection).action();
+        }
+        
+    }
     
     
 }

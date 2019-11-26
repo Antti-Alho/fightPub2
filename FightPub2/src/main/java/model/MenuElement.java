@@ -1,5 +1,5 @@
 package model;
-
+import java.beans.EventHandler;
 
 /**
  * Single menu element. The active active attribute describes if the element is selected
@@ -8,20 +8,17 @@ package model;
  */
 
 
-public class MenuElement {
+public abstract class MenuElement {
     
-    public boolean active;
-    public String label;
-    
-    /**
-     * 
-     * @param label is the name of the element 
-     */
-   public MenuElement(String label) {
-       this.active = false;
-       this.label=label;
-   }
-    
+    private boolean active;
+    private String label;
+    public boolean isActive() {
+        return this.active;
+    }
+    public String getLabel() {
+        return this.label;
+    }
+    public abstract void action();
    
    
 }

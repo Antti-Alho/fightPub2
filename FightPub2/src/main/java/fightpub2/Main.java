@@ -1,9 +1,12 @@
 
 package fightpub2;
 
+
 import view.View;
 import model.InitDatabase;
-import controller.CLIMenu;
+import view.CLIMenu;
+import view.MenuIF;
+
 /**
  * Starts the program.
  * @author Heidi, Antti, Joonas, Pate
@@ -11,10 +14,11 @@ import controller.CLIMenu;
 public class Main {
     public static void main(String[] args) {
         InitDatabase initDatabase = new InitDatabase();
-        CLIMenu menu = new CLIMenu();
-        System.out.println(menu.menuString());
+        MenuIF menu = new CLIMenu();
+        menu.showMenu();
         
         view.View view = new View();
         view.run();
+        
     }
 }

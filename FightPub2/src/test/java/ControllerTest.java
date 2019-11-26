@@ -244,7 +244,7 @@ public class ControllerTest {
      * exactly same frame.
      */
     @Test
-    void paskaa() {
+    void SimultaneousHit() {
         PlayerEntity char1 = controller.getCharacter1();
         PlayerEntity char2 = controller.getCharacter2();
         char1.setxCoord(1000);

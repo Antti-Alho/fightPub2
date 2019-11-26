@@ -92,15 +92,15 @@ public class Attack {
         }
 
     }
-
+    /**
+     * This method is activated on player input. It starts counting frames to
+     * activation frame, when hitbox is set active, and deactivation time, when
+     * hitbox will be deactivated. It also sets game characters state to attacking.
+     */
     public void activateAttack() {
         player.setState(PlayerEntity.State.ATTACKING);
-
-        // 100
         activation = frameClock.getFpsCounter();
-        //110
         deactivationTime = deactivationTimeFINAL + activation;
-
     }
 
 }
