@@ -105,6 +105,10 @@ public class Controller {
         return hitbox.intersects(hurtbox);
     }
 
+    /**
+     * call checker methods here in correct order in the end of every update function call.
+     */
+    
     public void masterCheck() {
         checkFacing();
         hitter();
