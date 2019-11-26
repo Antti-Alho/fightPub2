@@ -38,7 +38,8 @@ public class ControllerTest {
     }
 
     /**
-     * tests if the characters are in their starting location
+     * tests if the characters are in their starting location defined by controllers constructor method.
+     * Controller should set them in positions 400 and 1200
      */
     @Test
     public void startLocation() {
@@ -47,20 +48,8 @@ public class ControllerTest {
     }
 
     /**
-     * Checks if the character turns around when he moves to the other side of the other character
-     */
-    @Test
-    public void turn() {
-        assertEquals(PlayerEntity.Facing.RIGHT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso oikealle lähtöpaikassaan.");
-        assertEquals(PlayerEntity.Facing.LEFT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso vasemmalle lähtopaikassaan.");
-        controller.getCharacter1().setxCoord(2000);
-        controller.checkFacing();
-        assertEquals(PlayerEntity.Facing.LEFT, controller.getCharacter1().getFacing(), "Hahmo 1 ei katso vasemmalle liikuttuaan toisen pelaajan ohi.");
-        assertEquals(PlayerEntity.Facing.RIGHT, controller.getCharacter2().getFacing(), "Hahmo 2 ei katso oikealle liikuttuaan toisen pelaajan ohi.");
-    }
-
-    /**
-     * Checks that the characters cant collide
+     * Tests the collisionCheck method, that returns true if character
+     * "hurtboxes" collide.
      */
     @Test
     void collisionCheck() {
@@ -94,12 +83,12 @@ public class ControllerTest {
         controller.getCharacter1().setyCoord(399);
         assertEquals(true, controller.checkCollision(), "Hahmojen pitäisi osua. Hahmo 1 suoraan yläpuolella, mutta osuvasti.");
 
-        controller.getCharacter1().setyCoord(0);
     }
 
     /**
-     * cheks that the checkfacing works properly when called again but characters havent moved.
-     */   
+     * Tests the checkFacing method, that keeps player characters facing each
+     * other even if they end up switching sides.
+     */
     @Test
     void CheckFacing() {
         PlayerEntity char1 = controller.getCharacter1();
@@ -115,27 +104,27 @@ public class ControllerTest {
 
     }
     /**
-     * Checks that the hit hits the other character or doesent
+     * Tests the checkHitboxCollision method, which should return true if and
+     * only if hitbox is colliding with another characters "hurtbox".
      */
     @Test
     void checkHitBoxCollision() {
         controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(1201);
-
-        controller.getCharacter1().attack('A');
+        controller.getCharacter1().getHitBox().setAll(10, 150, 20, 100, 30, 5, 40, HitBox.HitLocation.HIGH);
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter1(), controller.getCharacter2()), "Iskun pitäisi osua");
         assertEquals(false, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun ei pitäisi osua");
-        controller.getCharacter2().attack('A');
+        controller.getCharacter2().getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.HIGH);
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 iskee oikealta)");
         controller.getCharacter2().setxCoord(780);
         controller.masterCheck();
-        controller.getCharacter2().attack('A');
+        controller.getCharacter2().getHitBox().setAll(10, 150, 20, 100, 30, 5, 40, HitBox.HitLocation.HIGH);
 
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 vasemmalta");
     }
 
     /**
-     * checks that the other character goes into a hitstun after the hitting character has succesfly landed a hit
+     * checks that the other character goes into a hitstun after the hitting character has succesfully landed a hit
      * also it tests that the character goes back to a neutral state after a certain period of frames.
      */
     @Test
@@ -144,7 +133,8 @@ public class ControllerTest {
         PlayerEntity char2 = controller.getCharacter2();
         char1.setxCoord(1000);
         char2.setxCoord(1201);
-        char2.attack('A');
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.HIGH);
+        System.out.println(controller.checkHitboxCollision(char2, char1));
         controller.hitter();
         assertEquals(PlayerEntity.State.HITSTUN, char1.getState(), "char1 pitäisi olla hitstunnissa");
         for (int i = 0; i < 3; i++) {
@@ -158,11 +148,11 @@ public class ControllerTest {
     }
 
     /**
-     * checks that the blocking character goes into a blockstun state.
-     * also cheks for weird situations where characters hit at the same exact frame.
+     * checks that the standing character can block high and middle hitting
+     * attacks, and cannot block low attacks when
      */
     @Test
-    void blocking() {
+    void standingBlock() {
         PlayerEntity char1 = controller.getCharacter1();
         PlayerEntity char2 = controller.getCharacter2();
         char1.setxCoord(1000);
@@ -173,29 +163,92 @@ public class ControllerTest {
         char2.setHealth(100);
         char1.setState(PlayerEntity.State.NEUTRAL);
         char2.setState(PlayerEntity.State.NEUTRAL);
-        System.out.println(char2.getHealth());
-        char2.attack('A');
+        char1.setStance(PlayerEntity.Stance.STANDING);
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.HIGH);
         controller.hitter();
         assertEquals(PlayerEntity.State.BLOCKSTUN, char1.getState(), "char1:n pitäisi olla blockstun statessa");
+        char1.setState(PlayerEntity.State.NEUTRAL);
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.MID);
+        controller.hitter();
+        assertEquals(PlayerEntity.State.BLOCKSTUN, char1.getState(), "char1:n pitäisi olla blockstun statessa");
+        char1.setState(PlayerEntity.State.NEUTRAL);
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.LOW);
+        controller.hitter();
+        assertEquals(PlayerEntity.State.HITSTUN, char1.getState(), "char1:n pitäisi olla HIT statessa");
+    }
+    /**
+     * Tests that Hitbox gets deactivated after hit connects to another
+     * player characters "hurtbox"
+     */
+    @Test
+    void HitBoxDeactivation() {
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
+        char1.setxCoord(1000);
+        char2.setxCoord(1201);
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.HIGH);
+        controller.hitter();
         assertEquals(0, char2.getHitBox().getWidth(), "char2:n hitboxin width pitäisi olla 0");
         assertEquals(0, char2.getHitBox().getHeight(), "char2:n hitboxin height pitäisi olla 0");
-        //next case
-        char2.setStance(PlayerEntity.Stance.CROUCHING);
-        char1.getHitBox().setAll(0, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.HIGH);
+    }
+    /**
+     * Tests that crouching player can block low and mid attacks, but gets 
+     * hit by high attacks
+     */
+    @Test
+    void crouchingBlock() {
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
+        char1.setxCoord(1000);
+        char2.setxCoord(1201);
+        char1.setBlocking(true);
+        char2.setBlocking(true);
+        char1.setHealth(100);
+        char2.setHealth(100);
+        char1.setState(PlayerEntity.State.NEUTRAL);
+        char2.setState(PlayerEntity.State.NEUTRAL);
+        char1.setStance(PlayerEntity.Stance.CROUCHING);
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.LOW);
         controller.hitter();
-        assertEquals(PlayerEntity.State.HITSTUN, char2.getState(), "char2:n staten pitäisi olla hitstun");
-        //next case
+        assertEquals(PlayerEntity.State.BLOCKSTUN, char1.getState(), "char1:n pitäisi olla blockstun statessa");
+        char1.setState(PlayerEntity.State.NEUTRAL);
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.MID);
+        controller.hitter();
+        assertEquals(PlayerEntity.State.BLOCKSTUN, char1.getState(), "char1:n pitäisi olla blockstun statessa");
+        char1.setState(PlayerEntity.State.NEUTRAL);
+        char2.getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.HIGH);
+        controller.hitter();
+        assertEquals(PlayerEntity.State.HITSTUN, char1.getState(), "char1:n pitäisi olla HIT statessa");
+    }
+    /**
+     * Tests that attacks reduce health
+     */
+    @Test
+    void reduceHealth() {
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
+        char1.setxCoord(1000);
+        char2.setxCoord(1201);
+        char1.setBlocking(true);
+        char2.setBlocking(false);
+        char1.setHealth(100);
+        char2.setHealth(100);
         char2.setState(PlayerEntity.State.NEUTRAL);
         char2.setStance(PlayerEntity.Stance.STANDING);
-        char1.getHitBox().setAll(0, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.LOW);
+        char1.getHitBox().setAll(10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.LOW);
         controller.hitter();
-        assertEquals(PlayerEntity.State.HITSTUN, char2.getState(), "char2:n staten pitäisi olla hitstun");
-        controller.reduceStateDuration();
-        char2.setBlocking(true);
-        char1.getHitBox().setAll(10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.MID);
-        controller.hitter();
-        assertEquals(PlayerEntity.State.HITSTUN, char2.getState(), "char2: pitäisi edelleen olla hitstunnissa.");
         assertEquals(90, char2.getHealth(), "char2:n hp:n pitäisi olla 90");
+    }
+    /**
+     * Checks that both players can get hit simultaneously, if both get hit on
+     * exactly same frame.
+     */
+    @Test
+    void paskaa() {
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
+        char1.setxCoord(1000);
+        char2.setxCoord(1201);
         char1.setxCoord(1000);
         char2.setxCoord(1201);
         char1.setBlocking(false);
@@ -206,9 +259,6 @@ public class ControllerTest {
         char2.setState(PlayerEntity.State.NEUTRAL);
         char1.getHitBox().setAll( 10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.MID);
         char2.getHitBox().setAll( 10, 300, 300, char2.getWidth() - 300, 0, 10, 20, HitBox.HitLocation.MID);
-        System.out.println(controller.checkHitboxCollision(char2, char1));
-        System.out.println(char2.getFacing());
-        System.out.println(char1.getFacing());
         controller.hitter();
         assertEquals(PlayerEntity.State.HITSTUN, char1.getState(), "2. Hahmot löivät samaan aikaan. molempien charactereiden pitäisi olla hitstunnissa.");
         assertEquals(PlayerEntity.State.HITSTUN, char2.getState(), "1. Hahmot löivät samaan aikaan. molempien charactereiden pitäisi olla hitstunnissa.");
