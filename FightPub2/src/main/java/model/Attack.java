@@ -82,7 +82,6 @@ public class Attack {
             if (deactivationTime <= frameClock.getFpsCounter()) {
                 player.getHitBox().deactivate();
                 player.setState(PlayerEntity.State.NEUTRAL);
-                System.out.println(frameClock.getFpsCounter() - activation);
             } else if (activation + activationTime == frameClock.getFpsCounter()) {
                 int tempXoffSet = this.xOffset;
                 if (player.getFacing() == PlayerEntity.Facing.LEFT) {
@@ -101,9 +100,6 @@ public class Attack {
         activation = frameClock.getFpsCounter();
         //110
         deactivationTime = deactivationTimeFINAL + activation;
-        
-        System.out.println("Hyökätty" + frameClock.getFpsCounter());
-        System.out.println("Deactiotion time" + (deactivationTime - activation));
 
     }
 
