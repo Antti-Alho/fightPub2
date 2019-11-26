@@ -35,10 +35,10 @@ public class Attack {
     final int yOffset;
     final int hitStun;
     final int blockStun;
-    final int activationTime; //this is the time when the hit will activate so when timer == activation time the hit activates
-    int activation;
-    final int deactivationTimeFINAL = 50;
-    int deactivationTime;
+    final int activationTime; // when time of (activation + activationTime = frameclock.getFpcCounter) the attack activates
+    int activation; //when the attack button was pressed. measured in frames.
+    final int deactivationTimeFINAL = 50; //deactiovanTimeFinal + activation = deactivation time
+    int deactivationTime; // when deactivationTime <= frameclock.getFpscounter() deactivate the attack.
     HitBox.HitLocation loc;
     PlayerEntity player;
     Timer frameClock;
@@ -82,7 +82,6 @@ public class Attack {
             if (deactivationTime <= frameClock.getFpsCounter()) {
                 player.getHitBox().deactivate();
                 player.setState(PlayerEntity.State.NEUTRAL);
-                System.out.println(frameClock.getFpsCounter() - activation);
             } else if (activation + activationTime == frameClock.getFpsCounter()) {
                 int tempXoffSet = this.xOffset;
                 if (player.getFacing() == PlayerEntity.Facing.LEFT) {
@@ -94,6 +93,12 @@ public class Attack {
 
     }
 
+    /**
+     * Sets the attacking player into attacking state.
+     * activation is the time when the attack is pressed. for instance if 1000 frames of game has gone forward
+     * and you press attack at frame 1001 the activation will be = 1001
+     * deactivation time is the time when the hit will be deactivated.
+     */
     public void activateAttack() {
         player.setState(PlayerEntity.State.ATTACKING);
 
@@ -101,9 +106,6 @@ public class Attack {
         activation = frameClock.getFpsCounter();
         //110
         deactivationTime = deactivationTimeFINAL + activation;
-        
-        System.out.println("Hyökätty" + frameClock.getFpsCounter());
-        System.out.println("Deactiotion time" + (deactivationTime - activation));
 
     }
 
