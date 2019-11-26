@@ -474,7 +474,7 @@ public class Controller {
     }
 
     /**
-     * @This metod is called by view when we enter game state.
+     * This metod is called by view when we enter game state.
      */
     public void enter() {
         int width, height;
