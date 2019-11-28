@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 public class CLIMenu {
     
-    Locale current = new Locale("fi", "FI", "UNIX");
+    Locale current = new Locale("fi", "FI");
     ResourceBundle texts = ResourceBundle.getBundle("textResources", current);
     private ArrayList<MenuElement> menuelements = new ArrayList<MenuElement>();
     
