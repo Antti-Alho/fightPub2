@@ -290,10 +290,28 @@ public class ControllerTest {
         char2.setHealth(100);
         char1.setState(PlayerEntity.State.BLOCKSTUN);
         char2.setState(PlayerEntity.State.NEUTRAL);
-        char1.setAttackA(new Attack(10, 400, 400, 100, 100, 20, 20, HitBox.HitLocation.LOW, char1));
+        char1.setAttackA(new Attack(10, 400, 400, 100, 100, 20, 20,20, 20, HitBox.HitLocation.LOW, char1));
         char1.attack('A');
-        assertEquals(char1.getState(), PlayerEntity.State.BLOCKSTUN);
-  
+        controller.hitter();
+        assertEquals(PlayerEntity.State.BLOCKSTUN, char1.getState(), "Hahmo 1 edelleen blockstun statessa eli ei voinut lyödä koska ei mennyt attacking stateen");
+
+    }
+
+    @Test
+    void moreDmgfromCounterAttack() {
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
+        char1.setxCoord(1000);
+        char2.setxCoord(1201);
+        char1.setBlocking(false);
+        char2.setBlocking(false);
+        char1.setHealth(100);
+        char2.setHealth(100);
+        char1.setState(PlayerEntity.State.NEUTRAL);
+        char2.setState(PlayerEntity.State.ATTACKING);
+        char1.getHitBox().setAll(10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.MID);
+        controller.hitter();
+        assertEquals(88, char2.getHealth(), "Hahmo2 otti 20% enemmän damagea koska oli attacking statessa");
     }
 
     /*

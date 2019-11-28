@@ -37,7 +37,7 @@ public class Attack {
     final int blockStun;
     final int activationTime; // when time of (activation + activationTime = frameclock.getFpcCounter) the attack activates
     int activation; //when the attack button was pressed. measured in frames.
-    final int deactivationTimeFINAL = 50; //deactiovanTimeFinal + activation = deactivation time
+    final int deactivationTimeFINAL; //deactiovanTimeFinal + activation = deactivation time
     int deactivationTime; // when deactivationTime <= frameclock.getFpscounter() deactivate the attack.
     HitBox.HitLocation loc;
     PlayerEntity player;
@@ -55,11 +55,13 @@ public class Attack {
      * hitStun state in frames
      * @param blockStun how long the player who blocks this attack will be in
      * blockStun state in frames
+     * @param activationTime how long in frames it takes for the attack to activate
+     * @param deactivationTimeFINAL how long it takes for the hit to deactivate
      * @param loc defines is the attack low mid or high so can it be blocked in
      * which positions
      * @param player wich player owns this attack
      */
-    public Attack(int damage, int width, int height, int xOffset, int yOffset, int hitStun, int blockStun, HitBox.HitLocation loc, PlayerEntity player) {
+    public Attack(int damage, int width, int height, int xOffset, int yOffset, int hitStun, int blockStun, int activationTime, int deactivationTimeFINAL, HitBox.HitLocation loc, PlayerEntity player) {
         this.damage = damage;
         this.width = width;
         this.height = height;
@@ -67,10 +69,11 @@ public class Attack {
         this.yOffset = yOffset;
         this.hitStun = hitStun;
         this.blockStun = blockStun;
+        this.activationTime = activationTime;
+        this.deactivationTimeFINAL = deactivationTimeFINAL;
         this.loc = loc;
         this.player = player;
         this.frameClock = frameClock.getInstance();
-        this.activationTime = 15;
     }
 
     /**
@@ -94,18 +97,15 @@ public class Attack {
     }
 
     /**
-     * Sets the attacking player into attacking state.
-     * activation is the time when the attack is pressed. for instance if 1000 frames of game has gone forward
-     * and you press attack at frame 1001 the activation will be = 1001
+     * Sets the attacking player into attacking state. activation is the time
+     * when the attack is pressed. for instance if 1000 frames of game has gone
+     * forward and you press attack at frame 1001 the activation will be = 1001
      * deactivation time is the time when the hit will be deactivated.
      */
     public void activateAttack() {
         player.setState(PlayerEntity.State.ATTACKING);
-
-        // 100
         activation = frameClock.getFpsCounter();
-        //110
-        deactivationTime = deactivationTimeFINAL + activation;
+        deactivationTime = deactivationTimeFINAL + activationTime + activation;
 
     }
 
