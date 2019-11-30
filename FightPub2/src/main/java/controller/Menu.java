@@ -39,7 +39,7 @@ public class Menu {
      */
     public void upElement() {
         for (MenuElement element : menuelements) {
-            element.active = false;
+       
         }
         activeElement--;
         if (activeElement == -1) {

@@ -9,30 +9,31 @@ import java.util.Scanner;
  * CLI Menu that can be used when all else fails.
  * @author Joonas
  */
-
+import model.MenuElement;
 public class CLIMenu extends MenuIF {
     
     // Setting up localisation.
     
     
     Scanner input = new Scanner(System.in);
+    CLIMenu menu;
     
     
     public CLIMenu() {
      
      }
     /**
-     * This method creates a String that contains the menu options.
-     * @return string that contains menu options indexed.
+     * This method creates a String that contains the menustr options.
+     * @return string that contains menustr options indexed.
      */
     public String menuString() {
-       String menu = "";
+       String menustr = "";
        int index = 1;
        for (MenuElement element : menuelements) {
-           menu = menu + index + " " + element.getLabel() + "\n";
+           menustr = menustr + index + " " + element.getLabel() + "\n";
            index++;
        }
-       return menu;
+       return menustr;
     }
     @Override
     public void showMenu() {
@@ -41,12 +42,6 @@ public class CLIMenu extends MenuIF {
     
     @Override
     public void activateMenuElement() {
-        int selection = input.nextInt();
-        if (selection < 0 || selection > menuelements.size()) {
-            menuelements.get(selection).action();
-        }
         
     }
-    
-    
 }

@@ -8,7 +8,11 @@ import java.beans.EventHandler;
  */
 
 
-public abstract class MenuElement {
+public class MenuElement {
+    
+    public MenuElement(String ID) {
+        this.label = ID;
+    }
     
     private boolean active;
     private String label;
@@ -18,7 +22,4 @@ public abstract class MenuElement {
     public String getLabel() {
         return this.label;
     }
-    public abstract void action();
-   
-   
 }
