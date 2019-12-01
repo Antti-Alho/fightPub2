@@ -14,12 +14,6 @@ public class Menu {
     private int activeElement = 0;
     
     public Menu() {
-        MenuElement play = new MenuElement("Play");
-        MenuElement options = new MenuElement("Options");
-        menuelements.add(play);
-        menuelements.add(options);
-        
-     menuelements.get(activeElement).active = true;
      
      }
     /**
@@ -27,12 +21,12 @@ public class Menu {
      */
     public void downElement() {
         for (MenuElement element : menuelements) {
-            element.active = false;
+            
         }
         activeElement++;
         if (activeElement == menuelements.size())
             activeElement = 0;
-        menuelements.get(activeElement).active = true;
+        // menuelements.get(activeElement).active = true;
         }
     /**
      * Goes up 1 element at a time. If at first element go to last element.
@@ -45,7 +39,7 @@ public class Menu {
         if (activeElement == -1) {
             activeElement = menuelements.size() - 1;
         }
-        menuelements.get(activeElement).active = true;
+        // menuelements.get(activeElement).active = true;
     
     }
     public int getActiveElement() {

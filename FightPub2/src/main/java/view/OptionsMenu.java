@@ -24,11 +24,7 @@ import model.MenuElement;
  */
 public class OptionsMenu extends CLIMenu {
     public OptionsMenu() {
-        super.menuelements.clear();
-        super.menuelements.add(new MenuElement(super.texts.getString("CONTROLSETTINGS")));
-        super.menuelements.add(new MenuElement(super.texts.getString("VIDEOSETTINGS")));
-        super.menuelements.add(new MenuElement(super.texts.getString("AUDIOSETTINGS")));
-        super.menuelements.add(new MenuElement(super.texts.getString("BACK")));
+        
         super.showMenu();
     }
     @Override

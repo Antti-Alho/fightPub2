@@ -17,6 +17,7 @@
 package view;
 
 import model.MenuElement;
+import model.PlayElement;
 
 /**
  *
@@ -25,9 +26,7 @@ import model.MenuElement;
 public class CLIMainMenu extends CLIMenu {
     public CLIMainMenu() {
         super.menuelements.clear();
-        super.menuelements.add(new MenuElement(super.texts.getString("PLAY")));
-        super.menuelements.add(new MenuElement(super.texts.getString("OPTIONS")));
-        super.menuelements.add(new MenuElement(super.texts.getString("EXIT")));
+        super.menuelements.add(new PlayElement());
         super.showMenu();
         activateMenuElement();
     }

@@ -1,25 +1,31 @@
 package model;
 import java.beans.EventHandler;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import view.MenuIF;
 
 /**
- * Single menu element. The active active attribute describes if the element is selected
- * in UI.
+ * Single menu element, which can be added to menu.
  * @author Joonas, Patrik
  */
 
 
-public class MenuElement {
+public abstract class MenuElement {
     
-    public MenuElement(String ID) {
-        this.label = ID;
-    }
-    
-    private boolean active;
+    /**
+     * Locale settings to represent texts in correct language and typesetting.
+     */
+    Locale current = new Locale("fi", "FI");
+    ResourceBundle texts = ResourceBundle.getBundle("textResources", current);
+    /**
+     * 
+     */
     private String label;
-    public boolean isActive() {
-        return this.active;
-    }
     public String getLabel() {
         return this.label;
     }
+    /**
+     * The action that this element will start.
+     */
+    public abstract void action();
 }
