@@ -188,23 +188,40 @@ public class View {
         );
 
         //healthbox 1
-        drawSquare(0, 1000,
-                controller.getCharacter1().getHealth() * 5,
-                1080,
-                width,
-                height,
-                healthColour
+        drawSquare(0+((100-controller.getCharacter1().getHealth())*8), 1000,
+            800-((100-controller.getCharacter1().getHealth())*8), 
+            1080,
+            width,
+            height,
+            healthColour
         );
 
-        //healthbox 1
-        drawSquare(1420, 1000,
-                controller.getCharacter2().getHealth() * 5,
-                1080,
-                width,
-                height,
-                healthColour
+        //healthbox 2
+        drawSquare(1120, 1000,
+            controller.getCharacter2().getHealth()*8, 
+            1080,
+            width,
+            height,
+            healthColour
         );
-
+        
+        //Characterbox1
+        drawSquare(800, 920,
+            160, 
+            1080,
+            width,
+            height,
+            char1Colour
+        );
+        
+        //Characterbox2
+        drawSquare(960, 920,
+            160, 
+            1080,
+            width,
+            height,
+            char2Colour
+        );
     }
 
     /**

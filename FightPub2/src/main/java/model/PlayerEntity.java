@@ -118,7 +118,8 @@ public class PlayerEntity {
     public enum Stance {
         CROUCHING,
         STANDING,
-        JUMPING
+        JUMPUP,
+        
     }
 
     /**

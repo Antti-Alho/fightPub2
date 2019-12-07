@@ -27,7 +27,7 @@ public class ControllerTest {
      * before each test set the character to certain places and their values
      */
     @BeforeEach
-    public void setHitbox() {
+    public void setHurtbox() {
         controller.getCharacter1().setxCoord(400);
         controller.getCharacter2().setxCoord(1200);
         controller.getCharacter1().setFacing(PlayerEntity.Facing.RIGHT);
@@ -111,7 +111,7 @@ public class ControllerTest {
      * only if hitbox is colliding with another characters "hurtbox".
      */
     @Test
-    void checkHitBoxCollision() {
+    void checkHitBoxCollision1() {
         controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(1201);
         controller.getCharacter1().getHitBox().setAll(10, 150, 20, 100, 30, 5, 40, HitBox.HitLocation.HIGH);
@@ -119,11 +119,24 @@ public class ControllerTest {
         assertEquals(false, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun ei pitäisi osua");
         controller.getCharacter2().getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.HIGH);
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 iskee oikealta)");
+    }
+    void checkHitBoxCollision3() {
+        controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(780);
         controller.masterCheck();
         controller.getCharacter2().getHitBox().setAll(10, 150, 20, 100, 30, 5, 40, HitBox.HitLocation.HIGH);
-
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 vasemmalta");
+    }
+    void checkHitBoxCollision4() {
+        controller.getCharacter2().setStance(PlayerEntity.Stance.CROUCHING);
+        controller.getCharacter1().setxCoord(1000);
+        controller.getCharacter2().setxCoord(1201);
+        controller.getCharacter1().attack('A');
+        assertEquals(false, controller.checkHitboxCollision(controller.getCharacter1(), controller.getCharacter2()), "Iskun ei pitäisi osua. Toinen hahmo on iskun alapuolella");
+        controller.getCharacter1().attack('A');
+        //assertEquals(false, controller.hitter(), "Iskun ei pitäisi osua. Toinen hahmo on iskun alapuolella");
+        
+        
     }
 
     /**
