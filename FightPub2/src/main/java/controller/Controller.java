@@ -47,16 +47,18 @@ public class Controller {
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
         this.char1.setStance(PlayerEntity.Stance.STANDING);
         this.char1.setState(PlayerEntity.State.NEUTRAL);
+        this.char1.setStateDuration(40);
         this.char2 = db.getPlayerEntity("Jukka");
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
         this.char2.setStance(PlayerEntity.Stance.STANDING);
         this.char2.setState(PlayerEntity.State.NEUTRAL);
+        this.char2.setStateDuration(40);
         this.char1.setxCoord(400);
         this.char2.setxCoord(1200);
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
-        this.char1.setAttackA(new Attack(10, 400, 400, 100, 100, 20, 20, HitBox.HitLocation.LOW, this.char1));
-        this.char2.setAttackA(new Attack(10, 400, 400, 100, 100, 20, 20, HitBox.HitLocation.LOW, this.char2));
+        this.char1.setAttackA(new Attack(10, 400, 400, 100, 100, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char1));
+        this.char2.setAttackA(new Attack(10, 400, 400, 100, 100, 50, 50, 30, 20, HitBox.HitLocation.LOW, this.char2));
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
@@ -74,9 +76,10 @@ public class Controller {
         Rectangle character2 = new Rectangle(char2.getxCoord(), char2.getyCoord(), char2.getWidth(), char2.getHeight());
         return character1.intersects(character2);
     }
-    public boolean checkCorner(PlayerEntity chara){
-        return (chara.getxCoord() <= map.LEFTBORDER || chara.getxCoord()+chara.getStandingWidth() >= map.RIGHTBORDER);
-        
+
+    public boolean checkCorner(PlayerEntity chara) {
+        return (chara.getxCoord() <= map.LEFTBORDER || chara.getxCoord() + chara.getStandingWidth() >= map.RIGHTBORDER);
+
     }
 
     /**
@@ -105,9 +108,14 @@ public class Controller {
         return hitbox.intersects(hurtbox);
     }
 
+    /**
+     * call checker methods here in correct order in the end of every update
+     * function call.
+     */
     public void masterCheck() {
         checkFacing();
         hitter();
+        reduceStateDuration();
     }
 
     /**
@@ -153,23 +161,34 @@ public class Controller {
      * the characterGettingHit.
      */
     public void hitter() {
-        //Not blocking
+        //Character 2 not blocking
         if (checkHitboxCollision(char1, char2) && !isHitBlocked(char1, char2)) {
+            //if player 2 in attacking state and player 1 hits player 2 , player 2 takes more dmg
+            if (char2.getState() == PlayerEntity.State.ATTACKING) {
+                double dmgCalculation = (double) char2.getHealth() - (double) char1.getHitBox().getDamage() * 1.2;
+                char2.setHealth((int) dmgCalculation);
+            } else {
+                char2.setHealth(char2.getHealth() - char1.getHitBox().getDamage());
+            }
             setStun(char2, char1.getHitBox().getHitStun(), PlayerEntity.State.HITSTUN);
-            char2.setHealth(char2.getHealth() - char1.getHitBox().getDamage());
             char1.getHitBox().deactivate(); // deactivates hitBox
-            //blocking
+            //Blocking
         } else if (checkHitboxCollision(char1, char2) && isHitBlocked(char1, char2)) {
             setStun(char2, char1.getHitBox().getBlockStun(), PlayerEntity.State.BLOCKSTUN);
             char1.getHitBox().deactivate(); // deactivates hitBox
         }
 
-        //Not blocking
+        //Character 1 not blocking
         if (checkHitboxCollision(char2, char1) && !isHitBlocked(char2, char1)) {
+            if (char1.getState() == PlayerEntity.State.ATTACKING) {
+                double dmgCalculation2 = (double) char1.getHealth() - (double) char2.getHitBox().getDamage() * 1.2;
+                char1.setHealth((int) dmgCalculation2);
+            } else {
+                char1.setHealth(char1.getHealth() - char2.getHitBox().getDamage());
+            }
             setStun(char1, char2.getHitBox().getHitStun(), PlayerEntity.State.HITSTUN);
-            char1.setHealth(char1.getHealth() - char1.getHitBox().getDamage());
             char2.getHitBox().deactivate(); // deactivates hitBox
-            //blocking
+            //Blocking
         } else if (checkHitboxCollision(char2, char1) && isHitBlocked(char2, char1)) {
             setStun(char1, char2.getHitBox().getBlockStun(), PlayerEntity.State.BLOCKSTUN);
             char2.getHitBox().deactivate(); // deactivates hitBox
@@ -183,15 +202,16 @@ public class Controller {
      *
      */
     public void reduceStateDuration() {
-        if (char1.getStateDuration() == 0) {
+        if (char1.getStateDuration() == 0 && char1.getState() != PlayerEntity.State.NEUTRAL) {
             char1.setState(PlayerEntity.State.NEUTRAL);
         } else {
             char1.setStateDuration(char1.getStateDuration() - 1);
         }
-        if (char2.getStateDuration() == 0) {
+        if (char2.getStateDuration() == 0 && char2.getState() != PlayerEntity.State.NEUTRAL) {
             char2.setState(PlayerEntity.State.NEUTRAL);
         } else {
-            char2.setStateDuration(char1.getStateDuration() - 1);
+            char2.setStateDuration(char2.getStateDuration() - 1);
+
         }
     }
 
@@ -217,10 +237,10 @@ public class Controller {
     /**
      * Updates players positions.
      */
-    public void update() {        
+    public void update() {
         char1.getAttackA().updateHitbox();
         char2.getAttackA().updateHitbox();
-        
+
         String player1Move = "";
         String player2Move = "";
         try {
@@ -231,193 +251,230 @@ public class Controller {
             player2Move = inputB.player2GetMove();
         } catch (Exception e) {
         }
-        
+
         // Player 1 moves
-        if (player1Move != ""){
-            if ("Left".equals(player1Move)){
-                if (checkCorner(char1));
-                char1.setxCoord(char1.getxCoord()-char1.getWalkspeed());
-                if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed()/2);
-                        char2.setxCoord(char2.getxCoord()- char1.getWalkspeed()/2);
+        if (player1Move != "") {
+            if (char1.getState() == PlayerEntity.State.NEUTRAL) {
+                if ("Left".equals(player1Move)) {
+                    if (checkCorner(char1));
+                    char1.setxCoord(char1.getxCoord() - char1.getWalkspeed());
+                    if (checkCorner(char1)) {
+                        char1.setxCoord(char1.getxCoord() + char1.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() + char1.getWalkspeed() / 2);
+                            char2.setxCoord(char2.getxCoord() - char1.getWalkspeed() / 2);
+                        }
+                    }
+
+                }
+                if ("Right".equals(player1Move)) {
+                    if (checkCorner(char1));
+                    char1.setxCoord(char1.getxCoord() + char1.getWalkspeed());
+                    if (checkCorner(char1)) {
+                        char1.setxCoord(char1.getxCoord() - char1.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() - char1.getWalkspeed() / 2);
+                            char2.setxCoord(char2.getxCoord() + char1.getWalkspeed() / 2);
+                        }
+                    }
+
+                }
+                if ("Down".equals(player1Move)) {
+                    char1.setStance(PlayerEntity.Stance.CROUCHING);
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() - 2);
+                            char2.setxCoord(char2.getxCoord() + 2);
+                        }
                     }
                 }
-                
-            }
-            if ("Right".equals(player1Move)){
-                if (checkCorner(char1));
-                char1.setxCoord(char1.getxCoord()+char1.getWalkspeed());
-                if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()- char1.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()- char1.getWalkspeed()/2);
-                        char2.setxCoord(char2.getxCoord()+ char1.getWalkspeed()/2);
+                if ("Up".equals(player1Move)) {
+                    char1.setStance(PlayerEntity.Stance.STANDING);
+                }
+                if ("Down Left".equals(player1Move)) {
+                    char1.setStance(PlayerEntity.Stance.CROUCHING);
+                    char1.setxCoord(char1.getxCoord() - char1.getWalkspeed());
+                    if (checkCorner(char1)) {
+                        char1.setxCoord(char1.getxCoord() + char1.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() + char1.getWalkspeed() / 2);
+                            char2.setxCoord(char2.getxCoord() - char1.getWalkspeed() / 2);
+                        }
                     }
                 }
-                
-            }
-            if ("Down".equals(player1Move)){
-                char1.setStance(PlayerEntity.Stance.CROUCHING);
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()- 2);
-                        char2.setxCoord(char2.getxCoord()+ 2);
+                if ("Down Right".equals(player1Move)) {
+                    char1.setStance(PlayerEntity.Stance.CROUCHING);
+                    char1.setxCoord(char1.getxCoord() + char1.getWalkspeed());
+                    if (checkCorner(char1)) {
+                        char1.setxCoord(char1.getxCoord() - char1.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() - char1.getWalkspeed() / 2);
+                            char2.setxCoord(char2.getxCoord() + char1.getWalkspeed() / 2);
+                        }
                     }
                 }
-            }
-            if ("Up".equals(player1Move)){
-                char1.setStance(PlayerEntity.Stance.STANDING);
-            }
-            if ("Down Left".equals(player1Move)){
-                char1.setStance(PlayerEntity.Stance.CROUCHING);
-                char1.setxCoord(char1.getxCoord()-char1.getWalkspeed());
-                if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed()/2);
-                        char2.setxCoord(char2.getxCoord()- char1.getWalkspeed()/2);
+                if ("Up Left".equals(player1Move)) {
+                    char1.setStance(PlayerEntity.Stance.STANDING);
+                    char1.setxCoord(char1.getxCoord() - char1.getWalkspeed());
+                    if (checkCorner(char1)) {
+                        char1.setxCoord(char1.getxCoord() + char1.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() + char1.getWalkspeed() / 2);
+                            char2.setxCoord(char2.getxCoord() - char1.getWalkspeed() / 2);
+                        }
                     }
                 }
-            }
-            if ("Down Right".equals(player1Move)){
-                char1.setStance(PlayerEntity.Stance.CROUCHING);
-                char1.setxCoord(char1.getxCoord()+char1.getWalkspeed());
-                if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()- char1.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()- char1.getWalkspeed()/2);
-                        char2.setxCoord(char2.getxCoord()+ char1.getWalkspeed()/2);
+                if ("Up Right".equals(player1Move)) {
+                    char1.setStance(PlayerEntity.Stance.STANDING);
+                    char1.setxCoord(char1.getxCoord() + char1.getWalkspeed());
+                    if (checkCorner(char1)) {
+                        char1.setxCoord(char1.getxCoord() - char1.getWalkspeed());
                     }
-                }  
-            }
-            if ("Up Left".equals(player1Move)){
-                char1.setStance(PlayerEntity.Stance.STANDING);
-                char1.setxCoord(char1.getxCoord()-char1.getWalkspeed());
-                if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()+ char1.getWalkspeed()/2);
-                        char2.setxCoord(char2.getxCoord()- char1.getWalkspeed()/2);
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() - char1.getWalkspeed() / 2);
+                            char2.setxCoord(char2.getxCoord() + char1.getWalkspeed() / 2);
+                        }
                     }
+
                 }
+
             }
-            if ("Up Right".equals(player1Move)){
-                char1.setStance(PlayerEntity.Stance.STANDING);
-                char1.setxCoord(char1.getxCoord()+char1.getWalkspeed());
-                if (checkCorner(char1)) char1.setxCoord(char1.getxCoord()- char1.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()- char1.getWalkspeed()/2);
-                        char2.setxCoord(char2.getxCoord()+ char1.getWalkspeed()/2);
-                    }
-                }
-                
-            }
-            if ("A".equals(player1Move)){
+
+            if ("A".equals(player1Move)) {
                 //inputB.player1Inputs();
                 char1.attack('A');
-                
-                
+
             }
-            if (checkCorner(char2)&&char2.getFacing()==PlayerEntity.Facing.LEFT) char2.setxCoord(char2.getxCoord()- char1.getWalkspeed());
-            if (checkCorner(char2)&&char2.getFacing()==PlayerEntity.Facing.RIGHT) char2.setxCoord(char2.getxCoord()+ char1.getWalkspeed());
+            if (checkCorner(char2) && char2.getFacing() == PlayerEntity.Facing.LEFT) {
+                char2.setxCoord(char2.getxCoord() - char1.getWalkspeed());
+            }
+            if (checkCorner(char2) && char2.getFacing() == PlayerEntity.Facing.RIGHT) {
+                char2.setxCoord(char2.getxCoord() + char1.getWalkspeed());
+            }
             checkHitboxCollision(char1, char2);
-            
+
         }
-        
+
         //Player 2 moves
-        if (player2Move != ""){
-            if ("Left".equals(player2Move)){
-                if (checkCorner(char2));
-                char2.setxCoord(char2.getxCoord()-char2.getWalkspeed());
-                if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()+ char2.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char2.setxCoord(char2.getxCoord()+ char2.getWalkspeed()/2);
-                        char1.setxCoord(char1.getxCoord()- char2.getWalkspeed()/2);
+        if (player2Move != "") {
+            if (char2.getState() == PlayerEntity.State.NEUTRAL) {
+                if ("Left".equals(player2Move)) {
+                    if (checkCorner(char2));
+                    char2.setxCoord(char2.getxCoord() - char2.getWalkspeed());
+                    if (checkCorner(char2)) {
+                        char2.setxCoord(char2.getxCoord() + char2.getWalkspeed());
                     }
-                }  
-            }    
-            if ("Right".equals(player2Move)){
-                if (checkCorner(char2));
-                char2.setxCoord(char2.getxCoord()+char2.getWalkspeed());
-                if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()- char2.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char2.setxCoord(char2.getxCoord()- char2.getWalkspeed()/2);
-                        char1.setxCoord(char1.getxCoord()+ char2.getWalkspeed()/2);
-                    }
-                }   
-            }
-            if ("Down".equals(player2Move)){
-                char2.setStance(PlayerEntity.Stance.CROUCHING);  
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char1.setxCoord(char1.getxCoord()- 2);
-                        char2.setxCoord(char2.getxCoord()+ 2);
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char2.setxCoord(char2.getxCoord() + char2.getWalkspeed() / 2);
+                            char1.setxCoord(char1.getxCoord() - char2.getWalkspeed() / 2);
+                        }
                     }
                 }
-            }
-            if ("Up".equals(player2Move)){
-                char2.setStance(PlayerEntity.Stance.STANDING);
-                
-            }
-            if ("Down Left".equals(player2Move)){
-                char2.setStance(PlayerEntity.Stance.CROUCHING);
-                char2.setxCoord(char2.getxCoord()-char2.getWalkspeed());
-                if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()+ char2.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                    char2.setxCoord(char2.getxCoord()+ char2.getWalkspeed()/2);
-                    char1.setxCoord(char1.getxCoord()- char2.getWalkspeed()/2);
+                if ("Right".equals(player2Move)) {
+                    if (checkCorner(char2));
+                    char2.setxCoord(char2.getxCoord() + char2.getWalkspeed());
+                    if (checkCorner(char2)) {
+                        char2.setxCoord(char2.getxCoord() - char2.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char2.setxCoord(char2.getxCoord() - char2.getWalkspeed() / 2);
+                            char1.setxCoord(char1.getxCoord() + char2.getWalkspeed() / 2);
+                        }
                     }
                 }
-            }
-            if ("Down Right".equals(player2Move)){
-                char2.setStance(PlayerEntity.Stance.CROUCHING);
-                char2.setxCoord(char2.getxCoord()+char2.getWalkspeed());
-                if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()- char2.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char2.setxCoord(char2.getxCoord()- char2.getWalkspeed()/2);
-                        char1.setxCoord(char1.getxCoord()+ char2.getWalkspeed()/2);
-                    }
-                }  
-            }
-            if ("Up Left".equals(player2Move)){
-                char2.setStance(PlayerEntity.Stance.STANDING);
-                char2.setxCoord(char2.getxCoord()-char2.getWalkspeed());
-                if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()+ char2.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char2.setxCoord(char2.getxCoord()+ char2.getWalkspeed()/2);
-                        char1.setxCoord(char1.getxCoord()- char2.getWalkspeed()/2);
+                if ("Down".equals(player2Move)) {
+                    char2.setStance(PlayerEntity.Stance.CROUCHING);
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char1.setxCoord(char1.getxCoord() - 2);
+                            char2.setxCoord(char2.getxCoord() + 2);
+                        }
                     }
                 }
-            }
-            if ("Up Right".equals(player2Move)){
-                char2.setStance(PlayerEntity.Stance.STANDING);
-                char2.setxCoord(char2.getxCoord()+char2.getWalkspeed());
-                if (checkCorner(char2)) char2.setxCoord(char2.getxCoord()- char2.getWalkspeed());
-                if (checkCollision() == true){
-                    while (checkCollision() == true){
-                        char2.setxCoord(char2.getxCoord()- char2.getWalkspeed()/2);
-                        char1.setxCoord(char1.getxCoord()+ char2.getWalkspeed()/2);
+                if ("Up".equals(player2Move)) {
+                    char2.setStance(PlayerEntity.Stance.STANDING);
+
+                }
+                if ("Down Left".equals(player2Move)) {
+                    char2.setStance(PlayerEntity.Stance.CROUCHING);
+                    char2.setxCoord(char2.getxCoord() - char2.getWalkspeed());
+                    if (checkCorner(char2)) {
+                        char2.setxCoord(char2.getxCoord() + char2.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char2.setxCoord(char2.getxCoord() + char2.getWalkspeed() / 2);
+                            char1.setxCoord(char1.getxCoord() - char2.getWalkspeed() / 2);
+                        }
                     }
                 }
-                
+                if ("Down Right".equals(player2Move)) {
+                    char2.setStance(PlayerEntity.Stance.CROUCHING);
+                    char2.setxCoord(char2.getxCoord() + char2.getWalkspeed());
+                    if (checkCorner(char2)) {
+                        char2.setxCoord(char2.getxCoord() - char2.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char2.setxCoord(char2.getxCoord() - char2.getWalkspeed() / 2);
+                            char1.setxCoord(char1.getxCoord() + char2.getWalkspeed() / 2);
+                        }
+                    }
+                }
+                if ("Up Left".equals(player2Move)) {
+                    char2.setStance(PlayerEntity.Stance.STANDING);
+                    char2.setxCoord(char2.getxCoord() - char2.getWalkspeed());
+                    if (checkCorner(char2)) {
+                        char2.setxCoord(char2.getxCoord() + char2.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char2.setxCoord(char2.getxCoord() + char2.getWalkspeed() / 2);
+                            char1.setxCoord(char1.getxCoord() - char2.getWalkspeed() / 2);
+                        }
+                    }
+                }
+                if ("Up Right".equals(player2Move)) {
+                    char2.setStance(PlayerEntity.Stance.STANDING);
+                    char2.setxCoord(char2.getxCoord() + char2.getWalkspeed());
+                    if (checkCorner(char2)) {
+                        char2.setxCoord(char2.getxCoord() - char2.getWalkspeed());
+                    }
+                    if (checkCollision() == true) {
+                        while (checkCollision() == true) {
+                            char2.setxCoord(char2.getxCoord() - char2.getWalkspeed() / 2);
+                            char1.setxCoord(char1.getxCoord() + char2.getWalkspeed() / 2);
+                        }
+                    }
+
+                }
+
             }
-            if ("A".equals(player2Move)){
+
+            if ("A".equals(player2Move)) {
                 //inputB.player2Inputs();
                 char2.attack('A');
             }
             checkHitboxCollision(char2, char1);
-            if (checkCorner(char1) && char1.getFacing()==PlayerEntity.Facing.RIGHT)
-                char1.setxCoord(char1.getxCoord()+ char2.getWalkspeed());
-            if (checkCorner(char1) && char1.getFacing()==PlayerEntity.Facing.LEFT)
-                char1.setxCoord(char1.getxCoord()- char2.getWalkspeed());
+            if (checkCorner(char1) && char1.getFacing() == PlayerEntity.Facing.RIGHT) {
+                char1.setxCoord(char1.getxCoord() + char2.getWalkspeed());
+            }
+            if (checkCorner(char1) && char1.getFacing() == PlayerEntity.Facing.LEFT) {
+                char1.setxCoord(char1.getxCoord() - char2.getWalkspeed());
+            }
         }
         masterCheck();
     }
@@ -426,39 +483,38 @@ public class Controller {
      * Listens keyinputs.
      */
     public void input() {
-        long window = GLFW.glfwGetCurrentContext();         
-        if (glfwGetKey(window, GLFW_KEY_A)==GLFW.GLFW_PRESS){
+        long window = GLFW.glfwGetCurrentContext();
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW.GLFW_PRESS) {
             inputB.player1Add("Left");
         }
-        if (glfwGetKey(window, GLFW_KEY_D)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW.GLFW_PRESS) {
             inputB.player1Add("Right");
         }
-        if (glfwGetKey(window, GLFW_KEY_W)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW.GLFW_PRESS) {
             inputB.player1Add("Up");
         }
-        if (glfwGetKey(window, GLFW_KEY_S)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW.GLFW_PRESS) {
             inputB.player1Add("Down");
         }
-        if (glfwGetKey(window, GLFW_KEY_R)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_R) == GLFW.GLFW_PRESS) {
             inputB.player1Add("A");
         }
-        if (glfwGetKey(window, GLFW_KEY_LEFT)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW.GLFW_PRESS) {
             inputB.player2Add("Left");
         }
-        if (glfwGetKey(window, GLFW_KEY_RIGHT)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW.GLFW_PRESS) {
             inputB.player2Add("Right");
         }
-        if (glfwGetKey(window, GLFW_KEY_UP)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW.GLFW_PRESS) {
             inputB.player2Add("Up");
         }
-        if (glfwGetKey(window, GLFW_KEY_DOWN)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW.GLFW_PRESS) {
             inputB.player2Add("Down");
         }
-        if (glfwGetKey(window, GLFW_KEY_PAGE_UP)==GLFW.GLFW_PRESS){
+        if (glfwGetKey(window, GLFW_KEY_PAGE_UP) == GLFW.GLFW_PRESS) {
             inputB.player2Add("A");
         }
-        
-        
+
     }
 
     /**

@@ -78,7 +78,7 @@ public class PlayerEntity {
         this.walkspeed = walkspeed;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-        this.stateDuration = 0;
+       
 
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
