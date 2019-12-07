@@ -51,15 +51,19 @@ public class Controller {
         this.char1 = db.getPlayerEntity("Pekka");
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
         this.char1.setStance(PlayerEntity.Stance.STANDING);
+        this.char1.setState(PlayerEntity.State.NEUTRAL);
+        this.char1.setStateDuration(40);
         this.char2 = db.getPlayerEntity("Jukka");
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
         this.char2.setStance(PlayerEntity.Stance.STANDING);
+        this.char2.setState(PlayerEntity.State.NEUTRAL);
+        this.char2.setStateDuration(40);
         this.char1.setxCoord(480);
         this.char2.setxCoord(1200);
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
-        this.char1.setAttackA(new Attack(10, 200, 100, 200, 210, 20, 20, HitBox.HitLocation.LOW, this.char1));
-        this.char2.setAttackA(new Attack(10, 200, 100, 150, 210, 20, 20, HitBox.HitLocation.LOW, this.char2));
+        this.char1.setAttackA(new Attack(10, 400, 400, 100, 100, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char1));
+        this.char2.setAttackA(new Attack(10, 400, 400, 100, 100, 50, 50, 30, 20, HitBox.HitLocation.LOW, this.char2));
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
@@ -82,6 +86,7 @@ public class Controller {
     }
      public boolean checkCornerRight(PlayerEntity chara){
         return (chara.getxCoord()+chara.getWidth()>= map.RIGHTBORDER); 
+
     }
 
     /**
@@ -109,9 +114,14 @@ public class Controller {
         return hitbox.intersects(hurtbox);
     }
 
+    /**
+     * call checker methods here in correct order in the end of every update
+     * function call.
+     */
     public void masterCheck() {
         checkFacing();
         hitter();
+        reduceStateDuration();
     }
 
     /**
@@ -156,23 +166,34 @@ public class Controller {
      * the characterGettingHit.
      */
     public void hitter() {
-        //Not blocking char2s get damage
+        //Character 2 not blocking
         if (checkHitboxCollision(char1, char2) && !isHitBlocked(char1, char2)) {
+            //if player 2 in attacking state and player 1 hits player 2 , player 2 takes more dmg
+            if (char2.getState() == PlayerEntity.State.ATTACKING) {
+                double dmgCalculation = (double) char2.getHealth() - (double) char1.getHitBox().getDamage() * 1.2;
+                char2.setHealth((int) dmgCalculation);
+            } else {
+                char2.setHealth(char2.getHealth() - char1.getHitBox().getDamage());
+            }
             setStun(char2, char1.getHitBox().getHitStun(), PlayerEntity.State.HITSTUN);
-            char2.setHealth(char2.getHealth() - char1.getHitBox().getDamage());
             char1.getHitBox().deactivate(); // deactivates hitBox
-            //blocking
+            //Blocking
         } else if (checkHitboxCollision(char1, char2) && isHitBlocked(char1, char2)) {
             setStun(char2, char1.getHitBox().getBlockStun(), PlayerEntity.State.BLOCKSTUN);
             char1.getHitBox().deactivate(); // deactivates hitBox
         }
 
-        //Not blocking char1s get damage
+        //Character 1 not blocking
         if (checkHitboxCollision(char2, char1) && !isHitBlocked(char2, char1)) {
+            if (char1.getState() == PlayerEntity.State.ATTACKING) {
+                double dmgCalculation2 = (double) char1.getHealth() - (double) char2.getHitBox().getDamage() * 1.2;
+                char1.setHealth((int) dmgCalculation2);
+            } else {
+                char1.setHealth(char1.getHealth() - char2.getHitBox().getDamage());
+            }
             setStun(char1, char2.getHitBox().getHitStun(), PlayerEntity.State.HITSTUN);
-            char1.setHealth(char1.getHealth() - char2.getHitBox().getDamage());
             char2.getHitBox().deactivate(); // deactivates hitBox
-            //blocking
+            //Blocking
         } else if (checkHitboxCollision(char2, char1) && isHitBlocked(char2, char1)) {
             setStun(char1, char2.getHitBox().getBlockStun(), PlayerEntity.State.BLOCKSTUN);
             char2.getHitBox().deactivate(); // deactivates hitBox
@@ -185,15 +206,16 @@ public class Controller {
      *
      */
     public void reduceStateDuration() {
-        if (char1.getStateDuration() == 0) {
+        if (char1.getStateDuration() == 0 && char1.getState() != PlayerEntity.State.NEUTRAL) {
             char1.setState(PlayerEntity.State.NEUTRAL);
         } else {
             char1.setStateDuration(char1.getStateDuration() - 1);
         }
-        if (char2.getStateDuration() == 0) {
+        if (char2.getStateDuration() == 0 && char2.getState() != PlayerEntity.State.NEUTRAL) {
             char2.setState(PlayerEntity.State.NEUTRAL);
         } else {
-            char2.setStateDuration(char1.getStateDuration() - 1);
+            char2.setStateDuration(char2.getStateDuration() - 1);
+
         }
     }
 
@@ -220,6 +242,9 @@ public class Controller {
      * Updates players positions.
      */
     public void update() {
+        char1.getAttackA().updateHitbox();
+        char2.getAttackA().updateHitbox();
+
         String player1Move = "";
         String player2Move = "";
         
@@ -252,7 +277,7 @@ public class Controller {
         if (checkCornerLeft(char2))char2.setxCoord(1);
         if (checkCornerRight(char1))char1.setxCoord(1919-char1.getWidth());
         if (checkCornerRight(char2))char2.setxCoord(1919-char2.getWidth());
-        if (char2.getyCoord()<=20&&char1.getyCoord()<= 20){
+        if (char2.getyCoord()<=30 &&char1.getyCoord()<= 30){
             if (char1.getFacing()==PlayerEntity.Facing.RIGHT && checkCollision()){
                 char1.setxCoord(char1.getxCoord()-char1.getWalkspeed());
                 char2.setxCoord(char2.getxCoord()+char2.getWalkspeed());
@@ -273,7 +298,6 @@ public class Controller {
         //Player 2 hits
         if (player2Move != ""){
             if ("A".equals(player2Move)){
-                //inputB.player2Inputs();
                 char2.attack('A');
             }
             checkHitboxCollision(char2, char1);

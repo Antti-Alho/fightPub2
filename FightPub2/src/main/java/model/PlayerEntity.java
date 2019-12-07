@@ -60,7 +60,8 @@ public class PlayerEntity {
     private boolean blocking = false;
     @Transient
     private Attack attackA;
-    @Transient static Timer timer;
+    @Transient
+    static Timer timer;
 
     public PlayerEntity() {
     }
@@ -77,7 +78,7 @@ public class PlayerEntity {
         this.walkspeed = walkspeed;
         this.stance = Stance.STANDING;
         this.state = State.NEUTRAL;
-        this.stateDuration = 0;
+       
 
         //this.hitBox = new HitBox(0, 0, 0, 0, 0, HitLocation.MID);
     }
@@ -139,27 +140,34 @@ public class PlayerEntity {
      * @param ID char value that indicates attack used.
      */
     public void attack(char ID) {
-        switch (ID) {
-            case 'A':
-                
-                attackA.setHitBox();
+        if (this.state == State.NEUTRAL) {
+            switch (ID) {
+                case 'A':
+
+                    attackA.activateAttack();
+            }
+
         }
+
     }
 
     /**
      * check characters stance and retuns heigt
+     *
      * @return height
      */
-    public int getHeight(){
-        if (stance == Stance.CROUCHING){
+    public int getHeight() {
+        if (stance == Stance.CROUCHING) {
             return this.crouchingHeight;
         } else if (stance == Stance.STANDING) {
             return this.standingHeight;
         }
         return this.standingHeight;
     }
+
     /**
      * check characters stance and retuns width
+     *
      * @return width
      */
     public int getWidth() {
