@@ -1,30 +1,23 @@
 
-package view;
-import model.MenuElement;
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.ResourceBundle;
+package view.menu;
+
 import java.util.Scanner;
 /**
  * CLI Menu that can be used when all else fails.
  * @author Joonas
  */
-import model.MenuElement;
+import view.menu.MenuElement;
 public class CLIMenu extends MenuIF {
-    
-    // Setting up localisation.
-    
-    
+
     Scanner input = new Scanner(System.in);
     CLIMenu menu;
-    
-    
+
     public CLIMenu() {
      
      }
     /**
-     * This method creates a String that contains the menustr options.
-     * @return string that contains menustr options indexed.
+     * This method creates a String that contains the menu element labels.
+     * @return string that contains menu option labels indexed.
      */
     public String menuString() {
        String menustr = "";

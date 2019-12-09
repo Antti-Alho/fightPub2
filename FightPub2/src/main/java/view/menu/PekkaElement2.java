@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 flatline
+ * Copyright (C) 2019 Joonas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,34 +14,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package view;
+package view.menu;
 
-import model.MenuElement;
-import model.PlayElement;
+import view.View;
 
 /**
  *
- * @author flatline
+ * @author Joonas
  */
-public class CLIMainMenu extends CLIMenu {
-    public CLIMainMenu() {
-        super.menuelements.clear();
-        super.menuelements.add(new PlayElement());
-        super.showMenu();
-        activateMenuElement();
+public class PekkaElement2 extends MenuElement {
+    private String char1;
+    private String label;
+    public PekkaElement2(String char1) {
+        this.label = texts.getString("CHAR1");
+        this.char1 = char1;
     }
     
     @Override
-    public void activateMenuElement() {
-        switch (input.nextInt()) {
-            case 1:
-                    super.menu = new Character1Menu();
-                    break;
-            case 2:
-                super.menu = new OptionsMenu();
-                break;
-            case 3:
-                System.exit(0);
-        }
+    public void action() {
+        View view = new View(this.char1, "Pekka");
+        view.run();
+    }
+    @Override
+    public String getLabel() {
+        return this.label;
     }
 }

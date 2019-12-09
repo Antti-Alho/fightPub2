@@ -33,10 +33,10 @@ public class View {
     /**
      * Constructor for new view class
      */
-    public View() {
+    public View(String char1, String char2) {
         timer = timer.getInstance();
         renderer = new Renderer();
-        controller = new Controller("Pekka", "Pekka", new MapModel("Jee"), 100, 1);
+        controller = new Controller(char1, char2, new MapModel("Jee"), 100, 1);
 
         keyCallback = new GLFWKeyCallback() {
             @Override

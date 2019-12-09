@@ -2,10 +2,10 @@
 package fightpub2;
 
 
-import view.View;
+
 import model.InitDatabase;
-import view.CLIMainMenu;
-import view.MenuIF;
+import view.menu.CLIMainMenu;
+import view.menu.MenuIF;
 
 /**
  * Starts the program.
@@ -14,8 +14,6 @@ import view.MenuIF;
 public class Main {
     public static void main(String[] args) {
         InitDatabase initDatabase = new InitDatabase();
-        MenuIF menu = new CLIMainMenu();
-        view.View view = new View();
-        view.run();
+        MenuIF menu = new CLIMainMenu(); // View luodaan ja käynnistetään menussa.
     }
 }

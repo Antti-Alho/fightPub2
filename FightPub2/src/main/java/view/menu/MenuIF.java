@@ -1,6 +1,6 @@
-package view;
+package view.menu;
 import java.util.ArrayList;
-import model.MenuElement;
+import view.menu.MenuElement;
 import java.util.Locale;
 import java.util.ResourceBundle;
 

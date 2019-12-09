@@ -1,8 +1,7 @@
-package model;
-import java.beans.EventHandler;
+package view.menu;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import view.MenuIF;
+
 
 /**
  * Single menu element, which can be added to menu.

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 flatline
+ * Copyright (C) 2019 Joonas
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,36 +14,38 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package view;
-
-import model.MenuElement;
+package view.menu;
 
 /**
  *
- * @author flatline
+ * @author Joonas
  */
-public class OptionsMenu extends CLIMenu {
-    public OptionsMenu() {
-        
-        super.showMenu();
+public class Character2Menu extends CLIMenu {
+    String char1;
+    String char2;
+    public Character2Menu(String char1) {
+        this.char1 = char1;
+        menuelements.clear();
+        menuelements.add(new JukkaElement2(char1));
+        menuelements.add(new PekkaElement2(char1));
+        showMenu();
+        activateMenuElement();
     }
     @Override
     public void activateMenuElement() {
-        switch (input.nextInt()) {
+         switch (input.nextInt()) {
             case 1:
-                    System.out.println("No options");
-                    super.showMenu();
-                    break;
+                menuelements.get(0).action();
+                break;
             case 2:
-                 System.out.println("No options");
-                    super.showMenu();
-                    break;
+                menuelements.get(1).action();
+                break;
             case 3:
-                System.out.println("No options");
-                    super.showMenu();
-                    break;
-            case 4:
-                super.menu = new CLIMainMenu();
+                menu = new CLIMainMenu();
+                break;
+            default:
+                break;
         }
     }
+    
 }

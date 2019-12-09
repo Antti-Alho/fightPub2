@@ -1,6 +1,6 @@
 
 package controller;
-import model.MenuElement;
+import view.menu.MenuElement;
 import java.util.ArrayList;
 /**
  * This class created an menu that can be navigated with up and down inputs.
