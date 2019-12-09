@@ -126,13 +126,6 @@ public class Controller {
         reduceStateDuration();
         healthCheck();
     }
-    
-    public void healthCheck() {
-        if (char1.getHealth() <= 0 || char2.getHealth() <= 0) {
-            System.out.println("peli ohi");
-            System.exit(0);
-        }
-    }
 
     /**
      *
@@ -318,10 +311,12 @@ public class Controller {
         if (char1.getHealth() <= 0){
             dead1 = true;
             char1.setStance(PlayerEntity.Stance.DEFEATED);
+            System.out.println("peli ohi");
         }
         if (char2.getHealth() <= 0){
             dead2 = true;
             char2.setStance(PlayerEntity.Stance.DEFEATED);
+            System.out.println("peli ohi");
         }
     }
 
