@@ -47,7 +47,7 @@ public class Moves {
         PlayerEntity.Stance stance =char1.getStance();
         
         //Actions, when character is in jump stance
-        if (stance== PlayerEntity.Stance.JUMPUP){
+        if (stance== PlayerEntity.Stance.JUMPING){
             if (y1!=600){
                 y1 = y1+12;
                 if ("Right".equals(save)){
@@ -69,7 +69,7 @@ public class Moves {
         }
         
         // Player moves when stance is STANDING.
-        if (stance!= PlayerEntity.Stance.JUMPUP && y1==0){
+        if (stance!= PlayerEntity.Stance.JUMPING && y1==0){
             if ("Left".equals(move)){
                 x1 = x1-char1.getWalkspeed();
             }
@@ -81,29 +81,30 @@ public class Moves {
             }
             if ("Down Left".equals(move)){
                 stance = PlayerEntity.Stance.CROUCHING;
-                x1 = x1-char1.getWalkspeed();
+                x1 = x1-char1.getWalkspeed()/2;
             }
             if ("Down Right".equals(move)){
                 stance = PlayerEntity.Stance.CROUCHING;
-                x1 = x1+char1.getWalkspeed();
+                x1 = x1+char1.getWalkspeed()/2;
             }
             if ("Up".equals(move)){
-                stance = PlayerEntity.Stance.JUMPUP;
+                stance = PlayerEntity.Stance.JUMPING;
                 save="";
             }
             if ("Up Left".equals(move)){
                 save = "Left";
-                stance = PlayerEntity.Stance.JUMPUP;
+                stance = PlayerEntity.Stance.JUMPING;
             }
             if ("Up Right".equals(move)){
                 save = "Right";
-                stance = PlayerEntity.Stance.JUMPUP;
+                stance = PlayerEntity.Stance.JUMPING;
             }
         }
         list[0] = Integer.toString(x1);
         list[1] = Integer.toString(y1);
         list[2] = save;
         list[3] = String.valueOf(stance);
+        //System.out.println(stance);
         return list;
     }
     

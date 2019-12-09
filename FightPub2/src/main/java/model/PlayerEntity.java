@@ -33,6 +33,12 @@ public class PlayerEntity {
 
     @Column(name = "crouching_Height")
     private int crouchingHeight;
+    
+    @Column(name = "defeated_Height")
+    private int defeatedHeight;
+    
+    @Column(name = "defeated_Width")
+    private int defeatedWidth;
 
     @Column(name = "health")
     private int health;
@@ -118,7 +124,8 @@ public class PlayerEntity {
     public enum Stance {
         CROUCHING,
         STANDING,
-        JUMPUP,
+        JUMPING,
+        DEFEATED
         
     }
 
@@ -161,6 +168,8 @@ public class PlayerEntity {
             return this.crouchingHeight;
         } else if (stance == Stance.STANDING) {
             return this.standingHeight;
+        }else if (stance == Stance.DEFEATED){
+            return this.defeatedHeight;
         }
         return this.standingHeight;
     }
@@ -175,6 +184,8 @@ public class PlayerEntity {
             return this.crouchingWidth;
         } else if (stance == Stance.STANDING) {
             return this.standingWidth;
+        }else if (stance == Stance.DEFEATED){
+            return this.defeatedWidth;
         }
         return this.standingWidth;
     }
@@ -343,6 +354,21 @@ public class PlayerEntity {
 
     public void setAttackA(Attack attackA) {
         this.attackA = attackA;
+    }
+    public int getDefeatedHeight() {
+        return defeatedHeight;
+    }
+
+    public void setDefeatedHeight(int defeatedHeight) {
+        this.defeatedHeight = defeatedHeight;
+    }
+
+    public int getDefeatedWidth() {
+        return defeatedWidth;
+    }
+
+    public void setDefeatedWidth(int defeatedWidth) {
+        this.defeatedWidth = defeatedWidth;
     }
 
 }
