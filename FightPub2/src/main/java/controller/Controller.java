@@ -54,6 +54,7 @@ public class Controller {
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
         this.char1.setStance(PlayerEntity.Stance.STANDING);
         this.char1.setState(PlayerEntity.State.NEUTRAL);
+        this.char1.setStateDuration(40);
         this.char2 = db.getPlayerEntity(char2);
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
         this.char2.setStance(PlayerEntity.Stance.STANDING);
