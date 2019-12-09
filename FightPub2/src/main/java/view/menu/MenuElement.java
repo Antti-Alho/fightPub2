@@ -4,21 +4,18 @@ import java.util.ResourceBundle;
 
 
 /**
- * Single menu element, which can be added to menu.
+ * Single menu element, which can be added to menu. Locale settings are
+ * read from here.
  * @author Joonas, Patrik
  */
 
 
 public abstract class MenuElement {
     
-    /**
-     * Locale settings to represent texts in correct language and typesetting.
-     */
+
     Locale current = new Locale("fi", "FI");
     ResourceBundle texts = ResourceBundle.getBundle("textResources", current);
-    /**
-     * 
-     */
+    
     private String label;
     public String getLabel() {
         return this.label;

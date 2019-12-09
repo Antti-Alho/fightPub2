@@ -1,12 +1,11 @@
-
 package view.menu;
 
 import view.menu.CLIMenu;
-import view.menu.MenuElement;
 
 /**
- *
- * @author flatline
+ * This menu contains all characters. Player 1 chooses a character, and
+ * it is passed to Character2Menu.
+ * @author Joonas
  */
 public class Character1Menu extends CLIMenu {
     public Character1Menu() {

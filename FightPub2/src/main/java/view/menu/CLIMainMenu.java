@@ -1,11 +1,8 @@
 
 package view.menu;
 
-
-
-
 /**
- *
+ * Menu that is spawned on program startup.
  * @author Joonas
  */
 public class CLIMainMenu extends CLIMenu {
@@ -18,6 +15,9 @@ public class CLIMainMenu extends CLIMenu {
         activateMenuElement();
     }
     
+    /**
+     * Selects menu action.
+     */
     @Override
     public void activateMenuElement() {
         switch (input.nextInt()) {
