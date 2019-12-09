@@ -16,7 +16,7 @@ public abstract class MenuElement {
     Locale current = new Locale("fi", "FI");
     ResourceBundle texts = ResourceBundle.getBundle("textResources", current);
     
-    private String label;
+    String label;
     public String getLabel() {
         return this.label;
     }
