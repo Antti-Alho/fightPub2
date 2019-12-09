@@ -124,7 +124,6 @@ public class Controller {
         checkFacing();
         hitter();
         reduceStateDuration();
-        healthCheck();
     }
 
     /**
