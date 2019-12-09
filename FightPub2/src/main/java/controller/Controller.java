@@ -50,12 +50,12 @@ public class Controller {
      */
     public Controller(String char1, String char2, MapModel map, int timelimit, int rounds) {
         Database db = new Database();
-        this.char1 = db.getPlayerEntity("Pekka");
+        this.char1 = db.getPlayerEntity(char1);
         this.char1.setFacing(PlayerEntity.Facing.RIGHT);
         this.char1.setStance(PlayerEntity.Stance.STANDING);
         this.char1.setState(PlayerEntity.State.NEUTRAL);
         this.char1.setStateDuration(40);
-        this.char2 = db.getPlayerEntity("Jukka");
+        this.char2 = db.getPlayerEntity(char2);
         this.char2.setFacing(PlayerEntity.Facing.LEFT);
         this.char2.setStance(PlayerEntity.Stance.STANDING);
         this.char2.setState(PlayerEntity.State.NEUTRAL);
@@ -310,10 +310,12 @@ public class Controller {
         if (char1.getHealth() <= 0){
             dead1 = true;
             char1.setStance(PlayerEntity.Stance.DEFEATED);
+            System.out.println("peli ohi");
         }
         if (char2.getHealth() <= 0){
             dead2 = true;
             char2.setStance(PlayerEntity.Stance.DEFEATED);
+            System.out.println("peli ohi");
         }
     }
 
