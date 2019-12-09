@@ -16,7 +16,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  *
- * @author Heidi, Antti
+ * @author Heidi, Antti, Joonas
  */
 public class View {
 
@@ -32,11 +32,15 @@ public class View {
 
     /**
      * Constructor for new view class
+     * @param char1 Determines which PlayerEntity class will be created for
+     *              player 1
+     * @param char2 Determines which PlayerEntity class will be created for
+     *              player 1
      */
-    public View() {
+    public View(String char1, String char2) {
         timer = timer.getInstance();
         renderer = new Renderer();
-        controller = new Controller("Pekka", "Pekka", new MapModel("Jee"), 100, 1);
+        controller = new Controller(char1, char2, new MapModel("Jee"), 100, 1);
 
         keyCallback = new GLFWKeyCallback() {
             @Override
