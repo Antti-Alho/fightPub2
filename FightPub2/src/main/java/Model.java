@@ -35,10 +35,12 @@ public class Model {
     private int t_id;
     private int i_id;
     private Texture tex;
+    private Shader sha;
     private Colour col;
     
-    public Model(float[] vertices, float[] tex_coords, int[] indicies, Texture tex){
+    public Model(float[] vertices, float[] tex_coords, int[] indicies, Texture tex, Shader sha){
         this.tex = tex;
+        this.sha = sha;
         
         draw_count = indicies.length;
 
@@ -62,7 +64,10 @@ public class Model {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
     
-    public void render(){
+    public void render(int x, int y){
+        
+        //glViewport(x, y, tex.getHeight(), tex.getWidth());
+        
         if (tex != null) {
             tex.bind();
         } else if (this.col != null) {
@@ -71,13 +76,9 @@ public class Model {
                     col.getG(),
                     col.getB(),
                     col.getA());
-        }else {
-            glColor4f(
-                    Colour.RED.getR(),
-                    Colour.RED.getG(),
-                    Colour.RED.getB(),
-                    Colour.RED.getA());
         }
+        
+        //sha.bind();
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         

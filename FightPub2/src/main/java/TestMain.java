@@ -36,7 +36,7 @@ public class TestMain {
             System.exit(1);
         }
         
-        long win = glfwCreateWindow(240, 466, "Window", 0, 0);
+        long win = glfwCreateWindow(400, 466, "Window", 0, 0);
         
         glfwShowWindow(win);
         glfwMakeContextCurrent(win);
@@ -45,10 +45,10 @@ public class TestMain {
         glEnable(GL_TEXTURE_2D);
         
         float[] vertices = new float[] {
-            -0.5f, 0.5f, 0, //top left 0
-            0.5f, 0.5f ,0, // top right 1
-            0.5f, -0.5f, 0, // bottom right 2
-            -0.5f, -0.5f, 0, // bottom left 3
+            -1f, 1f, 0, //top left 0
+            1f, 1f ,0, // top right 1
+            1f, -1f, 0, // bottom right 2
+            -1f, -1f, 0, // bottom left 3
         };
         
         float[] texture = new float[] {
@@ -64,12 +64,10 @@ public class TestMain {
         };
         
         File f = new File("");
+        Shader shader = new Shader("shader");
         Texture tex = new Texture(f.getAbsolutePath() + "/src/main/java/assets/ruy.png");
-        Model model = new Model(vertices, texture, indicies, tex);
-        
+        Model model = new Model(vertices, texture, indicies, null, shader);
 
-        
-        
         while(glfwWindowShouldClose(win) == false) {
             if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GL_TRUE){
                 glfwSetWindowShouldClose(win, true);
@@ -77,10 +75,8 @@ public class TestMain {
             
             glfwPollEvents();
             glClear(GL_COLOR_BUFFER_BIT);
-
             
-            model.render();
-
+            model.render(0,0);
             
             glfwSwapBuffers(win);
         }
