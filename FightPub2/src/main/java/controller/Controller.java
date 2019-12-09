@@ -36,6 +36,8 @@ public class Controller {
     private String player2Save = "";
     private Moves moves2= new Moves(this);
     private Moves moves1= new Moves(this);
+    boolean dead1 = false;
+    boolean dead2 = false;
     
 
     /**
@@ -62,8 +64,8 @@ public class Controller {
         this.char2.setxCoord(1200);
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
-        this.char1.setAttackA(new Attack(10, 400, 400, 100, 100, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char1));
-        this.char2.setAttackA(new Attack(10, 400, 400, 100, 100, 50, 50, 30, 20, HitBox.HitLocation.LOW, this.char2));
+        this.char1.setAttackA(new Attack(10, 200, 100, 150, 201, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char1));
+        this.char2.setAttackA(new Attack(10, 200, 100, 150, 201, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char2));
         this.map = map;
         this.timelimit = timelimit;
         this.rounds = rounds;
@@ -205,6 +207,7 @@ public class Controller {
      * reduce stateDuration by 1.
      *
      */
+    
     public void reduceStateDuration() {
         if (char1.getStateDuration() == 0 && char1.getState() != PlayerEntity.State.NEUTRAL) {
             char1.setState(PlayerEntity.State.NEUTRAL);
@@ -218,13 +221,13 @@ public class Controller {
 
         }
     }
-
+    
     /**
      * Checks characters positions and makes sure they are facing eachother.
      */
     public void checkFacing() {
-        if (char1.getFacing() == PlayerEntity.Facing.RIGHT && char1.getxCoord() > char2.getxCoord()
-                || char1.getFacing() == PlayerEntity.Facing.LEFT && char1.getxCoord() < char2.getxCoord()) {
+        if (char1.getFacing() == PlayerEntity.Facing.RIGHT && char1.getxCoord()+char1.getWidth()/2 > char2.getxCoord()+ char2.getWidth()/2
+                || char1.getFacing() == PlayerEntity.Facing.LEFT && char1.getxCoord()+char1.getWidth()/2 < char2.getxCoord()+char2.getWidth()/2) {
             char1.turn();
             char2.turn();
         }
@@ -262,7 +265,7 @@ public class Controller {
         list2 = moves2.getMove(char2, char1, player2Move, player2Save);
         
         //Updates players positions and stances.
-         char1.setxCoord(Integer.parseInt(list1[0]));
+        char1.setxCoord(Integer.parseInt(list1[0]));
         char1.setyCoord(Integer.parseInt(list1[1]));
         player1Save = list1[2];
         char1.setStance(Enum.valueOf(PlayerEntity.Stance.class, list1[3]));
@@ -271,6 +274,8 @@ public class Controller {
         char2.setyCoord(Integer.parseInt(list2[1]));
         player2Save = list2[2];
         char2.setStance(Enum.valueOf(PlayerEntity.Stance.class, list2[3]));
+        
+        
         
         //Checks if there's any kind of collisions
         if (checkCornerLeft(char1))char1.setxCoord(1);
@@ -302,6 +307,14 @@ public class Controller {
             }
             checkHitboxCollision(char2, char1);
         }
+        if (char1.getHealth() <= 0){
+            dead1 = true;
+            char1.setStance(PlayerEntity.Stance.DEFEATED);
+        }
+        if (char2.getHealth() <= 0){
+            dead2 = true;
+            char2.setStance(PlayerEntity.Stance.DEFEATED);
+        }
     }
 
     /**
@@ -309,7 +322,7 @@ public class Controller {
      */
     public void input() {
         long window = GLFW.glfwGetCurrentContext();
-        if (char1.getStance()!=PlayerEntity.Stance.JUMPUP){
+        if (char1.getStance()!=PlayerEntity.Stance.JUMPING&& dead1!=true &&char1.getState() == PlayerEntity.State.NEUTRAL){
             if (glfwGetKey(window, GLFW_KEY_A)==GLFW.GLFW_PRESS){
                 inputB.player1Add("Left");
             }
@@ -321,14 +334,13 @@ public class Controller {
             }
             if (glfwGetKey(window, GLFW_KEY_S)==GLFW.GLFW_PRESS){
                 inputB.player1Add("Down");
-            }else{
+            }else
                 char1.setStance(PlayerEntity.Stance.STANDING);
-            }
             if (glfwGetKey(window, GLFW_KEY_R)==GLFW.GLFW_PRESS){
                 inputB.player1Add("A");
             }
         }
-        if (char2.getStance()!=PlayerEntity.Stance.JUMPUP){
+        if (char2.getStance()!=PlayerEntity.Stance.JUMPING&&dead2!=true&&char2.getState() == PlayerEntity.State.NEUTRAL){
             if (glfwGetKey(window, GLFW_KEY_LEFT)==GLFW.GLFW_PRESS){
                 inputB.player2Add("Left");
             }
@@ -344,8 +356,8 @@ public class Controller {
                 char2.setStance(PlayerEntity.Stance.STANDING);
             }
             if (glfwGetKey(window, GLFW_KEY_PAGE_UP)==GLFW.GLFW_PRESS){
-                inputB.player2Add("A");
-            } 
+                inputB.player2Add("A"); 
+            }
         }
     }
 

@@ -29,6 +29,8 @@ public class InitDatabase {
             pEntity.setStandingWidth(250);
             pEntity.setCrouchingHeight(200);
             pEntity.setCrouchingWidth(280);
+            pEntity.setDefeatedHeight(250);
+            pEntity.setDefeatedWidth(400);
             pEntity.setWalkspeed(4);
 
             //Save the employee in database
@@ -41,6 +43,8 @@ public class InitDatabase {
             pEntity2.setStandingWidth(180);
             pEntity2.setCrouchingHeight(200);
             pEntity2.setCrouchingWidth(220);
+            pEntity2.setDefeatedHeight(180);
+            pEntity2.setDefeatedWidth(400);
             pEntity2.setWalkspeed(6);
 
             //Save the employee in database
