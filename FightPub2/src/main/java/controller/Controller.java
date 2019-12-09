@@ -64,7 +64,7 @@ public class Controller {
         this.char2.setxCoord(1200);
         this.char1.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
         this.char2.setHitBox(new HitBox(0, 0, 0, 0, 0, HitBox.HitLocation.HIGH));
-        this.char1.setAttackA(new Attack(10, 200, 100, 170, 201, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char1));
+        this.char1.setAttackA(new Attack(10, 200, 100, 150, 201, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char1));
         this.char2.setAttackA(new Attack(10, 200, 100, 150, 201, 50, 50, 20, 20, HitBox.HitLocation.LOW, this.char2));
         this.map = map;
         this.timelimit = timelimit;
