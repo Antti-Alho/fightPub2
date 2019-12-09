@@ -18,7 +18,7 @@ package view;
 
 /**
  * You only exit and forget that this state ever existed.
- * used as a default state for state machine.
+ * used as a default state for state machine. when no window is needed.
  * @author antti
  */
 public class EmptyState implements State{

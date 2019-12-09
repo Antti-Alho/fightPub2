@@ -1,8 +1,12 @@
 
 package view;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import javax.imageio.ImageIO;
+import org.lwjgl.BufferUtils;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13C.GL_CLAMP_TO_BORDER;
 import static org.lwjgl.stb.STBImage.stbi_failure_reason;
@@ -16,10 +20,51 @@ import org.lwjgl.system.MemoryStack;
  */
 public class Texture {
     
-    private final int id;
+    private int id;
     private int width;
     private int height;
 
+    /**
+     * 
+     * @param filename 
+     */
+    public Texture(String filename) {
+        BufferedImage bi;
+        try {
+            bi = ImageIO.read(new File(filename));
+            width = bi.getWidth();
+            height = bi.getHeight();
+            int[] pixels_raw = bi.getRGB(0, 0, width, height, null, 0, width);
+            
+            ByteBuffer pixels = BufferUtils.createByteBuffer(width * height * 4);
+            
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    int pixel = pixels_raw[i*width + j];
+                    pixels.put((byte)((pixel >> 16) & 0xFF)); //red
+                    pixels.put((byte)((pixel >> 8) & 0xFF)); // green
+                    pixels.put((byte)(pixel & 0xFF)); //blue
+                    pixels.put((byte)((pixel >> 24) & 0xFF)); //alpha
+                }
+            }
+            
+            pixels.flip();
+            
+            id = glGenTextures();
+            
+            glBindTexture(GL_TEXTURE_2D, id);
+            
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+            
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_BYTE, pixels);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
     public Texture() {
         id = glGenTextures();
     }
