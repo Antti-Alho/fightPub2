@@ -19,8 +19,7 @@ package model;
 /**
  * This class is used to create a rectangle which is used to hit another
  * character. Every instance of character class has an instance of this class.
- *
- * @see Character
+
  * @author Pate, Joonas
  */
 public class HitBox {
@@ -65,13 +64,12 @@ public class HitBox {
     /**
      * Helper method to set all parameters in single method
      *
-     * @param active
      * @param damage
      * @param width
      * @param height
      * @param xOffset
      * @param yOffset
-     * @param hitStun;
+     * @param hitStun
      * @param blockStun
      * @param hitLocation
      */

@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 public abstract class MenuElement {
     
 
-    Locale current = new Locale("fi", "FI");
+    Locale current = new Locale("jp", "JP");
     ResourceBundle texts = ResourceBundle.getBundle("textResources", current);
     
     String label;

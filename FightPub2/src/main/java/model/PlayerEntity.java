@@ -7,11 +7,8 @@ import controller.Database;
 import view.Timer;
 
 /**
- * This class contains playable character attributes and methods.
- *
+ * This class contains playable character attributes and methods
  * @see HitBox
- * @see HurtBox
- *
  * @author Pate, Joonas, Heidi, Antti
  */
 @Entity
