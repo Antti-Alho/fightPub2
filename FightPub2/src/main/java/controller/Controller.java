@@ -211,13 +211,21 @@ public class Controller {
     public void reduceStateDuration() {
         if (char1.getStateDuration() == 0 && char1.getState() != PlayerEntity.State.NEUTRAL) {
             char1.setState(PlayerEntity.State.NEUTRAL);
-        } else {
+        } else if (char1.getStateDuration() >= 0){
             char1.setStateDuration(char1.getStateDuration() - 1);
+            if (char1.getFacing()== PlayerEntity.Facing.RIGHT) char1.setxCoord(char1.getxCoord() - 3);
+            if (char1.getFacing()== PlayerEntity.Facing.LEFT) char1.setxCoord(char1.getxCoord() + 3);
+            if (checkCornerLeft(char1))char2.setxCoord(char2.getxCoord() + 3);
+            if (checkCornerRight(char1))char2.setxCoord(char2.getxCoord() - 3);
         }
         if (char2.getStateDuration() == 0 && char2.getState() != PlayerEntity.State.NEUTRAL) {
             char2.setState(PlayerEntity.State.NEUTRAL);
-        } else {
+        } else if (char2.getStateDuration() >= 0){
             char2.setStateDuration(char2.getStateDuration() - 1);
+            if (char2.getFacing()== PlayerEntity.Facing.RIGHT) char2.setxCoord(char2.getxCoord() - 3);
+            if (char2.getFacing()== PlayerEntity.Facing.LEFT) char2.setxCoord(char2.getxCoord() + 3);
+            if (checkCornerLeft(char2))char1.setxCoord(char1.getxCoord() + 3);
+            if (checkCornerRight(char2))char1.setxCoord(char1.getxCoord() - 3);
 
         }
     }
