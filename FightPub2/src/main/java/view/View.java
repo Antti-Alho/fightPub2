@@ -16,7 +16,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  *
- * @author Heidi, Antti
+ * @author Heidi, Antti, Joonas
  */
 public class View {
 
@@ -32,11 +32,15 @@ public class View {
 
     /**
      * Constructor for new view class
+     * @param char1 Determines which PlayerEntity class will be created for
+     *              player 1
+     * @param char2 Determines which PlayerEntity class will be created for
+     *              player 1
      */
-    public View() {
+    public View(String char1, String char2) {
         timer = timer.getInstance();
         renderer = new Renderer();
-        controller = new Controller("Pekka", "Pekka", new MapModel("Jee"), 100, 1);
+        controller = new Controller(char1, char2, new MapModel("Jee"), 100, 1);
 
         keyCallback = new GLFWKeyCallback() {
             @Override
@@ -188,23 +192,40 @@ public class View {
         );
 
         //healthbox 1
-        drawSquare(0, 1000,
-                controller.getCharacter1().getHealth() * 5,
-                1080,
-                width,
-                height,
-                healthColour
+        drawSquare(0+((100-controller.getCharacter1().getHealth())*8), 1000,
+            800-((100-controller.getCharacter1().getHealth())*8), 
+            1080,
+            width,
+            height,
+            healthColour
         );
 
-        //healthbox 1
-        drawSquare(1420, 1000,
-                controller.getCharacter2().getHealth() * 5,
-                1080,
-                width,
-                height,
-                healthColour
+        //healthbox 2
+        drawSquare(1120, 1000,
+            controller.getCharacter2().getHealth()*8, 
+            1080,
+            width,
+            height,
+            healthColour
         );
-
+        
+        //Characterbox1
+        drawSquare(800, 920,
+            160, 
+            1080,
+            width,
+            height,
+            char1Colour
+        );
+        
+        //Characterbox2
+        drawSquare(960, 920,
+            160, 
+            1080,
+            width,
+            height,
+            char2Colour
+        );
     }
 
     /**

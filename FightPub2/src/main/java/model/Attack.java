@@ -1,19 +1,4 @@
-/*
- * Copyright (C) 2019 flatline
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+
 package model;
 
 import view.Timer;
@@ -37,7 +22,7 @@ public class Attack {
     final int blockStun;
     final int activationTime; // when time of (activation + activationTime = frameclock.getFpcCounter) the attack activates
     int activation; //when the attack button was pressed. measured in frames.
-    final int deactivationTimeFINAL = 50; //deactiovanTimeFinal + activation = deactivation time
+    final int deactivationTimeFINAL; //deactiovanTimeFinal + activation = deactivation time
     int deactivationTime; // when deactivationTime <= frameclock.getFpscounter() deactivate the attack.
     HitBox.HitLocation loc;
     PlayerEntity player;
@@ -55,11 +40,13 @@ public class Attack {
      * hitStun state in frames
      * @param blockStun how long the player who blocks this attack will be in
      * blockStun state in frames
+     * @param activationTime how long in frames it takes for the attack to activate
+     * @param deactivationTimeFINAL how long it takes for the hit to deactivate
      * @param loc defines is the attack low mid or high so can it be blocked in
      * which positions
      * @param player wich player owns this attack
      */
-    public Attack(int damage, int width, int height, int xOffset, int yOffset, int hitStun, int blockStun, HitBox.HitLocation loc, PlayerEntity player) {
+    public Attack(int damage, int width, int height, int xOffset, int yOffset, int hitStun, int blockStun, int activationTime, int deactivationTimeFINAL, HitBox.HitLocation loc, PlayerEntity player) {
         this.damage = damage;
         this.width = width;
         this.height = height;
@@ -67,10 +54,11 @@ public class Attack {
         this.yOffset = yOffset;
         this.hitStun = hitStun;
         this.blockStun = blockStun;
+        this.activationTime = activationTime;
+        this.deactivationTimeFINAL = deactivationTimeFINAL;
         this.loc = loc;
         this.player = player;
         this.frameClock = frameClock.getInstance();
-        this.activationTime = 15;
     }
 
     /**
@@ -94,19 +82,17 @@ public class Attack {
     }
 
     /**
-     * Sets the attacking player into attacking state.
-     * activation is the time when the attack is pressed. for instance if 1000 frames of game has gone forward
-     * and you press attack at frame 1001 the activation will be = 1001
+     * Sets the attacking player into attacking state. activation is the time
+     * when the attack is pressed. for instance if 1000 frames of game has gone
+     * forward and you press attack at frame 1001 the activation will be = 1001
      * deactivation time is the time when the hit will be deactivated.
+
      */
     public void activateAttack() {
         player.setState(PlayerEntity.State.ATTACKING);
-
-        // 100
         activation = frameClock.getFpsCounter();
-        //110
-        deactivationTime = deactivationTimeFINAL + activation;
 
+        deactivationTime = deactivationTimeFINAL + activationTime + activation;
     }
 
 }

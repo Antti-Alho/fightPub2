@@ -9,6 +9,7 @@ import model.MapModel;
 import model.PlayerEntity;
 import controller.Controller;
 import java.awt.event.KeyEvent;
+import model.Attack;
 import org.junit.jupiter.api.Disabled;
 import model.HitBox;
 import model.InitDatabase;
@@ -26,7 +27,7 @@ public class ControllerTest {
      * before each test set the character to certain places and their values
      */
     @BeforeEach
-    public void setHitbox() {
+    public void setHurtbox() {
         controller.getCharacter1().setxCoord(400);
         controller.getCharacter2().setxCoord(1200);
         controller.getCharacter1().setFacing(PlayerEntity.Facing.RIGHT);
@@ -38,8 +39,9 @@ public class ControllerTest {
     }
 
     /**
-     * tests if the characters are in their starting location defined by controllers constructor method.
-     * Controller should set them in positions 400 and 1200
+     * tests if the characters are in their starting location defined by
+     * controllers constructor method. Controller should set them in positions
+     * 400 and 1200
      */
     @Test
     public void startLocation() {
@@ -103,12 +105,13 @@ public class ControllerTest {
         assertEquals(PlayerEntity.Facing.RIGHT, char2.getFacing(), "Hahmo 2 kääntynyt vaikka ei saisi");
 
     }
+
     /**
      * Tests the checkHitboxCollision method, which should return true if and
      * only if hitbox is colliding with another characters "hurtbox".
      */
     @Test
-    void checkHitBoxCollision() {
+    void checkHitBoxCollision1() {
         controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(1201);
         controller.getCharacter1().getHitBox().setAll(10, 150, 20, 100, 30, 5, 40, HitBox.HitLocation.HIGH);
@@ -116,16 +119,30 @@ public class ControllerTest {
         assertEquals(false, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun ei pitäisi osua");
         controller.getCharacter2().getHitBox().setAll(10, 150, 20, -100, 30, 5, 40, HitBox.HitLocation.HIGH);
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 iskee oikealta)");
+    }
+    void checkHitBoxCollision3() {
+        controller.getCharacter1().setxCoord(1000);
         controller.getCharacter2().setxCoord(780);
         controller.masterCheck();
         controller.getCharacter2().getHitBox().setAll(10, 150, 20, 100, 30, 5, 40, HitBox.HitLocation.HIGH);
-
         assertEquals(true, controller.checkHitboxCollision(controller.getCharacter2(), controller.getCharacter1()), "Iskun pitäisi osua (hahmo 2 vasemmalta");
+    }
+    void checkHitBoxCollision4() {
+        controller.getCharacter2().setStance(PlayerEntity.Stance.CROUCHING);
+        controller.getCharacter1().setxCoord(1000);
+        controller.getCharacter2().setxCoord(1201);
+        controller.getCharacter1().attack('A');
+        assertEquals(false, controller.checkHitboxCollision(controller.getCharacter1(), controller.getCharacter2()), "Iskun ei pitäisi osua. Toinen hahmo on iskun alapuolella");
+        controller.getCharacter1().attack('A');
+        //assertEquals(false, controller.hitter(), "Iskun ei pitäisi osua. Toinen hahmo on iskun alapuolella");
+        
+        
     }
 
     /**
-     * checks that the other character goes into a hitstun after the hitting character has succesfully landed a hit
-     * also it tests that the character goes back to a neutral state after a certain period of frames.
+     * checks that the other character goes into a hitstun after the hitting
+     * character has succesfully landed a hit also it tests that the character
+     * goes back to a neutral state after a certain period of frames.
      */
     @Test
     void checkStateChanged() {
@@ -176,9 +193,10 @@ public class ControllerTest {
         controller.hitter();
         assertEquals(PlayerEntity.State.HITSTUN, char1.getState(), "char1:n pitäisi olla HIT statessa");
     }
+
     /**
-     * Tests that Hitbox gets deactivated after hit connects to another
-     * player characters "hurtbox"
+     * Tests that Hitbox gets deactivated after hit connects to another player
+     * characters "hurtbox"
      */
     @Test
     void HitBoxDeactivation() {
@@ -191,9 +209,10 @@ public class ControllerTest {
         assertEquals(0, char2.getHitBox().getWidth(), "char2:n hitboxin width pitäisi olla 0");
         assertEquals(0, char2.getHitBox().getHeight(), "char2:n hitboxin height pitäisi olla 0");
     }
+
     /**
-     * Tests that crouching player can block low and mid attacks, but gets 
-     * hit by high attacks
+     * Tests that crouching player can block low and mid attacks, but gets hit
+     * by high attacks
      */
     @Test
     void crouchingBlock() {
@@ -220,6 +239,7 @@ public class ControllerTest {
         controller.hitter();
         assertEquals(PlayerEntity.State.HITSTUN, char1.getState(), "char1:n pitäisi olla HIT statessa");
     }
+
     /**
      * Tests that attacks reduce health
      */
@@ -239,12 +259,13 @@ public class ControllerTest {
         controller.hitter();
         assertEquals(90, char2.getHealth(), "char2:n hp:n pitäisi olla 90");
     }
+
     /**
      * Checks that both players can get hit simultaneously, if both get hit on
      * exactly same frame.
      */
     @Test
-    void paskaa() {
+    void SimultaneousHit() {
         PlayerEntity char1 = controller.getCharacter1();
         PlayerEntity char2 = controller.getCharacter2();
         char1.setxCoord(1000);
@@ -257,8 +278,8 @@ public class ControllerTest {
         char2.setHealth(100);
         char1.setState(PlayerEntity.State.NEUTRAL);
         char2.setState(PlayerEntity.State.NEUTRAL);
-        char1.getHitBox().setAll( 10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.MID);
-        char2.getHitBox().setAll( 10, 300, 300, char2.getWidth() - 300, 0, 10, 20, HitBox.HitLocation.MID);
+        char1.getHitBox().setAll(10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.MID);
+        char2.getHitBox().setAll(10, 300, 300, char2.getWidth() - 300, 0, 10, 20, HitBox.HitLocation.MID);
         controller.hitter();
         assertEquals(PlayerEntity.State.HITSTUN, char1.getState(), "2. Hahmot löivät samaan aikaan. molempien charactereiden pitäisi olla hitstunnissa.");
         assertEquals(PlayerEntity.State.HITSTUN, char2.getState(), "1. Hahmot löivät samaan aikaan. molempien charactereiden pitäisi olla hitstunnissa.");
@@ -266,6 +287,46 @@ public class ControllerTest {
         assertEquals(90, char2.getHealth(), "1. char2:n hp:n pitäisi olla 90");
         assertEquals(90, char2.getHealth(), "2. char2:n hp:n pitäisi olla 90");
     }
+
+    /**
+     * tests if the player can only hit in neutral state
+     */
+    @Test
+    void attackTesting() {
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
+        char1.setxCoord(1000);
+        char2.setxCoord(1201);
+        char1.setBlocking(false);
+        char2.setBlocking(false);
+        char1.setHealth(100);
+        char2.setHealth(100);
+        char1.setState(PlayerEntity.State.BLOCKSTUN);
+        char2.setState(PlayerEntity.State.NEUTRAL);
+        char1.setAttackA(new Attack(10, 400, 400, 100, 100, 20, 20,20, 20, HitBox.HitLocation.LOW, char1));
+        char1.attack('A');
+        controller.hitter();
+        assertEquals(PlayerEntity.State.BLOCKSTUN, char1.getState(), "Hahmo 1 edelleen blockstun statessa eli ei voinut lyödä koska ei mennyt attacking stateen");
+
+    }
+
+    @Test
+    void moreDmgfromCounterAttack() {
+        PlayerEntity char1 = controller.getCharacter1();
+        PlayerEntity char2 = controller.getCharacter2();
+        char1.setxCoord(1000);
+        char2.setxCoord(1201);
+        char1.setBlocking(false);
+        char2.setBlocking(false);
+        char1.setHealth(100);
+        char2.setHealth(100);
+        char1.setState(PlayerEntity.State.NEUTRAL);
+        char2.setState(PlayerEntity.State.ATTACKING);
+        char1.getHitBox().setAll(10, 300, 300, 0, 0, 10, 20, HitBox.HitLocation.MID);
+        controller.hitter();
+        assertEquals(88, char2.getHealth(), "Hahmo2 otti 20% enemmän damagea koska oli attacking statessa");
+    }
+
     /*
     @Test
     void cameraPosition() {
