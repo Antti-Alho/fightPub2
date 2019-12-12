@@ -64,9 +64,9 @@ public class TestMain {
         };
         
         File f = new File("");
-        Shader shader = new Shader("shader");
+        //Shader shader = new Shader("shader");
         Texture tex = new Texture(f.getAbsolutePath() + "/src/main/java/assets/ruy.png");
-        Model model = new Model(vertices, texture, indicies, null, shader);
+        Model model = new Model(vertices, texture, indicies, tex, null);
 
         while(glfwWindowShouldClose(win) == false) {
             if (glfwGetKey(win, GLFW_KEY_ESCAPE) == GL_TRUE){

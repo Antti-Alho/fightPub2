@@ -64,8 +64,7 @@ public class Model {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
     
-    public void render(int x, int y){
-        
+    public void render(int x, int y){ 
         //glViewport(x, y, tex.getHeight(), tex.getWidth());
         
         if (tex != null) {
